@@ -6065,20 +6065,58 @@
                     document.body.appendChild(script);
                 });
             }
-            async function sheetRequest(method, action, data) {
+            function sheetFormPostRequest(action, data) {
                 const config = sheetConfig();
-                if (!config) throw new Error("missing url");
+                if (!config) return Promise.reject(new Error("missing url"));
+                return new Promise((resolve, reject) => {
+                    const requestId = `ananSheetPost_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+                    const iframe = document.createElement("iframe");
+                    const form = document.createElement("form");
+                    let done = false;
+                    const cleanup = () => {
+                        if (done) return;
+                        done = true;
+                        clearTimeout(timer);
+                        window.removeEventListener("message", onMessage);
+                        form.remove();
+                        setTimeout(() => iframe.remove(), 0);
+                    };
+                    const fail = (message) => {
+                        cleanup();
+                        reject(new Error(message));
+                    };
+                    const timer = setTimeout(() => fail("連線逾時"), 30000);
+                    const onMessage = (event) => {
+                        const payload = event.data;
+                        if (!payload || payload.ananSheetSync !== true || payload.requestId !== requestId) return;
+                        cleanup();
+                        if (!payload.result?.ok) reject(new Error(payload.result?.error || "同步失敗"));
+                        else resolve(payload.result);
+                    };
+                    const addInput = (name, value) => {
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = name;
+                        input.value = value;
+                        form.appendChild(input);
+                    };
+                    window.addEventListener("message", onMessage);
+                    iframe.name = requestId;
+                    iframe.style.display = "none";
+
+                    form.method = "POST";
+                    form.action = config.url;
+                    form.target = requestId;
+                    form.style.display = "none";
+                    addInput("payload", JSON.stringify({action, token: config.token, data}));
+                    addInput("requestId", requestId);
+                    document.body.append(iframe, form);
+                    form.submit();
+                });
+            }
+            async function sheetRequest(method, action, data) {
                 if (method === "GET") return sheetJsonpRequest(action);
-                const request = {
-                    method,
-                    headers: {"Content-Type": "text/plain;charset=utf-8"},
-                    body: JSON.stringify({action, token: config.token, data}),
-                };
-                const response = await fetch(config.url, request);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const result = await response.json();
-                if (!result.ok) throw new Error(result.error || "同步失敗");
-                return result;
+                return sheetFormPostRequest(action, data);
             }
             $("#sheetTestBtn").onclick = async () => {
                 try {

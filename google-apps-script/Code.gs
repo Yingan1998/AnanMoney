@@ -18,17 +18,18 @@ function doGet(e) {
   }
 }
 function doPost(e) {
+  const requestId = e.parameter.requestId || "";
   try {
-    const payload = JSON.parse(e.postData.contents || "{}");
+    const rawPayload = e.parameter.payload || (e.postData && e.postData.contents) || "{}";
+    const payload = JSON.parse(rawPayload);
     authorize_(payload.token || "");
     if (payload.action !== "save" || !payload.data) throw new Error("Invalid save request");
     writeState_(payload.data);
-    return json_({ok: true, message: "saved"});
+    return postOutput_({ok: true, message: "saved"}, requestId);
   } catch (error) {
-    return json_({ok: false, error: error.message});
+    return postOutput_({ok: false, error: error.message}, requestId);
   }
 }
-
 function authorize_(token) {
   if (SYNC_TOKEN && SYNC_TOKEN !== "CHANGE_ME" && token !== SYNC_TOKEN) {
     throw new Error("Invalid sync token");
@@ -127,6 +128,19 @@ function output_(value, callback) {
   return json_(value);
 }
 
+function postOutput_(value, requestId) {
+  if (!requestId) return json_(value);
+  const message = {
+    ananSheetSync: true,
+    requestId: String(requestId),
+    result: value,
+  };
+  return HtmlService.createHtmlOutput(
+    '<!doctype html><meta charset="utf-8"><script>parent.postMessage(' +
+      JSON.stringify(message) +
+      ', "*");</script>'
+  );
+}
 function jsonp_(callback, value) {
   if (!/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/.test(callback)) {
     return json_({ok: false, error: "Invalid callback"});
