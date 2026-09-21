@@ -3924,7 +3924,7 @@
                         <div class="setting-card">
                             <h3>Google 試算表</h3>
                             <div class="desc">
-                                透過 Google Apps Script Web App 同步本機資料。請先部署後端，再貼上 Web App 網址。
+                                透過 Google Apps Script Web App 同步本機資料。可貼上 Web App 網址，或用「複製手機連線連結」把網址帶到手機。
                             </div>
                             <div class="field" style="margin-top: 12px">
                                 <label>Apps Script Web App 網址</label>
@@ -3943,6 +3943,7 @@
                                 <button class="secondary" id="sheetUploadBtn">上傳資料</button>
                                 <button class="secondary" id="sheetDownloadBtn">下載資料</button>
                             </div>
+                            <button class="secondary setting-wide" id="sheetShareConfigBtn" style="margin-top: 10px">複製手機連線連結</button>
                             <button class="secondary setting-wide" id="sheetPreviewBtn" style="margin-top: 10px">查看資料表結構</button>
                         </div>
 
@@ -4125,6 +4126,13 @@
             const stockMoney = (n) =>
                 "NT$ " + Number(n || 0).toLocaleString("zh-TW", {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
+            // Google Sheets sync bootstrap. Put the deployed /exec URL here if you want new devices to auto-fill it.
+            // The sync token is intentionally not stored in share links to avoid leaking it through browser history.
+            const SHEET_SYNC_DEFAULTS = {
+                url: "",
+            };
+
+            // Demo data and the full app state shape used when this browser has no saved data yet.
             const DEFAULT = {
                 budget: 0,
                 accounts: [
@@ -4324,6 +4332,7 @@
                 goals: [{id: uid(), name: "東京旅費", target: 0, saved: 0}],
                 events: [],
             };
+            // localStorage is the offline-first database for the app; Google Sheets is an optional sync target.
             const store = {
                 key: "anan-money-v35",
                 load() {
@@ -4368,7 +4377,22 @@
                 fxRates: {TWD: 1},
                 fxUpdatedAt: "",
             };
+            function normalizeSheetApiUrl(url) {
+                const value = String(url || "").trim();
+                if (!value) return "";
+                return value.replace(/[?#].*$/, "");
+            }
+            function applySheetBootstrapConfig() {
+                const params = new URLSearchParams(location.search);
+                const url = normalizeSheetApiUrl(params.get("sheetUrl") || params.get("syncUrl") || SHEET_SYNC_DEFAULTS.url);
+                if (url && !state.settings.sheetApiUrl) state.settings.sheetApiUrl = url;
+                if (params.has("sheetUrl") || params.has("syncUrl")) {
+                    store.save();
+                    history.replaceState(null, "", location.pathname + location.hash);
+                }
+            }
             if (!state.settings.pin || state.settings.pin === "1215") state.settings.pin = "0000";
+            applySheetBootstrapConfig();
             state.settings.showAssetAmounts = state.settings.showAssetAmounts !== false;
             state.settings.cardReminder = state.settings.cardReminder !== false;
             state.balanceHistory ||= [];
@@ -4516,6 +4540,7 @@
                 a.currency ||= "TWD";
                 a.memo ||= "";
             });
+            // Normalize imported/synced data so older Sheets or backups cannot break rendering.
             function applyLoadedState(data) {
                 const previousSettings = state?.settings || {};
                 const loaded = data && typeof data === "object" ? data : {};
@@ -6007,14 +6032,20 @@
                 }
             };
             function sheetConfig() {
-                const url = $("#sheetApiUrl").value.trim(),
-                    token = $("#sheetApiToken").value.trim();
+                const url = normalizeSheetApiUrl($("#sheetApiUrl").value || state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url),
+                    token = ($("#sheetApiToken").value || state.settings.sheetApiToken || "").trim();
                 if (!url) {
-                    toast("請先輸入 Apps Script Web App 網址");
+                    toast("請先輸入 Apps Script Web App 網址，或在 SHEET_SYNC_DEFAULTS.url 設定預設網址");
+                    return null;
+                }
+                if (/\/dev\/?$/.test(url)) {
+                    toast("請使用部署後的 /exec 網址，不要使用 /dev 測試網址");
                     return null;
                 }
                 state.settings.sheetApiUrl = url;
                 state.settings.sheetApiToken = token;
+                $("#sheetApiUrl").value = url;
+                $("#sheetApiToken").value = token;
                 store.save();
                 return {url, token};
             }
@@ -6031,6 +6062,7 @@
                 status.textContent = text;
                 status.style.color = error ? "#b64252" : "";
             }
+            // GET uses JSONP because Apps Script ContentService does not provide browser CORS headers.
             function sheetJsonpRequest(action) {
                 const config = sheetConfig();
                 if (!config) return Promise.reject(new Error("missing url"));
@@ -6065,6 +6097,7 @@
                     document.body.appendChild(script);
                 });
             }
+            // POST uses a hidden form + iframe so GitHub Pages/mobile browsers can upload without CORS.
             function sheetFormPostRequest(action, data) {
                 const config = sheetConfig();
                 if (!config) return Promise.reject(new Error("missing url"));
@@ -6158,6 +6191,17 @@
                 } catch (error) {
                     setSheetStatus("下載失敗", true);
                     toast(`下載失敗：${error.message}`);
+                }
+            };
+            $("#sheetShareConfigBtn").onclick = async () => {
+                const config = sheetConfig();
+                if (!config) return;
+                const link = `${location.origin}${location.pathname}?sheetUrl=${encodeURIComponent(config.url)}`;
+                try {
+                    await navigator.clipboard.writeText(link);
+                    toast("手機連線連結已複製，安全碼需在手機輸入一次");
+                } catch (error) {
+                    prompt("複製這個連結到手機開啟；安全碼需在手機輸入一次", link);
                 }
             };
             $("#sheetPreviewBtn").onclick = () =>
