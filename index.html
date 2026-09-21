@@ -1338,6 +1338,11 @@
                 align-items: center;
                 gap: 8px;
             }
+            .account-amount-wrap {
+                display: grid;
+                gap: 3px;
+                justify-items: end;
+            }
             .edit-mini {
                 width: 34px;
                 height: 34px;
@@ -1493,6 +1498,9 @@
                 margin-top: 3px;
             }
             .asset-account-row .aval {
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 font-weight: 900;
                 text-align: right;
             }
@@ -1501,6 +1509,10 @@
                 background: transparent;
                 color: var(--purple);
                 font-size: 20px;
+            }
+            .asset-visibility.muted-eye {
+                color: var(--muted);
+                opacity: 0.65;
             }
             .masked {
                 letter-spacing: 3px;
@@ -3535,8 +3547,8 @@
                 </div>
             </section>
             <nav class="bottom-nav">
-                <button class="nav active" data-open="assets"><span>▣</span>資產</button>
-                <button class="nav" data-open="invest"><span>◔</span>投資</button>
+                <button class="nav active" data-open="calendar"><span>日</span>首頁</button>
+                <button class="nav" data-open="assets"><span>▣</span>資產</button>
                 <button class="nav main" id="quickFab"><span>＋</span>記帳</button>
                 <button class="nav" data-open="analysis"><span>⌁</span>分析</button>
                 <button class="nav" id="settingsNav"><span>⚙</span>設定</button>
@@ -4424,6 +4436,7 @@
             if (!state.settings.pin || state.settings.pin === "1215") state.settings.pin = "0000";
             applySheetBootstrapConfig();
             state.settings.showAssetAmounts = state.settings.showAssetAmounts !== false;
+            state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
             state.settings.cardReminder = state.settings.cardReminder !== false;
             state.balanceHistory ||= [];
             state.cards.forEach((c) => {
@@ -4594,6 +4607,7 @@
                 state.settings.sheetApiToken ||= previousSettings.sheetApiToken || "";
                 state.settings.pin ||= previousSettings.pin || "0000";
                 state.settings.showAssetAmounts = state.settings.showAssetAmounts !== false;
+                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
                 state.settings.cardReminder = state.settings.cardReminder !== false;
                 ["transactions", "accounts", "projects", "cards", "splits", "stocks", "funds", "goals", "events", "recurring", "balanceHistory"].forEach(
                     (key) => (state[key] = Array.isArray(state[key]) ? state[key] : [])
@@ -4714,12 +4728,33 @@
             function accountValueTwd(a) {
                 return accBalance(a) * fxRateToTwd(a.currency);
             }
+            function hiddenAccountIds() {
+                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
+                return state.settings.hiddenAccountIds;
+            }
+            function isAccountHidden(id) {
+                return hiddenAccountIds().includes(id);
+            }
+            function accountMask() {
+                return '<span class="masked">••••</span>';
+            }
             function accountMoney(a) {
-                if (!state.settings.showAssetAmounts) return '<span class="masked">••••</span>';
+                if (!a || isAccountHidden(a.id)) return accountMask();
                 const original = accBalance(a),
                     converted = accountValueTwd(a);
                 if (a.currency === "TWD") return moneyExact(original);
                 return `${a.currency} ${original.toLocaleString("zh-TW", {maximumFractionDigits: 2})} · 約 ${moneyExact(converted)}`;
+            }
+            function accountBaseMoney(a) {
+                return isAccountHidden(a.id) ? accountMask() : moneyExact(a.balance || 0);
+            }
+            function toggleAccountVisibility(id) {
+                const ids = hiddenAccountIds();
+                state.settings.hiddenAccountIds = ids.includes(id) ? ids.filter((x) => x !== id) : ids.concat(id);
+                store.save();
+                if (current === "assets") renderAssets();
+                if (current === "accounts") renderAccountGroups();
+                if (current === "accountDetail") renderAccountDetail();
             }
             async function refreshFxRates() {
                 try {
@@ -5372,16 +5407,16 @@
                     blocks += `<div class="asset-category"><div class="asset-category-head"><span>${icon} ${label}</span><span class="asset-category-total">${
                         state.settings.showAssetAmounts ? money(total) : "••••"
                     }</span></div>${arr
-                    .map(
-                        (a) =>
-                            `<div class="asset-account-row" data-asset-account="${
-                                a.id
-                            }"><div class="aicon">${icon}</div><div><strong>${a.name}</strong><small>${
-                                a.currency || "TWD"
-                            }${a.memo ? " · " + a.memo : ""}</small></div><div class="aval">${
-                                state.settings.showAssetAmounts ? accountMoney(a) : "••••"
-                            }</div></div>`
-                    )
+                    .map((a) => {
+                        const hidden = isAccountHidden(a.id);
+                        return `<div class="asset-account-row" data-asset-account="${a.id}"><div class="aicon">${icon}</div><div><strong>${
+                            a.name
+                        }</strong><small>${a.currency || "TWD"}${a.memo ? " · " + a.memo : ""}</small></div><div class="aval"><span>${accountMoney(
+                            a
+                        )}</span><button class="asset-visibility ${hidden ? "muted-eye" : ""}" data-toggle-account-visibility="${a.id}" title="${
+                            hidden ? "顯示此資產" : "隱藏此資產"
+                        }">${hidden ? "◌" : "◉"}</button></div></div>`;
+                    })
                     .join("")}</div>`;
                 });
                 $("#assetRows").innerHTML = blocks || '<div class="empty">尚未新增帳戶，請從「帳戶管理」建立。</div>';
@@ -5390,6 +5425,13 @@
                         (r.onclick = () => {
                             currentAccountId = r.dataset.assetAccount;
                             openPage("accountDetail");
+                        })
+                );
+                $$("[data-toggle-account-visibility]").forEach(
+                    (b) =>
+                        (b.onclick = (e) => {
+                            e.stopPropagation();
+                            toggleAccountVisibility(b.dataset.toggleAccountVisibility);
                         })
                 );
                 const ups = state.settings.cardReminder ? upcomingCards() : [];
@@ -5405,7 +5447,7 @@
             }
             function renderAccountDetail() {
                 const a = state.accounts.find((x) => x.id === currentAccountId);
-                if (!a) return openPage("assets");
+                if (!a) return openPage("calendar");
                 $("#accountDetailTitle").textContent = a.name;
                 $("#accountDetailBalance").innerHTML = accountMoney(a);
                 const mk = monthKey(),
@@ -5420,8 +5462,8 @@
                 const hist = state.balanceHistory
                 .filter((h) => h.accountId === a.id)
                 .sort((x, y) => y.changedAt.localeCompare(x.changedAt));
-                $("#accountMonthIncome").innerHTML = displayMoney(inc);
-                $("#accountMonthExpense").innerHTML = displayMoney(exp);
+                $("#accountMonthIncome").innerHTML = isAccountHidden(a.id) ? accountMask() : money(inc);
+                $("#accountMonthExpense").innerHTML = isAccountHidden(a.id) ? accountMask() : money(exp);
                 $("#accountHistoryCount").textContent = hist.length;
                 $("#accountTxHistory").innerHTML =
                     tx
@@ -5434,9 +5476,7 @@
                         (h) =>
                             `<div class="card"><strong>${new Date(h.changedAt).toLocaleString(
                                 "zh-TW"
-                            )}</strong><div class="balance-history-row">修改前：${money(
-                                h.oldBalance
-                            )}<br>修改後：${money(h.newBalance)}${h.note ? "<br>備註：" + h.note : ""}</div></div>`
+                            )}</strong><div class="balance-history-row">修改前：${isAccountHidden(a.id) ? accountMask() : money(h.oldBalance)}<br>修改後：${isAccountHidden(a.id) ? accountMask() : money(h.newBalance)}${h.note ? "<br>備註：" + h.note : ""}</div></div>`
                     )
                     .join("") || '<div class="empty">尚無手動修改餘額歷程。</div>';
             }
@@ -5496,22 +5536,24 @@
                     .map(
                         ([g, x]) =>
                             `<div class="account-group"><h3>${g}</h3>${x
-                            .map(
-                                (a) =>
-                                    `<div class="account-line" data-manage-account="${a.id}"><div><strong>${
-                                        a.name
-                                    }</strong><small>${a.memo || "帳戶資產"}</small></div><div class="account-meta"><strong>幣別／分類</strong>${
-                                        a.currency || "TWD"
-                                    } · ${g}</div><div class="account-note"><strong>備註</strong>${
-                                        a.memo || "尚未填寫備註"
-                                    }</div><div class="account-edit"><div><strong>${
-                                        state.settings.showAssetAmounts ? accountMoney(a) : "••••"
-                                    }</strong><span class="account-balance-sub">基準餘額 ${
-                                        state.settings.showAssetAmounts ? moneyExact(a.balance || 0) : "••••"
-                                    }</span></div><button class="edit-mini" data-edit-manage="${
-                                        a.id
-                                    }">編輯</button></div></div>`
-                            )
+                            .map((a) => {
+                                const hidden = isAccountHidden(a.id);
+                                return `<div class="account-line" data-manage-account="${a.id}"><div><strong>${
+                                    a.name
+                                }</strong><small>${a.memo || "帳戶資產"}</small></div><div class="account-meta"><strong>幣別／分類</strong>${
+                                    a.currency || "TWD"
+                                } · ${g}</div><div class="account-note"><strong>備註</strong>${
+                                    a.memo || "尚未填寫備註"
+                                }</div><div class="account-edit"><div class="account-amount-wrap"><strong>${accountMoney(
+                                    a
+                                )}</strong><span class="account-balance-sub">基準餘額 ${accountBaseMoney(
+                                    a
+                                )}</span></div><button class="asset-visibility ${hidden ? "muted-eye" : ""}" data-toggle-account-visibility="${
+                                    a.id
+                                }" title="${hidden ? "顯示此資產" : "隱藏此資產"}">${
+                                    hidden ? "◌" : "◉"
+                                }</button><button class="edit-mini" data-edit-manage="${a.id}">編輯</button></div></div>`;
+                            })
                             .join("")}</div>`
                     )
                     .join("") || '<div class="empty">沒有帳戶</div>';
@@ -5520,6 +5562,13 @@
                         (el.onclick = () => {
                             currentAccountId = el.dataset.manageAccount;
                             openPage("accountDetail");
+                        })
+                );
+                $$("[data-toggle-account-visibility]").forEach(
+                    (el) =>
+                        (el.onclick = (e) => {
+                            e.stopPropagation();
+                            toggleAccountVisibility(el.dataset.toggleAccountVisibility);
                         })
                 );
                 $$("[data-edit-manage]").forEach(
@@ -5661,8 +5710,8 @@
             $("#quickCancel").onclick = cancelQuickEntry;
 
             $$("[data-open]").forEach((b) => (b.onclick = () => openPage(b.dataset.open)));
-            $("#backBtn").onclick = () => openPage("assets");
-            $("#avatarBtn").onclick = () => openPage("assets");
+            $("#backBtn").onclick = () => openPage("calendar");
+            $("#avatarBtn").onclick = () => openPage("calendar");
             $$("[data-txtype]").forEach(
                 (b) =>
                     (b.onclick = () => {
