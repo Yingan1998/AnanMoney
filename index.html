@@ -4119,7 +4119,24 @@
             const $ = (s) => document.querySelector(s),
                 $$ = (s) => [...document.querySelectorAll(s)];
             const uid = () => crypto.randomUUID?.() || Date.now() + Math.random().toString(16).slice(2);
-            const today = () => new Date().toISOString().slice(0, 10);
+            const today = () => {
+                const d = new Date();
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+            };
+            function dateOnly(value) {
+                if (!value) return "";
+                const toLocalIsoDate = (date) => {
+                    const y = date.getFullYear();
+                    const m = String(date.getMonth() + 1).padStart(2, "0");
+                    const d = String(date.getDate()).padStart(2, "0");
+                    return `${y}-${m}-${d}`;
+                };
+                if (value instanceof Date && !Number.isNaN(value.getTime())) return toLocalIsoDate(value);
+                const text = String(value).trim();
+                if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+                const parsed = new Date(text);
+                return Number.isNaN(parsed.getTime()) ? text : toLocalIsoDate(parsed);
+            }
             const money = (n) => "NT$ " + Math.round(Number(n || 0)).toLocaleString("zh-TW");
             const moneyExact = (n) =>
                 "NT$ " + Number(n || 0).toLocaleString("zh-TW", {minimumFractionDigits: 0, maximumFractionDigits: 2});
@@ -4403,7 +4420,7 @@
                         m = d.getMonth();
                     let dt = new Date(y, m, c.dueDay);
                     if (dt < new Date()) dt = new Date(y, m + 1, c.dueDay);
-                    c.dueDate = dt.toISOString().slice(0, 10);
+                    c.dueDate = dateOnly(dt);
                 }
                 if (!c.statementDate && c.statementDay) {
                     const d = new Date(),
@@ -4411,7 +4428,7 @@
                         m = d.getMonth();
                     let dt = new Date(y, m, c.statementDay);
                     if (dt < new Date()) dt = new Date(y, m + 1, c.statementDay);
-                    c.statementDate = dt.toISOString().slice(0, 10);
+                    c.statementDate = dateOnly(dt);
                 }
             });
             const ANAN_ACCOUNT_DEFAULTS = [
@@ -4568,6 +4585,10 @@
                 ["transactions", "accounts", "projects", "cards", "splits", "stocks", "funds", "goals", "events", "recurring", "balanceHistory"].forEach(
                     (key) => (state[key] = Array.isArray(state[key]) ? state[key] : [])
                 );
+                state.cards.forEach((c) => {
+                    c.statementDate = dateOnly(c.statementDate);
+                    c.dueDate = dateOnly(c.dueDate);
+                });
                 state.accounts.forEach((a) => {
                     a.type ||= a.name?.includes("現金") ? "cash" : "bank";
                     a.currency ||= "TWD";
@@ -5297,7 +5318,7 @@
                       .join("")
                     : "";
                 const sorted = [...state.cards].sort((a, b) =>
-                    (a.dueDate || "9999-12-31").localeCompare(b.dueDate || "9999-12-31")
+                    (dateOnly(a.dueDate) || "9999-12-31").localeCompare(dateOnly(b.dueDate) || "9999-12-31")
                 );
                 $("#cardList").innerHTML =
                     reminderHtml +
@@ -5315,9 +5336,9 @@
                                 )}</strong></div><div><small style="opacity:.75">信用額度</small><strong style="display:block;margin-top:4px">${displayMoney(
                                     c.limit || 0
                                 )}</strong></div><div><small style="opacity:.75">繳款截止日</small><strong style="display:block;margin-top:4px">${
-                                    c.dueDate || "未設定"
+                                    dateOnly(c.dueDate) || "未設定"
                                 }</strong></div><div><small style="opacity:.75">下一次結帳日</small><strong style="display:block;margin-top:4px">${
-                                    c.statementDate || "未設定"
+                                    dateOnly(c.statementDate) || "未設定"
                                 }</strong></div></div><button class="card-edit-btn" data-edit-card="${
                                     c.id
                                 }">手動修改</button></div>`
@@ -5686,8 +5707,8 @@
                 $("#cardLimit").value = c?.limit ?? 0;
                 $("#cardBalance").value = c?.balance ?? 0;
                 $("#cardCurrentDue").value = c?.currentDue ?? 0;
-                $("#statementDate").value = c?.statementDate || "";
-                $("#dueDate").value = c?.dueDate || "";
+                $("#statementDate").value = dateOnly(c?.statementDate) || "";
+                $("#dueDate").value = dateOnly(c?.dueDate) || "";
                 $("#cardMemo").value = c?.memo || "";
                 $("#deleteCardBtn").style.display = c ? "block" : "none";
                 $("#cardModal .card-modal-actions").classList.toggle("two-actions", !c);
@@ -5704,8 +5725,8 @@
                     limit: +$("#cardLimit").value || 0,
                     balance: +$("#cardBalance").value || 0,
                     currentDue: +$("#cardCurrentDue").value || 0,
-                    statementDate: $("#statementDate").value,
-                    dueDate: $("#dueDate").value,
+                    statementDate: dateOnly($("#statementDate").value),
+                    dueDate: dateOnly($("#dueDate").value),
                     memo: $("#cardMemo").value.trim(),
                 };
                 const i = state.cards.findIndex((x) => x.id === id);

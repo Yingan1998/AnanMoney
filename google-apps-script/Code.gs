@@ -114,7 +114,9 @@ function readRows_(spreadsheet, name) {
     const result = {};
     headers.forEach(function (header, index) {
       let value = row[index];
-      if (typeof value === "string" && /^[\[{]/.test(value)) {
+      if (Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime())) {
+        value = Utilities.formatDate(value, spreadsheet.getSpreadsheetTimeZone(), "yyyy-MM-dd");
+      } else if (typeof value === "string" && /^[\[{]/.test(value)) {
         try { value = JSON.parse(value); } catch (error) {}
       }
       result[header] = value;
