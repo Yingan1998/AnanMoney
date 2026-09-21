@@ -277,6 +277,16 @@
                 font-size: 10px;
                 font-weight: 800;
             }
+            .tx-actions {
+                display: flex;
+                gap: 6px;
+                justify-content: flex-end;
+                margin-top: 6px;
+            }
+            .danger-mini {
+                color: #c34c59;
+                border-color: #e6bdc5;
+            }
             .bottom-nav {
                 position: fixed;
                 left: 50%;
@@ -819,12 +829,15 @@
                 transform: translate(-50%, 14px);
                 opacity: 0;
                 transition: 0.2s;
-                z-index: 1300;
+                z-index: 1600;
                 background: #302838;
                 color: #fff;
                 padding: 10px 14px;
                 border-radius: 12px;
                 font-size: 12px;
+            }
+            #pinChangeModal {
+                z-index: 1500;
             }
             .toast.show {
                 opacity: 1;
@@ -3258,7 +3271,7 @@
                             ><select id="subcategory" class="control"></select>
                         </div>
                         <div class="field">
-                            <label>帳戶</label
+                            <label>帳戶／信用卡</label
                             ><select id="account" class="control"></select>
                         </div>
                         <div class="field"><label>消費日期</label><input id="date" class="control" type="date" /></div>
@@ -4598,14 +4611,15 @@
             let accountFilter = "asset",
                 qtype = "expense",
                 qnum = "0";
-            let current = "assets",
+            let current = "calendar",
                 currentAccountId = null,
                 txType = "expense",
                 party = "self",
                 calDate = new Date(),
                 selectedDate = today(),
                 calView = "daily",
-                currentStock = null;
+                currentStock = null,
+                editingTxId = null;
             const cats = {
                 expense: {
                     食品: ["早餐", "午餐", "晚餐", "外送", "飲料"],
@@ -4638,8 +4652,47 @@
                     {i: 0, e: 0}
                 );
             }
-            function accName(id) {
+            function isCardPayment(id) {
+                return String(id || "").startsWith("card:");
+            }
+            function cardIdFromPayment(id) {
+                return String(id || "").replace(/^card:/, "");
+            }
+            function paymentName(id) {
+                if (isCardPayment(id)) return state.cards.find((c) => c.id === cardIdFromPayment(id))?.name || "信用卡";
                 return state.accounts.find((a) => a.id === id)?.name || "未指定";
+            }
+            function accName(id) {
+                return paymentName(id);
+            }
+            function paymentOptions(type = txType) {
+                const accountOptions = state.accounts.map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`);
+                if (type === "expense") {
+                    const cardOptions = state.cards.map(
+                        (c) => `<option value="card:${c.id}">💳 ${c.name} · 未繳 ${money(c.balance || 0)}</option>`
+                    );
+                    return accountOptions.concat(cardOptions).join("");
+                }
+                return accountOptions.join("");
+            }
+            function applyCardCharge(paymentId, delta) {
+                if (!isCardPayment(paymentId) || !delta) return;
+                const card = state.cards.find((c) => c.id === cardIdFromPayment(paymentId));
+                if (!card) return;
+                card.balance = Math.max(0, (+card.balance || 0) + delta);
+            }
+            function removeSplitById(id) {
+                if (!id) return;
+                state.splits = state.splits.filter((s) => s.id !== id);
+            }
+            function reverseTransactionEffects(t) {
+                if (!t) return;
+                if (t.type === "expense") applyCardCharge(t.account, -(+t.amount || 0));
+                removeSplitById(t.splitId);
+            }
+            function applyTransactionEffects(t) {
+                if (!t) return;
+                if (t.type === "expense") applyCardCharge(t.account, +t.amount || 0);
             }
             function accBalance(a) {
                 let b = +a.balance || 0;
@@ -4789,7 +4842,7 @@
                         stocks: "股票資產",
                         cards: "信用卡帳單",
                     }[n] || "安安 Money";
-                $("#backBtn").style.visibility = n === "assets" ? "hidden" : "visible";
+                $("#backBtn").style.visibility = n === "calendar" ? "hidden" : "visible";
                 if (n === "home") renderHome();
                 if (n === "calendar") renderCalendar();
                 if (n === "add") renderAdd();
@@ -4814,15 +4867,15 @@
                 const sign = t.type === "income" ? "+" : t.type === "transfer" ? "" : "-";
                 const cls = t.type === "income" ? "green" : "red";
                 const p = state.projects.find((x) => x.id === t.projectId);
-                return `<div class="card tx"><div class="tx-ico">${icon}</div><div><strong>${
+                const payment = t.type === "transfer" ? accName(t.from) + " → " + accName(t.to) : paymentName(t.account);
+                return `<div class="card tx" data-tx-card="${t.id}"><div class="tx-ico">${icon}</div><div><strong>${
                     t.note || t.subcategory || t.category || "轉帳"
-                }</strong><small>${t.date} · ${
-                    t.type === "transfer" ? accName(t.from) + " → " + accName(t.to) : accName(t.account)
-                }${p ? " · " + p.name : ""}</small>${
+                }</strong><small>${t.date} · ${payment}${p ? " · " + p.name : ""}</small>${
                     p ? `<span class="badge">${p.type}</span>` : ""
-                }</div><div class="money ${cls}">${sign}${money(t.amount)}</div></div>`;
+                }</div><div style="text-align:right"><div class="money ${cls}">${sign}${money(
+                    t.amount
+                )}</div><div class="tx-actions"><button class="edit-mini" data-edit-tx="${t.id}">編輯</button><button class="edit-mini danger-mini" data-delete-tx="${t.id}">刪除</button></div></div></div>`;
             }
-
             function renderHome() {
                 const owed = owedToMe(),
                     owe = iOwe(),
@@ -4904,9 +4957,20 @@
                     .join("") || '<div class="empty">本月沒有行程</div>';
             }
             function renderAdd() {
-                $$("[data-txtype]").forEach((b) => b.classList.toggle("active", b.dataset.txtype === txType));
-                $("#formTitle").textContent =
-                    txType === "expense" ? "新增支出" : txType === "income" ? "新增收入" : "帳戶轉帳";
+                const editing = !!editingTxId;
+                $$('[data-txtype]').forEach((b) => b.classList.toggle('active', b.dataset.txtype === txType));
+                $("#formTitle").textContent = editing
+                    ? txType === "transfer"
+                        ? "修改轉帳"
+                        : txType === "income"
+                        ? "修改收入"
+                        : "修改支出"
+                    : txType === "expense"
+                    ? "新增支出"
+                    : txType === "income"
+                    ? "新增收入"
+                    : "帳戶轉帳";
+                $("#saveTx").textContent = editing ? "更新這一筆" : "儲存這一筆";
                 $("#normalFields").style.display = txType === "transfer" ? "none" : "block";
                 $("#transferFields").style.display = txType === "transfer" ? "block" : "none";
                 if (txType !== "transfer") {
@@ -4916,12 +4980,12 @@
                     .join("");
                     fillSub();
                 }
-                const opts = state.accounts
+                const accountOpts = state.accounts
                 .map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`)
                 .join("");
-                $("#account").innerHTML = opts;
-                $("#fromAccount").innerHTML = opts;
-                $("#toAccount").innerHTML = opts;
+                $("#account").innerHTML = paymentOptions(txType);
+                $("#fromAccount").innerHTML = accountOpts;
+                $("#toAccount").innerHTML = accountOpts;
                 $("#project").innerHTML =
                     `<option value="">不指定專案</option>` +
                     state.projects.map((p) => `<option value="${p.id}">${p.name}</option>`).join("");
@@ -4947,40 +5011,58 @@
                 }
                 $("#splitPreview").innerHTML = `自己負擔 ${money(self)} · 對方負擔 ${money(other)}${tail}`;
             }
+            function resetTransactionForm(date = today()) {
+                editingTxId = null;
+                txType = "expense";
+                party = "self";
+                $("#amount").value = "";
+                $("#note").value = "";
+                $("#splitPerson").value = "";
+                $("#share").value = 100;
+                $("#date").value = date;
+                $("#transferDate").value = date;
+                $("#transferNote").value = "帳戶轉帳";
+                $("#partySelf").classList.add("active");
+                $("#partyOther").classList.remove("active");
+            }
+            function splitPayloadForForm(amount) {
+                const person = $("#splitPerson").value.trim(),
+                    share = +$("#share").value || 100;
+                if (!person || share >= 100) return "";
+                const self = (amount * share) / 100,
+                    other = amount - self,
+                    splitId = uid();
+                state.splits.push({
+                    id: splitId,
+                    person,
+                    amount: party === "self" ? other : self,
+                    direction: party === "self" ? "owed_to_me" : "i_owe",
+                    settled: false,
+                    date: $("#date").value || today(),
+                    note: $("#note").value || $("#subcategory").value,
+                });
+                return splitId;
+            }
             function saveTransaction() {
                 const amount = +$("#amount").value;
                 if (!amount) return toast("請輸入金額");
+                const existingIndex = editingTxId ? state.transactions.findIndex((t) => t.id === editingTxId) : -1;
+                const existing = existingIndex >= 0 ? state.transactions[existingIndex] : null;
+                let tx;
                 if (txType === "transfer") {
                     if ($("#fromAccount").value === $("#toAccount").value) return toast("來源與目的帳戶不能相同");
-                    state.transactions.push({
-                        id: uid(),
+                    tx = {
+                        id: existing?.id || uid(),
                         type: "transfer",
                         amount,
                         date: $("#transferDate").value || today(),
                         from: $("#fromAccount").value,
                         to: $("#toAccount").value,
                         note: $("#transferNote").value,
-                    });
+                    };
                 } else {
-                    let splitId = "";
-                    const person = $("#splitPerson").value.trim(),
-                        share = +$("#share").value || 100;
-                    if (person && share < 100) {
-                        const self = (amount * share) / 100,
-                            other = amount - self;
-                        splitId = uid();
-                        state.splits.push({
-                            id: splitId,
-                            person,
-                            amount: party === "self" ? other : self,
-                            direction: party === "self" ? "owed_to_me" : "i_owe",
-                            settled: false,
-                            date: $("#date").value || today(),
-                            note: $("#note").value || $("#subcategory").value,
-                        });
-                    }
-                    state.transactions.push({
-                        id: uid(),
+                    tx = {
+                        id: existing?.id || uid(),
                         type: txType,
                         amount,
                         date: $("#date").value || today(),
@@ -4990,18 +5072,72 @@
                         projectId: $("#project").value,
                         note: $("#note").value.trim(),
                         party,
-                        splitId,
-                    });
+                        splitId: splitPayloadForForm(amount),
+                    };
                 }
+                if (existing) {
+                    reverseTransactionEffects(existing);
+                    state.transactions[existingIndex] = tx;
+                } else {
+                    state.transactions.push(tx);
+                }
+                applyTransactionEffects(tx);
                 store.save();
-                $("#amount").value = "";
-                $("#note").value = "";
-                $("#splitPerson").value = "";
-                $("#share").value = 100;
-                toast("已儲存");
-                openPage("home");
+                selectedDate = tx.date || today();
+                calDate = new Date(selectedDate + "T12:00:00");
+                resetTransactionForm(selectedDate);
+                toast(existing ? "已更新" : "已儲存");
+                openPage("calendar");
             }
-
+            function openTransactionEditor(id) {
+                const t = state.transactions.find((x) => x.id === id);
+                if (!t) return;
+                editingTxId = id;
+                txType = t.type;
+                party = t.party || "self";
+                openPage("add");
+                $("#amount").value = t.amount || "";
+                if (t.type === "transfer") {
+                    $("#fromAccount").value = t.from || "";
+                    $("#toAccount").value = t.to || "";
+                    $("#transferDate").value = t.date || today();
+                    $("#transferNote").value = t.note || "帳戶轉帳";
+                    return;
+                }
+                if (t.category && cats[txType]?.[t.category]) $("#category").value = t.category;
+                fillSub();
+                $("#subcategory").value = t.subcategory || $("#subcategory").value;
+                $("#account").value = t.account || "";
+                $("#project").value = t.projectId || "";
+                $("#date").value = t.date || today();
+                $("#note").value = t.note || "";
+                $("#partySelf").classList.toggle("active", party === "self");
+                $("#partyOther").classList.toggle("active", party === "other");
+                const split = state.splits.find((s) => s.id === t.splitId);
+                if (split && +t.amount) {
+                    $("#splitPerson").value = split.person || "";
+                    const share = party === "self" ? ((+t.amount - +split.amount) / +t.amount) * 100 : (+split.amount / +t.amount) * 100;
+                    $("#share").value = Math.max(0, Math.min(100, Math.round(share / 5) * 5));
+                } else {
+                    $("#splitPerson").value = "";
+                    $("#share").value = 100;
+                }
+                updateSplitPreview();
+            }
+            function deleteTransaction(id) {
+                const tx = state.transactions.find((t) => t.id === id);
+                if (!tx) return;
+                if (!confirm("確定刪除這筆記帳？")) return;
+                reverseTransactionEffects(tx);
+                state.transactions = state.transactions.filter((t) => t.id !== id);
+                store.save();
+                toast("已刪除");
+                if (current === "calendar") renderCalendar();
+                if (current === "home") renderHome();
+                if (current === "ledger") renderLedgerGroups();
+                if (current === "assets") renderAssets();
+                if (current === "cards") renderCards();
+            }
             function renderSplits() {
                 const owed = owedToMe(),
                     owe = iOwe(),
@@ -5460,7 +5596,7 @@
                 .join("");
             }
             function renderQuick() {
-                let opts = state.accounts.map((a) => `<option value="${a.id}">${a.name}</option>`).join("");
+                let opts = paymentOptions(qtype);
                 $("#qAccount").innerHTML = opts;
                 $("#qCategory").innerHTML = [
                     "飲食",
@@ -5495,7 +5631,7 @@
                 let amount = Number(qnum);
                 if (!amount) return toast("請輸入金額");
                 if (qtype === "transfer") return toast("快速轉帳下一版加入");
-                state.transactions.push({
+                const tx = {
                     id: uid(),
                     type: qtype,
                     amount,
@@ -5504,7 +5640,9 @@
                     subcategory: $("#qCategory").value,
                     account: $("#qAccount").value,
                     note: $("#qNote").value || $("#qCategory").value,
-                });
+                };
+                state.transactions.push(tx);
+                applyTransactionEffects(tx);
                 store.save();
                 qnum = "0";
                 $("#qAmount").textContent = "NT$ 0";
@@ -5552,6 +5690,19 @@
                 e.preventDefault();
                 saveTransaction();
             };
+            document.addEventListener("click", (e) => {
+                const editBtn = e.target.closest("[data-edit-tx]");
+                if (editBtn) {
+                    e.preventDefault();
+                    openTransactionEditor(editBtn.dataset.editTx);
+                    return;
+                }
+                const deleteBtn = e.target.closest("[data-delete-tx]");
+                if (deleteBtn) {
+                    e.preventDefault();
+                    deleteTransaction(deleteBtn.dataset.deleteTx);
+                }
+            });
             $("#date").value = today();
             $("#transferDate").value = today();
             $("#calPrev").onclick = () => {
@@ -5563,7 +5714,7 @@
                 renderCalendar();
             };
             $("#addForDay").onclick = () => {
-                $("#date").value = selectedDate;
+                resetTransactionForm(selectedDate);
                 openPage("add");
             };
             $$("[data-calview]").forEach(
@@ -5883,6 +6034,7 @@
                 (b) =>
                     (b.onclick = () => {
                         qtype = b.dataset.qtype;
+                        renderQuick();
                         $$("[data-qtype]").forEach((x) => x.classList.toggle("active", x === b));
                     })
             );
@@ -5986,6 +6138,9 @@
                         );
                     })
             );
+            $("#settingsCenter").addEventListener("click", (e) => {
+                if (e.target === $("#settingsCenter")) $("#settingsCenter").classList.remove("open");
+            });
             $("#settingsNav").onclick = () => {
                 refreshSettingsUI();
                 $("#settingsCenter").classList.add("open");
@@ -6237,6 +6392,7 @@
             if (oldQuickFab)
                 oldQuickFab.onclick = () => {
                     if (!state.settings.quickEntry) {
+                        resetTransactionForm();
                         openPage("add");
                         return;
                     }
@@ -6350,7 +6506,7 @@
             refreshSettingsUI();
             refreshFxRates();
 
-            openPage("assets");
+            openPage("calendar");
             setTimeout(() => {
                 if (state.settings.stockAutoRefresh) refreshStocks();
             }, 600);
