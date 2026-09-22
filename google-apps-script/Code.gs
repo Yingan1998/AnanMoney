@@ -1,10 +1,12 @@
 ﻿/**
- * Anan Money Google Sheets sync endpoint.
- * Deploy as Web app: Execute as Me, Who has access: Anyone.
+ * Anan Money Google Sheets 同步端點。
+ * 部署方式：Google Apps Script Web App，Execute as Me，Who has access: Anyone。
+ * 手機/GitHub Pages 不走一般 fetch CORS：GET 用 JSONP，POST 用隱藏 iframe + postMessage。
  */
 const SYNC_TOKEN = "AnanMoney1998";
 const SHEETS = ["Transactions", "Accounts", "Projects", "Cards", "Splits", "Stocks", "Funds", "Goals", "Events", "Recurring", "BalanceHistory", "Metadata", "Settings"];
 
+// doGet：提供 ping/load，支援 callback 參數輸出 JSONP，避免瀏覽器 CORS 擋住下載。
 function doGet(e) {
   const callback = e.parameter.callback || "";
   try {
@@ -17,6 +19,7 @@ function doGet(e) {
     return output_({ok: false, error: error.message}, callback);
   }
 }
+// doPost：接收整包 state 存入試算表，並用 parent.postMessage 回覆前端 iframe。
 function doPost(e) {
   const requestId = e.parameter.requestId || "";
   try {
@@ -36,6 +39,7 @@ function authorize_(token) {
   }
 }
 
+// writeState_：把前端 state 拆成多個工作表，便於人眼檢查與後續擴充。
 function writeState_(state) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const collections = {
@@ -58,6 +62,7 @@ function writeState_(state) {
   writeRows_(spreadsheet, "Settings", [{json: JSON.stringify(state.settings || {})}]);
 }
 
+// readState_：從所有工作表回組前端 state，日期欄位會在 readRows_ 轉成 yyyy-MM-dd。
 function readState_() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const state = {

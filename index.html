@@ -25,9 +25,11 @@
                 --shadow: 0 12px 35px rgba(79, 58, 98, 0.08);
                 --safe: env(safe-area-inset-bottom, 0px);
             }
+
             * {
                 box-sizing: border-box;
             }
+
             html,
             body {
                 margin: 0;
@@ -35,15 +37,18 @@
                 color: var(--ink);
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", sans-serif;
             }
+
             button,
             input,
             select,
             textarea {
                 font: inherit;
             }
+
             button {
                 cursor: pointer;
             }
+
             #app {
                 max-width: 500px;
                 min-height: 100dvh;
@@ -53,6 +58,7 @@
                 position: relative;
                 overflow-x: hidden;
             }
+
             .header {
                 height: 66px;
                 display: flex;
@@ -65,12 +71,14 @@
                 background: rgba(251, 247, 250, 0.92);
                 backdrop-filter: blur(18px);
             }
+
             .header h1 {
                 font-size: 21px;
                 margin: 0;
                 font-weight: 900;
                 letter-spacing: 0.5px;
             }
+
             .icon-btn,
             .avatar {
                 border: 0;
@@ -81,6 +89,7 @@
                 font-size: 22px;
                 color: var(--ink);
             }
+
             .avatar {
                 background: linear-gradient(135deg, #e6d8f5, #cdb9eb);
                 color: #5f497f;
@@ -88,16 +97,20 @@
                 font-size: 14px;
                 box-shadow: var(--shadow);
             }
+
             .page {
                 display: none;
                 padding-bottom: calc(88px + var(--safe));
             }
+
             .page.active {
                 display: block;
             }
+
             .hero {
                 padding: 4px 18px 14px;
             }
+
             .settle-card {
                 background: linear-gradient(145deg, #765ba4, #6e5599);
                 color: white;
@@ -107,6 +120,7 @@
                 position: relative;
                 overflow: hidden;
             }
+
             .settle-card:after {
                 content: "";
                 position: absolute;
@@ -117,26 +131,31 @@
                 right: -75px;
                 top: -75px;
             }
+
             .eyebrow {
                 font-size: 13px;
                 opacity: 0.77;
             }
+
             .big-money {
                 font-size: 40px;
                 font-weight: 950;
                 margin: 12px 0 18px;
             }
+
             .settle-bottom {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 gap: 12px;
             }
+
             .settle-bottom small {
                 opacity: 0.8;
                 max-width: 65%;
                 line-height: 1.5;
             }
+
             .white-btn {
                 border: 0;
                 background: #fff;
@@ -145,22 +164,26 @@
                 border-radius: 18px;
                 font-weight: 850;
             }
+
             .section-head {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 12px 18px 10px;
             }
+
             .section-head h2 {
                 margin: 0;
                 font-size: 21px;
             }
+
             .link-btn {
                 border: 0;
                 background: transparent;
                 color: var(--purple);
                 font-weight: 850;
             }
+
             .saving-card {
                 margin: 0 18px 14px;
                 background: #fff;
@@ -168,27 +191,33 @@
                 padding: 16px 18px;
                 box-shadow: var(--shadow);
             }
+
             .saving-card .top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
             }
+
             .saving-card .top strong {
                 font-size: 17px;
             }
+
             .goal {
                 margin-top: 13px;
                 padding-top: 13px;
                 border-top: 1px solid var(--line);
             }
+
             .goal:first-of-type {
                 border-top: 0;
             }
+
             .goal .row {
                 display: flex;
                 justify-content: space-between;
                 gap: 10px;
             }
+
             .progress {
                 height: 8px;
                 border-radius: 99px;
@@ -196,24 +225,28 @@
                 overflow: hidden;
                 margin-top: 8px;
             }
+
             .progress i {
                 display: block;
                 height: 100%;
                 background: linear-gradient(90deg, #a88bd0, #7357a6);
                 border-radius: inherit;
             }
+
             .quick-grid {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 10px;
                 padding: 0 18px 16px;
             }
+
             .quick {
                 border: 0;
                 background: transparent;
                 color: var(--ink);
                 font-size: 12px;
             }
+
             .quick i {
                 font-style: normal;
                 width: 52px;
@@ -226,9 +259,11 @@
                 box-shadow: var(--shadow);
                 font-size: 22px;
             }
+
             .list {
                 padding: 0 14px;
             }
+
             .card {
                 background: #fff;
                 border-radius: 22px;
@@ -236,12 +271,14 @@
                 margin-bottom: 10px;
                 box-shadow: 0 8px 25px rgba(80, 58, 96, 0.055);
             }
+
             .tx {
                 display: grid;
                 grid-template-columns: 50px 1fr auto;
                 gap: 11px;
                 align-items: center;
             }
+
             .tx-ico {
                 width: 48px;
                 height: 48px;
@@ -251,22 +288,27 @@
                 place-items: center;
                 font-size: 22px;
             }
+
             .tx strong {
                 display: block;
             }
+
             .tx small {
                 display: block;
                 color: var(--muted);
                 margin-top: 4px;
             }
+
             .money.red {
                 color: var(--red);
                 font-weight: 900;
             }
+
             .money.green {
                 color: var(--green);
                 font-weight: 900;
             }
+
             .badge {
                 display: inline-block;
                 margin-top: 6px;
@@ -277,16 +319,19 @@
                 font-size: 10px;
                 font-weight: 800;
             }
+
             .tx-actions {
                 display: flex;
                 gap: 6px;
                 justify-content: flex-end;
                 margin-top: 6px;
             }
+
             .danger-mini {
                 color: #c34c59;
                 border-color: #e6bdc5;
             }
+
             .bottom-nav {
                 position: fixed;
                 left: 50%;
@@ -301,22 +346,26 @@
                 border-top: 1px solid var(--line);
                 padding: 7px 5px calc(8px + var(--safe));
             }
+
             .nav {
                 border: 0;
                 background: transparent;
                 color: #8c8490;
                 font-size: 10px;
             }
+
             .nav span {
                 display: block;
                 font-size: 22px;
                 line-height: 1.2;
                 margin-bottom: 2px;
             }
+
             .nav.active {
                 color: var(--purple);
                 font-weight: 900;
             }
+
             .nav.main span {
                 width: 46px;
                 height: 46px;
@@ -328,34 +377,41 @@
                 place-items: center;
                 box-shadow: 0 10px 22px rgba(115, 87, 166, 0.3);
             }
+
             .calendar-wrap {
                 padding: 0 18px;
             }
+
             .calendar-card {
                 background: #fff;
                 border-radius: 28px;
                 padding: 18px;
                 box-shadow: var(--shadow);
             }
+
             .cal-top {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 16px;
             }
+
             .cal-top strong {
                 font-size: 20px;
             }
+
             .cal-grid {
                 display: grid;
                 grid-template-columns: repeat(7, 1fr);
                 gap: 8px;
                 text-align: center;
             }
+
             .wd {
                 font-size: 11px;
                 color: var(--muted);
             }
+
             .day {
                 aspect-ratio: 1;
                 border-radius: 50%;
@@ -363,10 +419,12 @@
                 background: transparent;
                 position: relative;
             }
+
             .day.sel {
                 background: var(--purple);
                 color: #fff;
             }
+
             .day.has:after {
                 content: "";
                 position: absolute;
@@ -378,9 +436,11 @@
                 border-radius: 99px;
                 background: #7558a8;
             }
+
             .day.sel:after {
                 background: #fff;
             }
+
             .event-chip {
                 display: block;
                 margin-top: 3px;
@@ -393,18 +453,22 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
             .day-info {
                 padding: 18px;
             }
+
             .day-info .top {
                 display: flex;
                 justify-content: space-between;
                 align-items: end;
             }
+
             .day-info h2 {
                 margin: 0;
                 font-size: 28px;
             }
+
             .outline-btn {
                 width: 100%;
                 height: 50px;
@@ -415,12 +479,14 @@
                 font-weight: 850;
                 margin: 13px 0;
             }
+
             .tabs {
                 display: flex;
                 gap: 8px;
                 padding: 4px 18px 12px;
                 overflow: auto;
             }
+
             .chip {
                 white-space: nowrap;
                 border: 1px solid #dcd1e0;
@@ -430,33 +496,40 @@
                 border-radius: 999px;
                 font-size: 12px;
             }
+
             .chip.active {
                 background: var(--purple);
                 border-color: var(--purple);
                 color: #fff;
             }
+
             .form {
                 padding: 0 18px 125px;
             }
+
             .form h2 {
                 font-size: 28px;
                 margin: 4px 0 20px;
             }
+
             .field {
                 margin-bottom: 15px;
             }
+
             .field label {
                 display: block;
                 color: var(--muted);
                 font-size: 12px;
                 margin: 0 0 7px 3px;
             }
+
             .field-hint {
                 margin: 6px 3px 0;
                 color: var(--muted);
                 font-size: 11px;
                 line-height: 1.5;
             }
+
             .control {
                 width: 100%;
                 height: 56px;
@@ -466,17 +539,20 @@
                 padding: 0 14px;
                 color: var(--ink);
             }
+
             textarea.control {
                 height: 90px;
                 padding-top: 14px;
                 resize: none;
             }
+
             .amount-input {
                 height: 84px;
                 font-size: 34px;
                 font-weight: 900;
                 color: var(--purple);
             }
+
             .segment {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -485,30 +561,36 @@
                 overflow: hidden;
                 background: #fff;
             }
+
             .segment button {
                 border: 0;
                 background: transparent;
                 height: 48px;
             }
+
             .segment button.active {
                 background: var(--purple3);
                 color: var(--purple);
                 font-weight: 900;
             }
+
             .rangebox {
                 background: #fff;
                 border: 1px solid #dfd5e3;
                 border-radius: 18px;
                 padding: 14px;
             }
+
             .rangebox input {
                 width: 100%;
                 accent-color: var(--purple);
             }
+
             .rangehead {
                 display: flex;
                 justify-content: space-between;
             }
+
             .split-preview {
                 margin-top: 10px;
                 background: #eee3fb;
@@ -516,9 +598,11 @@
                 padding: 14px;
                 line-height: 1.7;
             }
+
             .split-preview strong {
                 color: var(--green);
             }
+
             .form-actions {
                 position: fixed;
                 left: 50%;
@@ -528,6 +612,7 @@
                 padding: 10px 18px;
                 background: linear-gradient(180deg, transparent, var(--bg) 35%);
             }
+
             .primary {
                 width: 100%;
                 height: 55px;
@@ -538,6 +623,7 @@
                 font-weight: 900;
                 box-shadow: 0 10px 24px rgba(115, 87, 166, 0.25);
             }
+
             .secondary {
                 height: 44px;
                 border: 1px solid #d4c7db;
@@ -547,18 +633,22 @@
                 padding: 0 13px;
                 font-weight: 850;
             }
+
             .analysis-title {
                 padding: 0 18px 10px;
             }
+
             .analysis-title h2 {
                 font-size: 27px;
                 margin: 0 0 4px;
             }
+
             .analysis-title p {
                 margin: 0;
                 color: var(--muted);
                 font-size: 12px;
             }
+
             .analysis-card {
                 margin: 0 18px 14px;
                 background: #fff;
@@ -566,6 +656,7 @@
                 padding: 18px;
                 box-shadow: var(--shadow);
             }
+
             .category-row {
                 display: grid;
                 grid-template-columns: 46px 1fr auto;
@@ -573,6 +664,7 @@
                 align-items: center;
                 padding: 10px 0;
             }
+
             .category-row .icon {
                 width: 42px;
                 height: 42px;
@@ -581,6 +673,7 @@
                 place-items: center;
                 background: #f1e9fb;
             }
+
             .mini-bar {
                 height: 6px;
                 border-radius: 99px;
@@ -588,41 +681,49 @@
                 overflow: hidden;
                 margin-top: 6px;
             }
+
             .mini-bar i {
                 display: block;
                 height: 100%;
                 border-radius: inherit;
                 background: var(--purple);
             }
+
             .line-chart {
                 height: 150px;
                 position: relative;
                 border-bottom: 1px solid var(--line);
                 margin-top: 8px;
             }
+
             .line-chart svg {
                 width: 100%;
                 height: 100%;
             }
+
             .trend-head {
                 display: flex;
                 justify-content: space-between;
             }
+
             .trend-head strong {
                 font-size: 20px;
             }
+
             .donut-wrap {
                 display: grid;
                 grid-template-columns: 150px 1fr;
                 gap: 18px;
                 align-items: center;
             }
+
             .donut {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
                 position: relative;
             }
+
             .donut:after {
                 content: "";
                 position: absolute;
@@ -630,10 +731,12 @@
                 border-radius: 50%;
                 background: #fff;
             }
+
             .legend {
                 font-size: 12px;
                 line-height: 1.9;
             }
+
             .legend i {
                 display: inline-block;
                 width: 9px;
@@ -641,6 +744,7 @@
                 border-radius: 50%;
                 margin-right: 6px;
             }
+
             .project-cover {
                 margin: 0 18px 14px;
                 background: linear-gradient(135deg, #eef4fb, #f7edf6);
@@ -648,6 +752,7 @@
                 padding: 18px;
                 box-shadow: var(--shadow);
             }
+
             .project-cover .cover-art {
                 height: 150px;
                 border-radius: 22px;
@@ -660,31 +765,37 @@
                 font-size: 24px;
                 text-shadow: 0 2px 10px #0003;
             }
+
             .project-metrics {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
                 margin-top: 12px;
             }
+
             .project-metrics .metric {
                 background: #fff;
                 border-radius: 18px;
                 padding: 14px;
             }
+
             .metric small {
                 color: var(--muted);
             }
+
             .metric strong {
                 display: block;
                 font-size: 22px;
                 margin-top: 5px;
             }
+
             .stock-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
                 padding: 0 14px;
             }
+
             .stock-card {
                 background: #fff;
                 border: 1px solid #eadfeb;
@@ -692,26 +803,32 @@
                 padding: 14px;
                 box-shadow: var(--shadow);
             }
+
             .stock-card h3 {
                 font-size: 14px;
                 margin: 0 0 9px;
             }
+
             .stock-price {
                 font-size: 27px;
                 font-weight: 900;
             }
+
             .stock-up {
                 color: #ef3d4d;
             }
+
             .stock-down {
                 color: #2aa06f;
             }
+
             .stock-meta {
                 font-size: 10px;
                 color: var(--muted);
                 line-height: 1.55;
                 margin-top: 7px;
             }
+
             .notice {
                 margin: 0 18px 12px;
                 padding: 12px 14px;
@@ -721,34 +838,41 @@
                 font-size: 11px;
                 line-height: 1.55;
             }
+
             .assets-hero {
                 padding: 0 18px 14px;
             }
+
             .assets-card {
                 background: #f6fbff;
                 border: 1px solid #d8e5ee;
                 border-radius: 28px;
                 padding: 20px;
             }
+
             .assets-card .net {
                 font-size: 34px;
                 font-weight: 900;
                 margin: 8px 0 18px;
             }
+
             .asset-stats {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
+
             .asset-stats small {
                 display: block;
                 color: #7890a0;
                 font-size: 10px;
             }
+
             .asset-stats strong {
                 display: block;
                 margin-top: 3px;
             }
+
             .asset-row {
                 display: grid;
                 grid-template-columns: 46px 1fr auto;
@@ -757,9 +881,11 @@
                 padding: 12px 0;
                 border-bottom: 1px solid var(--line);
             }
+
             .asset-row:last-child {
                 border-bottom: 0;
             }
+
             .modal {
                 display: none;
                 position: fixed;
@@ -769,9 +895,11 @@
                 align-items: flex-end;
                 justify-content: center;
             }
+
             .modal.open {
                 display: flex;
             }
+
             .sheet {
                 width: min(500px, 100%);
                 max-height: 90dvh;
@@ -780,9 +908,11 @@
                 border-radius: 28px 28px 0 0;
                 padding: 18px 18px calc(24px + var(--safe));
             }
+
             .sheet h2 {
                 margin: 0 0 17px;
             }
+
             .sheet-handle {
                 width: 50px;
                 height: 5px;
@@ -790,6 +920,7 @@
                 background: #c9bdca;
                 margin: 0 auto 14px;
             }
+
             .scan-box {
                 background: #fff;
                 border: 1px solid #ded5e2;
@@ -797,6 +928,7 @@
                 padding: 16px;
                 text-align: center;
             }
+
             .scan-preview {
                 height: 240px;
                 border-radius: 18px;
@@ -806,22 +938,26 @@
                 color: var(--muted);
                 overflow: hidden;
             }
+
             .scan-preview img {
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
             }
+
             .scan-status {
                 padding: 14px 0 4px;
                 color: var(--orange);
                 font-weight: 850;
             }
+
             .scan-actions {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
                 margin-top: 12px;
             }
+
             .toast {
                 position: fixed;
                 left: 50%;
@@ -836,13 +972,16 @@
                 border-radius: 12px;
                 font-size: 12px;
             }
+
             #pinChangeModal {
                 z-index: 1500;
             }
+
             .toast.show {
                 opacity: 1;
                 transform: translate(-50%, 0);
             }
+
             .empty {
                 text-align: center;
                 color: var(--muted);
@@ -855,6 +994,7 @@
                 --finxi-soft: #eaf3f8;
                 --finxi-line: #d7e5ed;
             }
+
             .finxi-strip {
                 margin: 0 18px 14px;
                 background: #edf6fb;
@@ -863,21 +1003,25 @@
                 padding: 18px;
                 box-shadow: var(--shadow);
             }
+
             .finxi-strip .big {
                 font-size: 32px;
                 font-weight: 900;
                 margin: 8px 0;
             }
+
             .finxi-actions {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 12px;
                 margin-top: 14px;
             }
+
             .finxi-action {
                 text-align: center;
                 font-size: 12px;
             }
+
             .finxi-action i {
                 font-style: normal;
                 width: 58px;
@@ -890,13 +1034,16 @@
                 margin: 0 auto 7px;
                 font-size: 24px;
             }
+
             .account-groups {
                 padding: 0 18px;
             }
+
             .account-group h3 {
                 font-size: 16px;
                 margin: 14px 0 8px;
             }
+
             .account-line {
                 display: flex;
                 justify-content: space-between;
@@ -908,11 +1055,13 @@
                 padding: 14px;
                 margin-bottom: 8px;
             }
+
             .account-line small {
                 display: block;
                 color: var(--muted);
                 margin-top: 4px;
             }
+
             .quick-entry {
                 position: fixed;
                 left: 50%;
@@ -923,9 +1072,11 @@
                 z-index: 1150;
                 display: none;
             }
+
             .quick-entry.open {
                 display: block;
             }
+
             .quick-box {
                 background: #dfeef6;
                 border: 1px solid #c4dae7;
@@ -933,6 +1084,7 @@
                 padding: 13px;
                 box-shadow: 0 18px 40px rgba(57, 93, 118, 0.22);
             }
+
             .quick-box-head {
                 display: flex;
                 align-items: center;
@@ -940,11 +1092,13 @@
                 gap: 10px;
                 margin-bottom: 9px;
             }
+
             .quick-box-title {
                 color: #527285;
                 font-size: 13px;
                 font-weight: 900;
             }
+
             .quick-cancel {
                 height: 32px;
                 padding: 0 12px;
@@ -955,21 +1109,25 @@
                 font-size: 12px;
                 font-weight: 800;
             }
+
             .q-tabs {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
+
             .q-tabs button {
                 height: 42px;
                 border: 0;
                 border-radius: 13px;
                 background: white;
             }
+
             .q-tabs button.active {
                 background: var(--finxi);
                 color: #fff;
             }
+
             .q-amount {
                 background: #fff;
                 border-radius: 15px;
@@ -979,16 +1137,19 @@
                 font-weight: 900;
                 margin: 9px 0;
             }
+
             .q-grid {
                 display: grid;
                 grid-template-columns: 1fr 1.35fr;
                 gap: 10px;
             }
+
             .q-fields {
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
             }
+
             .q-fields select,
             .q-fields input {
                 height: 42px;
@@ -998,11 +1159,13 @@
                 padding: 0 10px;
                 width: 100%;
             }
+
             .keypad {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
+
             .keypad button {
                 height: 52px;
                 border: 0;
@@ -1010,17 +1173,21 @@
                 background: #fff;
                 font-size: 19px;
             }
+
             .q-done {
                 background: var(--finxi) !important;
                 color: #fff !important;
                 font-weight: 900;
             }
+
             .ledger-page {
                 padding: 0 14px;
             }
+
             .day-block {
                 margin-bottom: 10px;
             }
+
             .day-head {
                 background: #fff;
                 border: 1px solid var(--finxi-line);
@@ -1030,10 +1197,12 @@
                 justify-content: space-between;
                 align-items: center;
             }
+
             .day-head span {
                 font-size: 12px;
                 color: var(--muted);
             }
+
             .invest-table {
                 margin: 0 18px 14px;
                 background: #fff;
@@ -1041,6 +1210,7 @@
                 border-radius: 20px;
                 overflow: hidden;
             }
+
             .invest-row {
                 display: grid;
                 grid-template-columns: 70px 1fr 1fr 1fr;
@@ -1050,14 +1220,17 @@
                 font-size: 12px;
                 align-items: center;
             }
+
             .invest-row.head {
                 background: #f6fafc;
                 color: #6f8695;
                 font-weight: 800;
             }
+
             .invest-row:last-child {
                 border-bottom: 0;
             }
+
             .fund-box {
                 margin: 0 18px 14px;
                 background: #fff;
@@ -1065,25 +1238,30 @@
                 border-radius: 22px;
                 padding: 16px;
             }
+
             .fund-metrics {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 9px;
                 margin-top: 12px;
             }
+
             .fund-metrics div {
                 background: #f6f9fb;
                 border-radius: 14px;
                 padding: 11px;
             }
+
             .fund-metrics small {
                 display: block;
                 color: var(--muted);
             }
+
             .fund-metrics strong {
                 display: block;
                 margin-top: 4px;
             }
+
             .settings-center {
                 display: none;
                 position: fixed;
@@ -1094,9 +1272,11 @@
                 justify-content: center;
                 padding: 18px;
             }
+
             .settings-center.open {
                 display: flex;
             }
+
             .settings-panel {
                 width: min(450px, 100%);
                 max-height: 88dvh;
@@ -1106,6 +1286,7 @@
                 border-radius: 26px;
                 box-shadow: 0 24px 60px rgba(38, 65, 82, 0.25);
             }
+
             .settings-title {
                 display: flex;
                 justify-content: space-between;
@@ -1113,22 +1294,26 @@
                 padding: 17px;
                 border-bottom: 1px solid var(--finxi-line);
             }
+
             .settings-tabs {
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
                 gap: 6px;
                 padding: 13px;
             }
+
             .settings-tabs button {
                 height: 40px;
                 border: 1px solid #c9dce7;
                 background: white;
                 border-radius: 13px;
             }
+
             .settings-tabs button.active {
                 background: var(--finxi);
                 color: white;
             }
+
             .setting-card {
                 margin: 0 14px 10px;
                 background: #fff;
@@ -1136,6 +1321,7 @@
                 border-radius: 18px;
                 padding: 14px;
             }
+
             .switch {
                 width: 52px;
                 height: 28px;
@@ -1143,6 +1329,7 @@
                 background: #c5d8e4;
                 position: relative;
             }
+
             .switch:after {
                 content: "";
                 position: absolute;
@@ -1153,9 +1340,11 @@
                 top: 3px;
                 left: 3px;
             }
+
             .switch.on {
                 background: var(--finxi);
             }
+
             .switch.on:after {
                 left: 27px;
             }
@@ -1172,6 +1361,7 @@
                 --finxi-soft: #eee5f8;
                 --finxi-line: #e4d9eb;
             }
+
             .theme-blue {
                 --bg: #eef6fa;
                 --surface: #fff;
@@ -1183,6 +1373,7 @@
                 --finxi-soft: #e0eef6;
                 --finxi-line: #d1e2ec;
             }
+
             .theme-cream {
                 --bg: #fbf8f3;
                 --surface: #fffefa;
@@ -1194,61 +1385,74 @@
                 --finxi-soft: #f3e8df;
                 --finxi-line: #eadcd1;
             }
+
             body.compact .card,
             body.compact .rowcard,
             body.compact .setting-card {
                 padding: 11px;
             }
+
             body.large-text {
                 font-size: 17px;
             }
+
             body.large-text .muted,
             body.large-text small {
                 font-size: 13px;
             }
+
             .settings-center {
                 align-items: flex-end !important;
                 padding: 0 !important;
             }
+
             .settings-panel {
                 width: min(500px, 100%) !important;
                 max-height: 94dvh !important;
                 border-radius: 28px 28px 0 0 !important;
                 background: var(--bg) !important;
             }
+
             .settings-tabs {
                 position: sticky;
                 top: 0;
                 z-index: 2;
                 background: var(--bg);
             }
+
             .setting-pane {
                 display: none;
                 padding: 0 14px 18px;
             }
+
             .setting-pane.active {
                 display: block;
             }
+
             .setting-card h3 {
                 margin: 0 0 4px;
                 font-size: 16px;
             }
+
             .setting-card .desc {
                 color: var(--muted);
                 font-size: 12px;
                 line-height: 1.5;
             }
+
             .setting-row {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 gap: 12px;
             }
+
             .setting-row + .setting-row {
                 margin-top: 12px;
                 padding-top: 12px;
                 border-top: 1px solid var(--line);
             }
+
             .setting-control {
                 width: 150px;
                 max-width: 48%;
@@ -1259,16 +1463,19 @@
                 padding: 0 10px;
                 color: var(--ink);
             }
+
             .setting-wide {
                 width: 100%;
                 max-width: none;
             }
+
             .theme-picks {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
                 margin-top: 12px;
             }
+
             .theme-pick {
                 height: 74px;
                 border: 2px solid transparent;
@@ -1280,25 +1487,30 @@
                 align-items: center;
                 gap: 8px;
             }
+
             .theme-pick.active {
                 border-color: var(--finxi);
             }
+
             .theme-swatch {
                 width: 34px;
                 height: 20px;
                 border-radius: 999px;
             }
+
             .settings-actions {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
                 margin-top: 10px;
             }
+
             .danger {
                 background: #fff;
                 color: #c64656;
                 border: 1px solid #efc7cd;
             }
+
             .status-pill {
                 padding: 5px 9px;
                 border-radius: 99px;
@@ -1307,6 +1519,7 @@
                 font-size: 11px;
                 font-weight: 800;
             }
+
             .file-drop {
                 border: 1px dashed var(--finxi-line);
                 border-radius: 16px;
@@ -1316,6 +1529,7 @@
                 font-size: 12px;
                 margin-top: 10px;
             }
+
             .setting-note {
                 background: var(--finxi-soft);
                 color: var(--finxi-dark);
@@ -1330,19 +1544,23 @@
             .account-line {
                 cursor: pointer;
             }
+
             .account-line:hover {
                 background: var(--finxi-soft);
             }
+
             .account-edit {
                 display: flex;
                 align-items: center;
                 gap: 8px;
             }
+
             .account-amount-wrap {
                 display: grid;
                 gap: 3px;
                 justify-items: end;
             }
+
             .edit-mini {
                 width: 34px;
                 height: 34px;
@@ -1351,6 +1569,7 @@
                 background: #fff;
                 color: var(--finxi-dark);
             }
+
             .account-balance-sub {
                 display: block;
                 color: var(--muted);
@@ -1358,6 +1577,7 @@
                 margin-top: 3px;
                 text-align: right;
             }
+
             .default-balance-banner {
                 margin: 0 16px 12px;
                 padding: 12px 14px;
@@ -1368,17 +1588,20 @@
                 font-size: 12px;
                 line-height: 1.55;
             }
+
             .card-detail-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
                 margin-top: 14px;
             }
+
             .card-detail-grid div {
                 background: #ffffff14;
                 border-radius: 14px;
                 padding: 10px;
             }
+
             .card-edit-btn {
                 margin-top: 14px;
                 width: 100%;
@@ -1401,9 +1624,11 @@
                 justify-content: center;
                 padding: 24px;
             }
+
             .pin-lock.hidden {
                 display: none;
             }
+
             .pin-box {
                 width: min(390px, 100%);
                 background: #fff;
@@ -1412,29 +1637,35 @@
                 text-align: center;
                 box-shadow: 0 25px 70px rgba(84, 58, 108, 0.17);
             }
+
             .pin-box h2 {
                 margin: 6px 0;
             }
+
             .pin-dots {
                 display: flex;
                 justify-content: center;
                 gap: 13px;
                 margin: 24px 0;
             }
+
             .pin-dot {
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
                 background: #e6ddec;
             }
+
             .pin-dot.on {
                 background: var(--purple);
             }
+
             .pin-pad {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
             }
+
             .pin-pad button {
                 height: 60px;
                 border: 0;
@@ -1443,23 +1674,28 @@
                 color: var(--ink);
                 font-size: 22px;
             }
+
             .pin-pad button.action {
                 font-size: 13px;
                 color: var(--purple);
                 font-weight: 850;
             }
+
             .pin-msg {
                 height: 20px;
                 color: var(--red);
                 font-size: 12px;
                 margin-top: 9px;
             }
+
             .asset-category-wrap {
                 padding: 0 14px;
             }
+
             .asset-category {
                 margin-bottom: 13px;
             }
+
             .asset-category-head {
                 display: flex;
                 align-items: center;
@@ -1467,10 +1703,12 @@
                 padding: 4px 4px 8px;
                 font-weight: 900;
             }
+
             .asset-category-total {
                 color: var(--muted);
                 font-size: 12px;
             }
+
             .asset-account-row {
                 display: grid;
                 grid-template-columns: 46px 1fr auto;
@@ -1483,6 +1721,7 @@
                 box-shadow: 0 7px 22px rgba(80, 57, 102, 0.055);
                 cursor: pointer;
             }
+
             .asset-account-row .aicon {
                 width: 44px;
                 height: 44px;
@@ -1492,11 +1731,13 @@
                 place-items: center;
                 font-size: 21px;
             }
+
             .asset-account-row small {
                 display: block;
                 color: var(--muted);
                 margin-top: 3px;
             }
+
             .asset-account-row .aval {
                 display: flex;
                 align-items: center;
@@ -1504,19 +1745,23 @@
                 font-weight: 900;
                 text-align: right;
             }
+
             .asset-visibility {
                 border: 0;
                 background: transparent;
                 color: var(--purple);
                 font-size: 20px;
             }
+
             .asset-visibility.muted-eye {
                 color: var(--muted);
                 opacity: 0.65;
             }
+
             .masked {
                 letter-spacing: 3px;
             }
+
             .account-detail-hero {
                 margin: 0 18px 14px;
                 background: linear-gradient(145deg, #765ba4, #6e5599);
@@ -1525,64 +1770,78 @@
                 padding: 20px;
                 box-shadow: var(--shadow);
             }
+
             .account-detail-hero .big {
                 font-size: 34px;
                 font-weight: 900;
                 margin: 8px 0 16px;
             }
+
             .account-detail-stats {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
+
             .account-detail-stats small {
                 display: block;
                 opacity: 0.72;
                 font-size: 10px;
             }
+
             .account-detail-stats strong {
                 display: block;
                 margin-top: 4px;
             }
+
             .balance-history-row {
                 font-size: 12px;
                 line-height: 1.55;
                 color: var(--muted);
             }
+
             .card-reminder {
                 border-left: 4px solid #d9a35c;
             }
+
             .card-reminder.urgent {
                 border-left-color: #d75263;
             }
+
             .card-reminder .due {
                 font-weight: 900;
             }
+
             .card-reminder small {
                 display: block;
                 color: var(--muted);
                 margin-top: 4px;
             }
+
             .card-date-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
+
             .modal-footer-2 {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
+
             .account-modal-actions,
             .card-modal-actions {
                 display: grid !important;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 10px;
             }
+
             .account-modal-actions.two-actions,
             .card-modal-actions.two-actions {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
             .account-modal-actions button,
             .card-modal-actions button,
             .modal-footer-2 button {
@@ -1592,16 +1851,19 @@
                 padding-inline: 8px;
                 white-space: nowrap;
             }
+
             .account-modal-actions button[style*="display: none"],
             .card-modal-actions button[style*="display: none"] {
                 display: none !important;
             }
+
             .account-wizard {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
                 margin-bottom: 16px;
             }
+
             .account-wizard .step {
                 border: 0;
                 padding: 9px 6px;
@@ -1612,11 +1874,13 @@
                 font-size: 11px;
                 cursor: pointer;
             }
+
             .account-wizard .step.on {
                 background: var(--purple);
                 color: #fff;
                 font-weight: 900;
             }
+
             .account-wizard .step:focus-visible {
                 outline: 3px solid #d76b5066;
                 outline-offset: 2px;
@@ -1628,22 +1892,26 @@
                 gap: 10px;
                 margin-top: 16px;
             }
+
             .asset-overview-item {
                 background: #ffffffaa;
                 border: 1px solid #d8e5ee;
                 border-radius: 16px;
                 padding: 12px;
             }
+
             .asset-overview-item small {
                 display: block;
                 color: #71899a;
                 font-size: 11px;
             }
+
             .asset-overview-item strong {
                 display: block;
                 margin-top: 4px;
                 font-size: 17px;
             }
+
             .account-category-guide {
                 margin: 0 18px 12px;
                 padding: 13px 15px;
@@ -1654,6 +1922,7 @@
                 font-size: 12px;
                 line-height: 1.6;
             }
+
             .stock-refresh-row {
                 display: flex;
                 justify-content: space-between;
@@ -1661,15 +1930,18 @@
                 gap: 10px;
                 padding: 0 18px 14px;
             }
+
             .stock-refresh-row .muted {
                 font-size: 11px;
             }
+
             .layout-picks {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
                 margin-top: 12px;
             }
+
             .layout-pick {
                 min-height: 72px;
                 border: 1px solid var(--finxi-line);
@@ -1679,16 +1951,19 @@
                 font-size: 12px;
                 font-weight: 800;
             }
+
             .layout-pick span {
                 display: block;
                 font-size: 24px;
                 margin-bottom: 4px;
             }
+
             .layout-pick.active {
                 border-color: var(--finxi);
                 background: var(--finxi-soft);
                 color: var(--finxi-dark);
             }
+
             .tone-picks {
                 position: relative;
                 z-index: 3;
@@ -1697,6 +1972,7 @@
                 gap: 8px;
                 margin-top: 12px;
             }
+
             .tone-picks .chip {
                 position: relative;
                 z-index: 1;
@@ -1705,10 +1981,12 @@
                 touch-action: manipulation;
                 cursor: pointer;
             }
+
             @media (max-width: 520px) {
                 .asset-overview-grid {
                     grid-template-columns: 1fr;
                 }
+
                 .stock-refresh-row {
                     align-items: stretch;
                     flex-direction: column;
@@ -1719,18 +1997,22 @@
                 body {
                     padding: 24px 0;
                 }
+
                 #app {
                     max-width: 1180px;
                     min-height: calc(100dvh - 48px);
                     border-radius: 28px;
                     box-shadow: 0 18px 60px rgba(71, 54, 83, 0.12);
                 }
+
                 .header {
                     padding-inline: 32px;
                 }
+
                 .page {
                     padding-inline: 32px;
                 }
+
                 .hero,
                 .assets-hero,
                 .analysis-title,
@@ -1747,6 +2029,7 @@
                     max-width: 980px;
                     margin-inline: auto;
                 }
+
                 .saving-card,
                 .analysis-card,
                 .project-cover,
@@ -1756,24 +2039,29 @@
                     max-width: 980px;
                     margin-inline: auto;
                 }
+
                 .list {
                     max-width: 980px;
                     margin-inline: auto;
                 }
+
                 .quick-grid {
                     max-width: 980px;
                     margin-inline: auto;
                     grid-template-columns: repeat(8, 1fr);
                 }
+
                 .stock-grid {
                     max-width: 980px;
                     margin-inline: auto;
                     grid-template-columns: repeat(4, 1fr);
                 }
+
                 .bottom-nav,
                 .form-actions {
                     width: min(1180px, 100%);
                 }
+
                 .sheet {
                     width: min(640px, 100%);
                 }
@@ -1783,18 +2071,23 @@
                 .settle-card {
                     padding: 20px;
                 }
+
                 .big-money {
                     font-size: 34px;
                 }
+
                 .settle-bottom {
                     align-items: flex-end;
                 }
+
                 .white-btn {
                     padding-inline: 14px;
                 }
+
                 .calendar-card {
                     padding: 14px 10px;
                 }
+
                 .cal-grid {
                     gap: 4px;
                 }
@@ -1805,6 +2098,7 @@
                     font-size: 16px;
                     overflow-x: hidden;
                 }
+
                 body,
                 body.layout-mobile,
                 body.layout-mobile #app {
@@ -1813,11 +2107,13 @@
                     min-width: 0;
                     overflow-x: hidden;
                 }
+
                 body.layout-mobile .header {
                     width: 100%;
                     height: 58px;
                     padding: 0 14px;
                 }
+
                 body.layout-mobile .header h1 {
                     max-width: 58%;
                     overflow: hidden;
@@ -1825,11 +2121,13 @@
                     white-space: nowrap;
                     font-size: clamp(17px, 5vw, 21px);
                 }
+
                 body.layout-mobile .page {
                     width: 100%;
                     min-width: 0;
                     padding: 12px 12px calc(96px + var(--safe));
                 }
+
                 body.layout-mobile .hero,
                 body.layout-mobile .assets-hero,
                 body.layout-mobile .analysis-title,
@@ -1854,16 +2152,19 @@
                     padding-left: 0;
                     padding-right: 0;
                 }
+
                 body.layout-mobile .section-head {
                     gap: 10px;
                     align-items: center;
                 }
+
                 body.layout-mobile .section-head h2,
                 body.layout-mobile .analysis-title h2,
                 body.layout-mobile .form h2 {
                     font-size: clamp(20px, 6vw, 28px);
                     line-height: 1.2;
                 }
+
                 body.layout-mobile .assets-card,
                 body.layout-mobile .settle-card,
                 body.layout-mobile .finxi-strip,
@@ -1873,12 +2174,14 @@
                     border-radius: 18px;
                     padding: 16px;
                 }
+
                 body.layout-mobile .assets-card .net,
                 body.layout-mobile .finxi-strip .big,
                 body.layout-mobile .big-money {
                     font-size: clamp(32px, 10vw, 46px);
                     letter-spacing: -0.5px;
                 }
+
                 body.layout-mobile .asset-stats,
                 body.layout-mobile .asset-overview-grid,
                 body.layout-mobile .project-metrics,
@@ -1886,12 +2189,14 @@
                 body.layout-mobile .fund-metrics {
                     gap: 8px;
                 }
+
                 body.layout-mobile .asset-stats small,
                 body.layout-mobile .asset-overview-item small,
                 body.layout-mobile .muted,
                 body.layout-mobile small {
                     font-size: clamp(10px, 2.8vw, 13px);
                 }
+
                 body.layout-mobile .control,
                 body.layout-mobile .setting-control,
                 body.layout-mobile .secondary,
@@ -1900,16 +2205,20 @@
                     max-width: 100%;
                     min-width: 0;
                 }
+
                 body.layout-mobile .control {
                     height: 50px;
                     padding-inline: 12px;
                 }
+
                 body.layout-mobile textarea.control {
                     min-height: 84px;
                 }
+
                 body.layout-mobile .modal {
                     padding: 0;
                 }
+
                 body.layout-mobile .sheet {
                     width: 100%;
                     max-width: 100%;
@@ -1917,17 +2226,20 @@
                     padding: 16px 14px calc(20px + var(--safe));
                     border-radius: 22px 22px 0 0;
                 }
+
                 body.layout-mobile .account-modal-actions,
                 body.layout-mobile .card-modal-actions,
                 body.layout-mobile .modal-footer-2 {
                     gap: 8px;
                 }
+
                 body.layout-mobile .account-modal-actions button,
                 body.layout-mobile .card-modal-actions button,
                 body.layout-mobile .modal-footer-2 button {
                     height: 50px;
                     font-size: clamp(13px, 3.6vw, 16px);
                 }
+
                 body.layout-mobile .bottom-nav {
                     left: 0;
                     right: 0;
@@ -1937,13 +2249,16 @@
                     padding-left: 4px;
                     padding-right: 4px;
                 }
+
                 body.layout-mobile .nav {
                     min-width: 0;
                     font-size: clamp(9px, 2.6vw, 11px);
                 }
+
                 body.layout-mobile .nav span {
                     font-size: clamp(18px, 6vw, 23px);
                 }
+
                 body.layout-mobile .form-actions {
                     left: 0;
                     right: 0;
@@ -1953,6 +2268,7 @@
                     padding-left: 12px;
                     padding-right: 12px;
                 }
+
                 body.layout-mobile.large-text {
                     font-size: 17px;
                 }
@@ -1963,6 +2279,7 @@
                     padding: 10px;
                     background: #e9ede7;
                 }
+
                 body.layout-mobile #app {
                     width: 100%;
                     max-width: none;
@@ -1970,9 +2287,11 @@
                     border-radius: 16px;
                     box-shadow: 0 8px 24px rgba(37, 56, 45, 0.12);
                 }
+
                 body.layout-mobile .header {
                     border-radius: 16px 16px 0 0;
                 }
+
                 body.layout-mobile .bottom-nav {
                     left: 10px;
                     right: 10px;
@@ -1983,6 +2302,7 @@
                     border-radius: 14px;
                     box-shadow: 0 6px 18px rgba(37, 56, 45, 0.12);
                 }
+
                 body.layout-mobile .form-actions {
                     left: 10px;
                     right: 10px;
@@ -1991,9 +2311,11 @@
                     max-width: none;
                     border-radius: 14px 14px 0 0;
                 }
+
                 body.layout-mobile .tone-picks {
                     gap: 7px;
                 }
+
                 body.layout-mobile .tone-picks .chip {
                     flex: 1 1 auto;
                     min-width: 0;
@@ -2004,22 +2326,27 @@
             body.layout-mobile {
                 padding: 0;
             }
+
             body.layout-mobile #app {
                 max-width: 500px;
                 min-height: 100dvh;
                 border-radius: 0;
                 box-shadow: none;
             }
+
             body.layout-mobile .page {
                 padding-inline: 0;
             }
+
             body.layout-mobile .bottom-nav,
             body.layout-mobile .form-actions {
                 width: min(500px, 100%);
             }
+
             body.layout-desktop {
                 padding: 0;
             }
+
             body.layout-desktop #app {
                 width: 100%;
                 max-width: none;
@@ -2027,12 +2354,15 @@
                 border-radius: 0;
                 box-shadow: none;
             }
+
             body.layout-desktop .header {
                 padding-inline: clamp(20px, 4vw, 64px);
             }
+
             body.layout-desktop .page {
                 padding-inline: clamp(20px, 4vw, 64px);
             }
+
             body.layout-desktop .hero,
             body.layout-desktop .assets-hero,
             body.layout-desktop .analysis-title,
@@ -2050,10 +2380,12 @@
                 max-width: 1400px;
                 margin-inline: auto;
             }
+
             body.layout-desktop .quick-grid {
                 max-width: 1400px;
                 margin-inline: auto;
             }
+
             body.layout-desktop .bottom-nav,
             body.layout-desktop .form-actions {
                 width: 100%;
@@ -2072,9 +2404,11 @@
                 --shadow: 0 16px 40px rgba(37, 56, 45, 0.08);
                 background: #e9ede7;
             }
+
             body.layout-desktop #app {
                 background: var(--bg);
             }
+
             body.layout-desktop .header {
                 height: 82px;
                 margin-left: 236px;
@@ -2082,15 +2416,18 @@
                 border-bottom: 1px solid var(--line);
                 background: rgba(243, 244, 239, 0.94);
             }
+
             body.layout-desktop .header h1 {
                 font-size: 24px;
                 letter-spacing: -0.4px;
             }
+
             body.layout-desktop .page {
                 min-height: calc(100dvh - 82px);
                 margin-left: 236px;
                 padding: 32px clamp(28px, 4vw, 64px) 48px;
             }
+
             body.layout-desktop .hero,
             body.layout-desktop .assets-hero,
             body.layout-desktop .analysis-title,
@@ -2114,6 +2451,7 @@
                 margin-left: auto;
                 margin-right: auto;
             }
+
             body.layout-desktop .assets-card {
                 padding: 30px 32px;
                 border: 1px solid #d6e1d8;
@@ -2121,27 +2459,33 @@
                 background: linear-gradient(135deg, #eef7f0 0%, #fffdf8 70%);
                 box-shadow: var(--shadow);
             }
+
             body.layout-desktop .assets-card .net {
                 margin: 14px 0 26px;
                 font-size: clamp(42px, 5vw, 64px);
                 letter-spacing: -2px;
             }
+
             body.layout-desktop .asset-stats {
                 gap: 26px;
             }
+
             body.layout-desktop .asset-stats > div {
                 padding-left: 16px;
                 border-left: 3px solid #b8d1bc;
             }
+
             body.layout-desktop .asset-overview-grid {
                 grid-template-columns: repeat(3, minmax(150px, 220px));
                 gap: 12px;
                 margin-top: 24px;
             }
+
             body.layout-desktop .asset-overview-item {
                 background: #ffffffb8;
                 border-color: #dce7dd;
             }
+
             body.layout-desktop .quick-grid {
                 grid-template-columns: repeat(4, minmax(130px, 190px));
                 justify-content: start;
@@ -2149,6 +2493,7 @@
                 padding-top: 24px;
                 padding-bottom: 28px;
             }
+
             body.layout-desktop .quick {
                 display: flex;
                 align-items: center;
@@ -2162,6 +2507,7 @@
                 font-weight: 800;
                 box-shadow: 0 5px 15px rgba(37, 56, 45, 0.04);
             }
+
             body.layout-desktop .quick i {
                 flex: 0 0 38px;
                 width: 38px;
@@ -2172,13 +2518,16 @@
                 box-shadow: none;
                 background: #f5e5de;
             }
+
             body.layout-desktop .section-head {
                 padding: 22px 0 12px;
             }
+
             body.layout-desktop .section-head h2 {
                 font-size: 18px;
                 letter-spacing: -0.2px;
             }
+
             body.layout-desktop .card,
             body.layout-desktop .asset-account-row,
             body.layout-desktop .saving-card,
@@ -2190,11 +2539,13 @@
                 border-radius: 18px;
                 box-shadow: 0 5px 18px rgba(37, 56, 45, 0.04);
             }
+
             body.layout-desktop #assetCardReminders {
                 display: grid;
                 grid-template-columns: repeat(4, minmax(0, 1fr));
                 gap: 14px;
             }
+
             body.layout-desktop #assetCardReminders .card {
                 min-height: 126px;
                 margin-bottom: 0;
@@ -2203,19 +2554,23 @@
                 flex-direction: column;
                 justify-content: center;
             }
+
             body.layout-desktop #assetCardReminders .card .due {
                 font-size: 16px;
                 line-height: 1.35;
             }
+
             body.layout-desktop #assetCardReminders .card small {
                 line-height: 1.55;
             }
+
             body.layout-desktop #assetRows {
                 display: grid;
                 grid-template-columns: repeat(4, minmax(0, 1fr));
                 align-items: start;
                 gap: 16px;
             }
+
             body.layout-desktop #assetRows .asset-category {
                 min-width: 0;
                 margin-bottom: 0;
@@ -2225,10 +2580,12 @@
                 background: var(--surface);
                 box-shadow: 0 5px 18px rgba(37, 56, 45, 0.04);
             }
+
             body.layout-desktop #assetRows .asset-category-head {
                 padding: 2px 2px 12px;
                 border-bottom: 1px solid var(--line);
             }
+
             body.layout-desktop #assetRows .asset-account-row {
                 margin: 10px 0 0;
                 padding: 10px 0;
@@ -2237,27 +2594,34 @@
                 border-radius: 0;
                 box-shadow: none;
             }
+
             body.layout-desktop #assetRows .asset-account-row:last-child {
                 border-bottom: 0;
             }
+
             body.layout-desktop #assetRows .asset-account-row .aicon {
                 width: 38px;
                 height: 38px;
                 border-radius: 11px;
                 font-size: 18px;
             }
+
             body.layout-desktop #assetRows .asset-account-row .aval {
                 font-size: 13px;
             }
+
             body.layout-desktop #assetRows .asset-account-row small {
                 font-size: 10px;
             }
+
             body.layout-desktop .asset-category-wrap:has(#assetRows) {
                 max-width: 1400px;
             }
+
             body.layout-desktop #assetRows > .empty {
                 grid-column: 1 / -1;
             }
+
             body.layout-desktop .bottom-nav {
                 position: fixed;
                 left: 0;
@@ -2275,6 +2639,7 @@
                 background: #eaf0ea;
                 box-shadow: 8px 0 24px rgba(37, 56, 45, 0.04);
             }
+
             body.layout-desktop .bottom-nav::before {
                 content: "安安\A MONEY";
                 white-space: pre;
@@ -2286,6 +2651,7 @@
                 font-weight: 950;
                 letter-spacing: 1px;
             }
+
             body.layout-desktop .nav {
                 width: 100%;
                 height: 54px;
@@ -2298,23 +2664,27 @@
                 font-size: 13px;
                 text-align: left;
             }
+
             body.layout-desktop .nav span {
                 flex: 0 0 25px;
                 margin: 0;
                 font-size: 20px;
                 text-align: center;
             }
+
             body.layout-desktop .nav.active {
                 background: #fffdf8;
                 color: #c85d45;
                 box-shadow: 0 5px 14px rgba(37, 56, 45, 0.06);
             }
+
             body.layout-desktop .nav.main {
                 order: 4;
                 margin-top: auto;
                 background: #d4684f;
                 color: #fff;
             }
+
             body.layout-desktop .nav.main span {
                 width: auto;
                 height: auto;
@@ -2323,6 +2693,7 @@
                 color: inherit;
                 font-size: 22px;
             }
+
             body.layout-desktop .account-line .edit-mini,
             body.layout-mobile .account-line .edit-mini {
                 width: 48px;
@@ -2332,12 +2703,17 @@
                 font-size: 13px;
                 font-weight: 800;
             }
+
             body.layout-desktop .account-line {
                 display: grid;
-                grid-template-columns: minmax(220px, 1.25fr) minmax(150px, 0.8fr) minmax(180px, 1fr) minmax(180px, 0.8fr);
+                grid-template-columns: minmax(220px, 1.25fr) minmax(150px, 0.8fr) minmax(180px, 1fr) minmax(
+                        180px,
+                        0.8fr
+                    );
                 align-items: center;
                 gap: 18px;
             }
+
             body.layout-desktop .account-line .account-meta,
             body.layout-desktop .account-line .account-note {
                 min-width: 0;
@@ -2345,6 +2721,7 @@
                 font-size: 12px;
                 line-height: 1.45;
             }
+
             body.layout-desktop .account-line .account-meta strong,
             body.layout-desktop .account-line .account-note strong {
                 display: block;
@@ -2352,29 +2729,35 @@
                 font-size: 11px;
                 margin-bottom: 3px;
             }
+
             body.layout-desktop .account-line .account-note {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
+
             body.layout-desktop .account-line .account-edit {
                 justify-content: flex-end;
             }
+
             @media (max-width: 700px) {
                 body.layout-mobile .account-line {
                     display: grid;
                     grid-template-columns: minmax(0, 1fr) auto;
                     gap: 10px;
                 }
+
                 body.layout-mobile .account-line .account-meta,
                 body.layout-mobile .account-line .account-note {
                     grid-column: 1 / -1;
                     font-size: 11px;
                 }
+
                 body.layout-mobile .account-line .account-note {
                     display: none;
                 }
             }
+
             body.layout-desktop .form-actions {
                 left: calc(50% + 118px);
                 width: calc(100% - 236px);
@@ -2397,6 +2780,7 @@
                 --red: #d65f58;
                 --shadow: 0 12px 30px rgba(44, 62, 50, 0.07);
             }
+
             body.layout-desktop,
             body.layout-mobile,
             body.layout-desktop #app,
@@ -2404,68 +2788,82 @@
                 background: var(--bg);
                 color: var(--ink);
             }
+
             body.layout-desktop button,
             body.layout-mobile button {
                 color: inherit;
             }
+
             body.layout-desktop .header,
             body.layout-mobile .header {
                 border-bottom: 1px solid var(--line);
                 background: rgba(244, 246, 241, 0.94);
             }
+
             body.layout-desktop .header h1,
             body.layout-mobile .header h1 {
                 color: var(--ink);
                 font-weight: 950;
             }
+
             body.layout-desktop .avatar,
             body.layout-mobile .avatar {
                 background: #ead9f7;
                 color: #6b4c8e;
                 box-shadow: none;
             }
+
             body.layout-desktop .page,
             body.layout-mobile .page {
                 background: transparent;
             }
+
             body.layout-desktop .analysis-title,
             body.layout-mobile .analysis-title {
                 padding-top: 6px;
                 padding-bottom: 18px;
             }
+
             body.layout-desktop .analysis-title h2,
             body.layout-mobile .analysis-title h2 {
                 color: var(--ink);
                 font-size: 27px;
                 letter-spacing: -0.7px;
             }
+
             body.layout-desktop .analysis-title p,
             body.layout-mobile .analysis-title p {
                 color: var(--muted);
             }
+
             body.layout-desktop .section-head h2,
             body.layout-mobile .section-head h2 {
                 color: var(--ink);
                 font-weight: 900;
             }
+
             body.layout-desktop .link-btn,
             body.layout-mobile .link-btn {
                 color: var(--purple);
             }
+
             body.layout-desktop .settle-card,
             body.layout-mobile .settle-card {
                 background: linear-gradient(135deg, #d76b50, #e38b6c);
                 border-radius: 24px;
                 box-shadow: var(--shadow);
             }
+
             body.layout-desktop .white-btn,
             body.layout-mobile .white-btn {
                 color: #b6523c;
                 border-radius: 12px;
             }
+
             body.layout-desktop .assets-card {
                 background: linear-gradient(135deg, #eef7f0 0%, #fffefa 78%);
             }
+
             body.layout-desktop .asset-category,
             body.layout-mobile .asset-category,
             body.layout-desktop .saving-card,
@@ -2482,34 +2880,40 @@
                 background: var(--surface);
                 box-shadow: var(--shadow);
             }
+
             body.layout-desktop .asset-account-row,
             body.layout-mobile .asset-account-row {
                 background: var(--surface);
             }
+
             body.layout-desktop .asset-account-row .aicon,
             body.layout-mobile .asset-account-row .aicon,
             body.layout-desktop .tx-ico,
             body.layout-mobile .tx-ico {
                 background: #f1e5fa;
             }
+
             body.layout-desktop .chip.active,
             body.layout-mobile .chip.active {
                 background: var(--purple);
                 border-color: var(--purple);
                 color: #fff;
             }
+
             body.layout-desktop .chip,
             body.layout-mobile .chip {
                 border-color: #d7ddd7;
                 background: var(--surface);
                 color: var(--muted);
             }
+
             body.layout-desktop .primary,
             body.layout-mobile .primary {
                 background: var(--purple);
                 border-radius: 13px;
                 box-shadow: 0 8px 18px rgba(215, 107, 80, 0.2);
             }
+
             body.layout-desktop .secondary,
             body.layout-mobile .secondary {
                 border-color: #e2c5ba;
@@ -2517,6 +2921,7 @@
                 color: #bd5c45;
                 border-radius: 12px;
             }
+
             body.layout-desktop .control,
             body.layout-mobile .control,
             body.layout-desktop .setting-control,
@@ -2525,15 +2930,18 @@
                 background: var(--surface);
                 border-radius: 12px;
             }
+
             body.layout-desktop .form h2,
             body.layout-mobile .form h2 {
                 color: var(--ink);
             }
+
             body.layout-desktop .amount-input,
             body.layout-mobile .amount-input {
                 color: var(--purple);
                 background: #fffaf7;
             }
+
             body.layout-desktop .finxi-strip,
             body.layout-mobile .finxi-strip {
                 background: #eef8fc;
@@ -2541,92 +2949,113 @@
                 border-radius: 24px;
                 box-shadow: var(--shadow);
             }
+
             body.layout-desktop .finxi-strip .big,
             body.layout-mobile .finxi-strip .big {
                 color: var(--ink);
                 font-size: 46px;
                 letter-spacing: -1px;
             }
+
             body.layout-desktop .finxi-action i,
             body.layout-mobile .finxi-action i {
                 border-color: #e2d9e8;
                 background: #fff;
             }
+
             body.layout-desktop .invest-row,
             body.layout-mobile .invest-row {
                 border-bottom-color: var(--line);
             }
+
             body.layout-desktop .invest-row.head,
             body.layout-mobile .invest-row.head {
                 background: #f1f7f8;
                 color: #6d8791;
             }
+
             body.layout-desktop #cardList > .card {
                 background: linear-gradient(135deg, #7559a8, #a486c8) !important;
                 border: 0;
                 color: #fff;
             }
+
             body.layout-mobile #cardList > .card {
                 background: linear-gradient(135deg, #7559a8, #a486c8) !important;
                 border: 0;
                 color: #fff;
             }
+
             body.layout-desktop .notice,
             body.layout-mobile .notice {
                 background: #f0e6f8;
                 color: #6a5286;
                 border: 1px solid #e1d4ed;
             }
+
             body.layout-desktop .bottom-nav {
                 background: #eaf1eb;
                 border-right-color: #d6e2d8;
             }
+
             body.layout-desktop .nav.active {
                 color: #cc6048;
             }
+
             body.layout-mobile .bottom-nav {
                 background: rgba(255, 255, 255, 0.96);
                 border-top-color: var(--line);
             }
+
             body.layout-mobile .nav.active {
                 color: var(--purple);
             }
+
             body.layout-desktop #cardList,
             body.layout-mobile #cardList {
                 display: grid;
                 gap: 14px;
             }
+
             body.layout-desktop #cardsPage {
                 padding-left: clamp(24px, 2.4vw, 38px);
                 padding-right: clamp(24px, 2.4vw, 38px);
             }
+
             body.layout-desktop #cardsPage .section-head {
                 padding-top: 18px;
                 padding-bottom: 8px;
             }
+
             body.layout-desktop #cardsPage #cardList {
                 gap: 12px;
             }
+
             body.layout-desktop #cardsPage #cardList > .notice {
                 padding: 10px 14px;
                 min-height: 40px;
             }
+
             body.layout-desktop #cardsPage #cardList > .card-reminder {
                 min-height: 100px;
                 padding: 15px 18px;
             }
+
             body.layout-desktop #cardList {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
             body.layout-desktop #cardList > .notice,
             body.layout-mobile #cardList > .notice {
                 grid-column: 1 / -1;
                 margin: 0;
             }
+
             body.layout-desktop #cardList > .card,
             body.layout-mobile #cardList > .card {
                 margin: 0;
             }
+
             body.layout-desktop #cardList > .card-reminder,
             body.layout-mobile #cardList > .card-reminder {
                 min-height: 112px;
@@ -2640,22 +3069,26 @@
                 color: var(--ink) !important;
                 box-shadow: 0 8px 22px rgba(100, 77, 35, 0.06);
             }
+
             body.layout-desktop #cardList > .card-reminder.urgent,
             body.layout-mobile #cardList > .card-reminder.urgent {
                 border-left-color: #d65f58;
                 background: #fff6f4 !important;
             }
+
             body.layout-desktop #cardList > .card-reminder .due,
             body.layout-mobile #cardList > .card-reminder .due {
                 color: var(--ink) !important;
                 font-size: 16px;
             }
+
             body.layout-desktop #cardList > .card-reminder small,
             body.layout-mobile #cardList > .card-reminder small {
                 color: var(--muted) !important;
                 opacity: 1;
                 line-height: 1.55;
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder),
             body.layout-mobile #cardList > .card:not(.card-reminder) {
                 min-height: 270px;
@@ -2667,15 +3100,18 @@
                 border: 1px solid #c2d7c8;
                 box-shadow: 0 14px 28px rgba(55, 91, 68, 0.11);
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-detail-grid,
             body.layout-mobile #cardList > .card:not(.card-reminder) .card-detail-grid {
                 gap: 10px;
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-detail-grid div,
             body.layout-mobile #cardList > .card:not(.card-reminder) .card-detail-grid div {
                 background: #ffffff9c;
                 border: 1px solid #ffffffd0;
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-edit-btn,
             body.layout-mobile #cardList > .card:not(.card-reminder) .card-edit-btn {
                 border-color: #d76b50;
@@ -2683,18 +3119,22 @@
                 color: #fff;
                 box-shadow: 0 6px 14px rgba(215, 107, 80, 0.18);
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-detail-grid small,
             body.layout-mobile #cardList > .card:not(.card-reminder) .card-detail-grid small {
                 color: #63766a !important;
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-detail-grid strong,
             body.layout-mobile #cardList > .card:not(.card-reminder) .card-detail-grid strong {
                 color: var(--ink) !important;
             }
+
             body.layout-desktop #stocksPage,
             body.layout-mobile #stocksPage {
                 --stock-accent: #2e7655;
             }
+
             body.layout-desktop #stocksPage .notice,
             body.layout-mobile #stocksPage .notice {
                 margin-top: 4px;
@@ -2704,26 +3144,31 @@
                 border-color: #d3e4d7;
                 color: #4d6f5b;
             }
+
             body.layout-desktop #stocksPage .stock-refresh-row,
             body.layout-mobile #stocksPage .stock-refresh-row {
                 min-height: 48px;
                 padding: 0 0 12px;
             }
+
             body.layout-desktop #stocksPage .stock-refresh-row .muted,
             body.layout-mobile #stocksPage .stock-refresh-row .muted {
                 color: #64796b;
             }
+
             body.layout-desktop #stocksPage .stock-add-row,
             body.layout-mobile #stocksPage .stock-add-row {
                 display: flex;
                 gap: 10px;
                 padding: 0 0 18px;
             }
+
             body.layout-desktop #stocksPage .stock-add-row .control,
             body.layout-mobile #stocksPage .stock-add-row .control {
                 flex: 1;
                 min-width: 0;
             }
+
             body.layout-desktop #stocksPage .stock-grid,
             body.layout-mobile #stocksPage .stock-grid {
                 display: grid;
@@ -2733,6 +3178,7 @@
                 width: 100%;
                 max-width: none;
             }
+
             body.layout-desktop #stocksPage .stock-card,
             body.layout-mobile #stocksPage .stock-card {
                 min-height: 206px;
@@ -2742,16 +3188,19 @@
                 background: linear-gradient(145deg, #fffefa, #edf5ef);
                 box-shadow: 0 10px 24px rgba(45, 77, 57, 0.07);
             }
+
             body.layout-desktop #stocksPage .stock-card h3,
             body.layout-mobile #stocksPage .stock-card h3 {
                 margin: 0 0 5px;
                 color: var(--ink);
                 font-size: 17px;
             }
+
             body.layout-desktop #stocksPage .stock-card .muted,
             body.layout-mobile #stocksPage .stock-card .muted {
                 color: var(--muted);
             }
+
             body.layout-desktop #stocksPage .stock-price,
             body.layout-mobile #stocksPage .stock-price {
                 margin: 22px 0 10px;
@@ -2759,23 +3208,27 @@
                 font-size: 25px;
                 font-weight: 900;
             }
+
             body.layout-desktop #stocksPage .stock-meta,
             body.layout-mobile #stocksPage .stock-meta {
                 color: var(--muted);
                 line-height: 1.7;
             }
+
             body.layout-desktop #stocksPage .stock-card .edit-mini,
             body.layout-mobile #stocksPage .stock-card .edit-mini {
                 width: 48px;
                 min-width: 48px;
                 white-space: nowrap;
             }
+
             body.layout-desktop #projectsPage .project-cover,
             body.layout-mobile #projectsPage .project-cover {
                 overflow: hidden;
                 border: 1px solid #d7e4da;
                 background: linear-gradient(135deg, #e9f3ed, #f4e9f3);
             }
+
             body.layout-desktop #projectsPage .project-cover .cover-art,
             body.layout-mobile #projectsPage .project-cover .cover-art {
                 height: 136px;
@@ -2783,22 +3236,26 @@
                 border-radius: 18px;
                 font-size: 27px;
             }
+
             body.layout-desktop #projectsPage .project-metrics,
             body.layout-mobile #projectsPage .project-metrics {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 8px;
             }
+
             body.layout-desktop #projectsPage .project-metrics .metric,
             body.layout-mobile #projectsPage .project-metrics .metric {
                 border: 1px solid #e0e8e1;
                 background: #fffefa;
             }
+
             body.layout-desktop #projectsPage #projectList,
             body.layout-mobile #projectsPage #projectList {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 14px;
             }
+
             body.layout-desktop #projectsPage #projectList > .project-item,
             body.layout-mobile #projectsPage #projectList > .project-item {
                 min-height: 190px;
@@ -2809,6 +3266,7 @@
                 background: #fffefa;
                 box-shadow: 0 10px 24px rgba(44, 62, 50, 0.06);
             }
+
             body.layout-desktop #projectsPage .project-item-top,
             body.layout-mobile #projectsPage .project-item-top {
                 display: flex;
@@ -2816,18 +3274,21 @@
                 justify-content: space-between;
                 gap: 12px;
             }
+
             body.layout-desktop #projectsPage .project-item .row-title,
             body.layout-mobile #projectsPage .project-item .row-title {
                 font-size: 18px;
                 font-weight: 900;
                 color: var(--ink);
             }
+
             body.layout-desktop #projectsPage .project-item-actions,
             body.layout-mobile #projectsPage .project-item-actions {
                 display: flex;
                 gap: 6px;
                 flex: 0 0 auto;
             }
+
             body.layout-desktop #projectsPage .project-item-actions .edit-mini,
             body.layout-mobile #projectsPage .project-item-actions .edit-mini {
                 width: 42px;
@@ -2836,6 +3297,7 @@
                 font-size: 12px;
                 white-space: nowrap;
             }
+
             body.layout-desktop #projectsPage .project-item-meta,
             body.layout-mobile #projectsPage .project-item-meta {
                 margin-top: 7px;
@@ -2843,6 +3305,7 @@
                 font-size: 12px;
                 line-height: 1.5;
             }
+
             body.layout-desktop #projectsPage .project-item-budget,
             body.layout-mobile #projectsPage .project-item-budget {
                 display: flex;
@@ -2851,6 +3314,7 @@
                 margin-top: 22px;
                 font-size: 13px;
             }
+
             body.layout-desktop #projectsPage .project-progress,
             body.layout-mobile #projectsPage .project-progress {
                 height: 7px;
@@ -2859,6 +3323,7 @@
                 background: #e7eee8;
                 overflow: hidden;
             }
+
             body.layout-desktop #projectsPage .project-progress i,
             body.layout-mobile #projectsPage .project-progress i {
                 display: block;
@@ -2866,16 +3331,19 @@
                 border-radius: inherit;
                 background: #70a67f;
             }
+
             body.layout-desktop #cardList > .card:not(.card-reminder) > div:first-child span,
             body.layout-mobile #cardList > .card:not(.card-reminder) > div:first-child span {
                 color: #2e5f45;
             }
+
             body.layout-desktop .assets-card,
             body.layout-mobile .assets-card,
             body.layout-desktop .finxi-strip,
             body.layout-mobile .finxi-strip {
                 box-shadow: 0 12px 30px rgba(44, 62, 50, 0.07);
             }
+
             body.layout-desktop .finxi-strip,
             body.layout-mobile .finxi-strip {
                 background: linear-gradient(135deg, #eef7f0, #e3f0f4);
@@ -2889,276 +3357,387 @@
                 body.layout-mobile .fund-metrics {
                     grid-template-columns: 1fr 1fr;
                 }
+
                 body.layout-mobile .finxi-strip .big {
                     font-size: 36px;
                 }
+
                 body.layout-mobile .stock-grid {
                     grid-template-columns: 1fr;
                 }
+
                 body.layout-mobile #cardList {
                     grid-template-columns: 1fr;
                 }
+
                 body.layout-mobile #stocksPage .stock-add-row {
                     flex-direction: column;
                 }
+
                 body.layout-mobile #projectsPage #projectList {
                     grid-template-columns: 1fr;
                 }
+
                 body.layout-mobile #projectsPage .project-metrics {
                     grid-template-columns: 1fr 1fr;
                 }
             }
 
-                /* Investment overview layout */
-                body.layout-desktop #investPage .finxi-strip,
+            /* Investment overview layout */
+            body.layout-desktop #investPage .finxi-strip,
+            body.layout-mobile #investPage .finxi-strip {
+                display: grid;
+                grid-template-columns: minmax(0, 1.25fr) minmax(360px, 1fr);
+                grid-template-areas:
+                    "top actions"
+                    "total actions"
+                    "status actions";
+                column-gap: 28px;
+                align-items: center;
+                min-height: 218px;
+                padding: 26px 28px;
+            }
+
+            body.layout-desktop #investPage .finxi-strip .hero-top,
+            body.layout-mobile #investPage .finxi-strip .hero-top {
+                grid-area: top;
+            }
+
+            body.layout-desktop #investPage .finxi-strip > .big,
+            body.layout-mobile #investPage .finxi-strip > .big {
+                grid-area: total;
+                margin: 4px 0 2px;
+            }
+
+            body.layout-desktop #investPage #investStatus,
+            body.layout-mobile #investPage #investStatus {
+                grid-area: status;
+            }
+
+            body.layout-desktop #investPage .finxi-actions,
+            body.layout-mobile #investPage .finxi-actions {
+                grid-area: actions;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                align-self: stretch;
+                align-items: center;
+                margin: 0;
+                padding-left: 24px;
+                border-left: 1px solid #d3e2d8;
+            }
+
+            body.layout-desktop #investPage .finxi-action,
+            body.layout-mobile #investPage .finxi-action {
+                padding: 12px 6px;
+                border: 1px solid #d6e3da;
+                border-radius: 16px;
+                background: #fffefa;
+                color: #557163;
+                font-weight: 800;
+            }
+
+            body.layout-desktop #investPage .finxi-action i,
+            body.layout-mobile #investPage .finxi-action i {
+                width: 44px;
+                height: 44px;
+                margin-bottom: 7px;
+                font-size: 20px;
+            }
+
+            body.layout-desktop #investPage .tabs,
+            body.layout-mobile #investPage .tabs {
+                padding-top: 18px;
+                padding-bottom: 12px;
+            }
+
+            body.layout-desktop #investPage .invest-table,
+            body.layout-mobile #investPage .invest-table {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+            }
+
+            body.layout-desktop #investPage .invest-row,
+            body.layout-mobile #investPage .invest-row {
+                grid-template-columns: 1fr 1.2fr 1.4fr 1.2fr;
+                padding: 15px 18px;
+            }
+
+            @media (max-width: 760px) {
                 body.layout-mobile #investPage .finxi-strip {
-                    display: grid;
-                    grid-template-columns: minmax(0, 1.25fr) minmax(360px, 1fr);
-                    grid-template-areas:
-                        "top actions"
-                        "total actions"
-                        "status actions";
-                    column-gap: 28px;
-                    align-items: center;
-                    min-height: 218px;
-                    padding: 26px 28px;
+                    display: block;
+                    min-height: 0;
+                    padding: 20px;
                 }
-                body.layout-desktop #investPage .finxi-strip .hero-top,
-                body.layout-mobile #investPage .finxi-strip .hero-top {
-                    grid-area: top;
-                }
-                body.layout-desktop #investPage .finxi-strip > .big,
-                body.layout-mobile #investPage .finxi-strip > .big {
-                    grid-area: total;
-                    margin: 4px 0 2px;
-                }
-                body.layout-desktop #investPage #investStatus,
-                body.layout-mobile #investPage #investStatus {
-                    grid-area: status;
-                }
-                body.layout-desktop #investPage .finxi-actions,
+
                 body.layout-mobile #investPage .finxi-actions {
-                    grid-area: actions;
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 10px;
-                    align-self: stretch;
-                    align-items: center;
-                    margin: 0;
-                    padding-left: 24px;
-                    border-left: 1px solid #d3e2d8;
+                    margin-top: 18px;
+                    padding: 16px 0 0;
+                    border-left: 0;
+                    border-top: 1px solid #d3e2d8;
                 }
-                body.layout-desktop #investPage .finxi-action,
-                body.layout-mobile #investPage .finxi-action {
-                    padding: 12px 6px;
-                    border: 1px solid #d6e3da;
-                    border-radius: 16px;
-                    background: #fffefa;
-                    color: #557163;
-                    font-weight: 800;
+            }
+
+            @media (max-width: 759px) {
+                body.layout-mobile {
+                    padding: 10px;
+                    background: #e9ede7;
                 }
-                body.layout-desktop #investPage .finxi-action i,
-                body.layout-mobile #investPage .finxi-action i {
-                    width: 44px;
-                    height: 44px;
-                    margin-bottom: 7px;
-                    font-size: 20px;
-                }
-                body.layout-desktop #investPage .tabs,
-                body.layout-mobile #investPage .tabs {
-                    padding-top: 18px;
-                    padding-bottom: 12px;
-                }
-                body.layout-desktop #investPage .invest-table,
-                body.layout-mobile #investPage .invest-table {
+
+                body.layout-mobile #app {
                     width: 100%;
                     max-width: none;
-                    margin: 0;
+                    min-height: calc(100dvh - 20px);
+                    border-radius: 16px;
+                    box-shadow: 0 8px 24px rgba(37, 56, 45, 0.12);
                 }
-                body.layout-desktop #investPage .invest-row,
-                body.layout-mobile #investPage .invest-row {
-                    grid-template-columns: 1fr 1.2fr 1.4fr 1.2fr;
-                    padding: 15px 18px;
+
+                body.layout-mobile .header {
+                    border-radius: 16px 16px 0 0;
                 }
-                @media (max-width: 760px) {
-                    body.layout-mobile #investPage .finxi-strip {
-                        display: block;
-                        min-height: 0;
-                        padding: 20px;
-                    }
-                    body.layout-mobile #investPage .finxi-actions {
-                        margin-top: 18px;
-                        padding: 16px 0 0;
-                        border-left: 0;
-                        border-top: 1px solid #d3e2d8;
-                    }
+
+                body.layout-mobile .bottom-nav {
+                    left: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                    width: auto;
+                    max-width: none;
+                    border: 1px solid var(--line);
+                    border-radius: 14px;
+                    box-shadow: 0 6px 18px rgba(37, 56, 45, 0.12);
                 }
-                @media (max-width: 759px) {
-                    body.layout-mobile {
-                        padding: 10px;
-                        background: #e9ede7;
-                    }
-                    body.layout-mobile #app {
-                        width: 100%;
-                        max-width: none;
-                        min-height: calc(100dvh - 20px);
-                        border-radius: 16px;
-                        box-shadow: 0 8px 24px rgba(37, 56, 45, 0.12);
-                    }
-                    body.layout-mobile .header {
-                        border-radius: 16px 16px 0 0;
-                    }
-                    body.layout-mobile .bottom-nav {
-                        left: 10px;
-                        right: 10px;
-                        bottom: 10px;
-                        width: auto;
-                        max-width: none;
-                        border: 1px solid var(--line);
-                        border-radius: 14px;
-                        box-shadow: 0 6px 18px rgba(37, 56, 45, 0.12);
-                    }
-                    body.layout-mobile .form-actions {
-                        left: 10px;
-                        right: 10px;
-                        bottom: calc(70px + var(--safe));
-                        width: auto;
-                        max-width: none;
-                        border-radius: 14px 14px 0 0;
-                    }
+
+                body.layout-mobile .form-actions {
+                    left: 10px;
+                    right: 10px;
+                    bottom: calc(70px + var(--safe));
+                    width: auto;
+                    max-width: none;
+                    border-radius: 14px 14px 0 0;
                 }
-                /* Theme palettes are the single source of truth for both layouts. */
-                body.layout-desktop.theme-lavender,
-                body.layout-mobile.theme-lavender {
-                    --bg: #faf5fc;
-                    --surface: #fff;
-                    --surface-soft: #f3ebf8;
-                    --ink: #2b2531;
-                    --muted: #8e8493;
-                    --line: #eadfeb;
-                    --purple: #8a70b6;
-                    --purple2: #a58acb;
-                    --purple3: #eee5f8;
-                    --finxi: #8a70b6;
-                    --finxi-dark: #674f8c;
-                    --finxi-soft: #eee5f8;
-                    --finxi-line: #e4d9eb;
-                    --shadow: 0 12px 30px rgba(91, 69, 116, 0.09);
+            }
+
+            /* Theme palettes are the single source of truth for both layouts. */
+            body.layout-desktop.theme-lavender,
+            body.layout-mobile.theme-lavender {
+                --bg: #faf5fc;
+                --surface: #fff;
+                --surface-soft: #f3ebf8;
+                --ink: #2b2531;
+                --muted: #8e8493;
+                --line: #eadfeb;
+                --purple: #8a70b6;
+                --purple2: #a58acb;
+                --purple3: #eee5f8;
+                --finxi: #8a70b6;
+                --finxi-dark: #674f8c;
+                --finxi-soft: #eee5f8;
+                --finxi-line: #e4d9eb;
+                --shadow: 0 12px 30px rgba(91, 69, 116, 0.09);
+            }
+
+            body.layout-desktop.theme-blue,
+            body.layout-mobile.theme-blue {
+                --bg: #eef6fa;
+                --surface: #fff;
+                --surface-soft: #e0eef6;
+                --ink: #243747;
+                --muted: #7c91a0;
+                --line: #dbe8ef;
+                --purple: #7faaca;
+                --purple2: #9ac2da;
+                --purple3: #e0eef6;
+                --finxi: #7faaca;
+                --finxi-dark: #557f9d;
+                --finxi-soft: #e0eef6;
+                --finxi-line: #d1e2ec;
+            }
+
+            body.layout-desktop.theme-cream,
+            body.layout-mobile.theme-cream {
+                --bg: #fbf8f3;
+                --surface: #fffefa;
+                --surface-soft: #f3e8df;
+                --ink: #332e2a;
+                --muted: #968c83;
+                --line: #ece3da;
+                --purple: #b38c71;
+                --purple2: #c6a287;
+                --purple3: #f3e8df;
+                --finxi: #b38c71;
+                --finxi-dark: #856650;
+                --finxi-soft: #f3e8df;
+                --finxi-line: #eadcd1;
+            }
+
+            body.layout-desktop.theme-lavender,
+            body.layout-mobile.theme-lavender,
+            body.layout-desktop.theme-blue,
+            body.layout-mobile.theme-blue,
+            body.layout-desktop.theme-cream,
+            body.layout-mobile.theme-cream {
+                background: var(--bg);
+                color: var(--ink);
+            }
+
+            body.layout-desktop.theme-lavender #app,
+            body.layout-mobile.theme-lavender #app,
+            body.layout-desktop.theme-blue #app,
+            body.layout-mobile.theme-blue #app,
+            body.layout-desktop.theme-cream #app,
+            body.layout-mobile.theme-cream #app {
+                background: var(--bg);
+            }
+
+            body.layout-desktop.theme-lavender .header,
+            body.layout-mobile.theme-lavender .header,
+            body.layout-desktop.theme-blue .header,
+            body.layout-mobile.theme-blue .header,
+            body.layout-desktop.theme-cream .header,
+            body.layout-mobile.theme-cream .header {
+                background: color-mix(in srgb, var(--bg) 94%, transparent);
+                border-bottom-color: var(--line);
+            }
+
+            body.layout-desktop.theme-lavender .bottom-nav,
+            body.layout-mobile.theme-lavender .bottom-nav,
+            body.layout-desktop.theme-blue .bottom-nav,
+            body.layout-mobile.theme-blue .bottom-nav,
+            body.layout-desktop.theme-cream .bottom-nav,
+            body.layout-mobile.theme-cream .bottom-nav {
+                background: color-mix(in srgb, var(--surface) 96%, transparent);
+                border-color: var(--line);
+            }
+
+            body.layout-desktop.theme-lavender .primary,
+            body.layout-mobile.theme-lavender .primary,
+            body.layout-desktop.theme-blue .primary,
+            body.layout-mobile.theme-blue .primary,
+            body.layout-desktop.theme-cream .primary,
+            body.layout-mobile.theme-cream .primary {
+                background: var(--purple);
+                box-shadow: 0 8px 18px color-mix(in srgb, var(--purple) 24%, transparent);
+            }
+
+            body.layout-desktop.theme-lavender .secondary,
+            body.layout-mobile.theme-lavender .secondary,
+            body.layout-desktop.theme-blue .secondary,
+            body.layout-mobile.theme-blue .secondary,
+            body.layout-desktop.theme-cream .secondary,
+            body.layout-mobile.theme-cream .secondary {
+                color: var(--finxi-dark);
+                border-color: var(--finxi-line);
+            }
+
+            body.layout-desktop.theme-lavender .settle-card,
+            body.layout-mobile.theme-lavender .settle-card,
+            body.layout-desktop.theme-blue .settle-card,
+            body.layout-mobile.theme-blue .settle-card,
+            body.layout-desktop.theme-cream .settle-card,
+            body.layout-mobile.theme-cream .settle-card {
+                background: linear-gradient(135deg, var(--purple), var(--purple2));
+            }
+
+            body.layout-desktop.theme-lavender #cardList > .card:not(.card-reminder),
+            body.layout-mobile.theme-lavender #cardList > .card:not(.card-reminder),
+            body.layout-desktop.theme-blue #cardList > .card:not(.card-reminder),
+            body.layout-mobile.theme-blue #cardList > .card:not(.card-reminder),
+            body.layout-desktop.theme-cream #cardList > .card:not(.card-reminder),
+            body.layout-mobile.theme-cream #cardList > .card:not(.card-reminder) {
+                background: linear-gradient(135deg, var(--purple), var(--purple2)) !important;
+                color: #fff !important;
+                border-color: var(--finxi-line);
+            }
+
+            body.layout-desktop.theme-lavender #stocksPage .stock-card,
+            body.layout-mobile.theme-lavender #stocksPage .stock-card,
+            body.layout-desktop.theme-blue #stocksPage .stock-card,
+            body.layout-mobile.theme-blue #stocksPage .stock-card,
+            body.layout-desktop.theme-cream #stocksPage .stock-card,
+            body.layout-mobile.theme-cream #stocksPage .stock-card {
+                background: linear-gradient(145deg, var(--surface), var(--surface-soft));
+                border-color: var(--finxi-line);
+            }
+
+            /* ===== V4.1 行動操作與資料工具 ===== */
+            .tx-actions .edit-mini,
+            .sort-actions .edit-mini,
+            .project-item-actions .edit-mini {
+                width: auto;
+                min-width: 48px;
+                height: 38px;
+                padding: 0 10px;
+                border-radius: 12px;
+                font-size: clamp(12px, 3.2vw, 14px);
+                white-space: nowrap;
+            }
+            .tx .money {
+                white-space: nowrap;
+            }
+            @media (max-width: 420px) {
+                .tx {
+                    grid-template-columns: 44px 1fr;
+                    align-items: start;
                 }
-                body.layout-desktop.theme-blue,
-                body.layout-mobile.theme-blue {
-                    --bg: #eef6fa;
-                    --surface: #fff;
-                    --surface-soft: #e0eef6;
-                    --ink: #243747;
-                    --muted: #7c91a0;
-                    --line: #dbe8ef;
-                    --purple: #7faaca;
-                    --purple2: #9ac2da;
-                    --purple3: #e0eef6;
-                    --finxi: #7faaca;
-                    --finxi-dark: #557f9d;
-                    --finxi-soft: #e0eef6;
-                    --finxi-line: #d1e2ec;
+                .tx > div:last-child {
+                    grid-column: 2;
+                    width: 100%;
+                    text-align: left !important;
                 }
-                body.layout-desktop.theme-cream,
-                body.layout-mobile.theme-cream {
-                    --bg: #fbf8f3;
-                    --surface: #fffefa;
-                    --surface-soft: #f3e8df;
-                    --ink: #332e2a;
-                    --muted: #968c83;
-                    --line: #ece3da;
-                    --purple: #b38c71;
-                    --purple2: #c6a287;
-                    --purple3: #f3e8df;
-                    --finxi: #b38c71;
-                    --finxi-dark: #856650;
-                    --finxi-soft: #f3e8df;
-                    --finxi-line: #eadcd1;
+                .tx-actions {
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
                 }
-                body.layout-desktop.theme-lavender,
-                body.layout-mobile.theme-lavender,
-                body.layout-desktop.theme-blue,
-                body.layout-mobile.theme-blue,
-                body.layout-desktop.theme-cream,
-                body.layout-mobile.theme-cream {
-                    background: var(--bg);
-                    color: var(--ink);
+                .tx-actions .edit-mini {
+                    flex: 1 1 68px;
                 }
-                body.layout-desktop.theme-lavender #app,
-                body.layout-mobile.theme-lavender #app,
-                body.layout-desktop.theme-blue #app,
-                body.layout-mobile.theme-blue #app,
-                body.layout-desktop.theme-cream #app,
-                body.layout-mobile.theme-cream #app {
-                    background: var(--bg);
-                }
-                body.layout-desktop.theme-lavender .header,
-                body.layout-mobile.theme-lavender .header,
-                body.layout-desktop.theme-blue .header,
-                body.layout-mobile.theme-blue .header,
-                body.layout-desktop.theme-cream .header,
-                body.layout-mobile.theme-cream .header {
-                    background: color-mix(in srgb, var(--bg) 94%, transparent);
-                    border-bottom-color: var(--line);
-                }
-                body.layout-desktop.theme-lavender .bottom-nav,
-                body.layout-mobile.theme-lavender .bottom-nav,
-                body.layout-desktop.theme-blue .bottom-nav,
-                body.layout-mobile.theme-blue .bottom-nav,
-                body.layout-desktop.theme-cream .bottom-nav,
-                body.layout-mobile.theme-cream .bottom-nav {
-                    background: color-mix(in srgb, var(--surface) 96%, transparent);
-                    border-color: var(--line);
-                }
-                body.layout-desktop.theme-lavender .primary,
-                body.layout-mobile.theme-lavender .primary,
-                body.layout-desktop.theme-blue .primary,
-                body.layout-mobile.theme-blue .primary,
-                body.layout-desktop.theme-cream .primary,
-                body.layout-mobile.theme-cream .primary {
-                    background: var(--purple);
-                    box-shadow: 0 8px 18px color-mix(in srgb, var(--purple) 24%, transparent);
-                }
-                body.layout-desktop.theme-lavender .secondary,
-                body.layout-mobile.theme-lavender .secondary,
-                body.layout-desktop.theme-blue .secondary,
-                body.layout-mobile.theme-blue .secondary,
-                body.layout-desktop.theme-cream .secondary,
-                body.layout-mobile.theme-cream .secondary {
-                    color: var(--finxi-dark);
-                    border-color: var(--finxi-line);
-                }
-                body.layout-desktop.theme-lavender .settle-card,
-                body.layout-mobile.theme-lavender .settle-card,
-                body.layout-desktop.theme-blue .settle-card,
-                body.layout-mobile.theme-blue .settle-card,
-                body.layout-desktop.theme-cream .settle-card,
-                body.layout-mobile.theme-cream .settle-card {
-                    background: linear-gradient(135deg, var(--purple), var(--purple2));
-                }
-                body.layout-desktop.theme-lavender #cardList > .card:not(.card-reminder),
-                body.layout-mobile.theme-lavender #cardList > .card:not(.card-reminder),
-                body.layout-desktop.theme-blue #cardList > .card:not(.card-reminder),
-                body.layout-mobile.theme-blue #cardList > .card:not(.card-reminder),
-                body.layout-desktop.theme-cream #cardList > .card:not(.card-reminder),
-                body.layout-mobile.theme-cream #cardList > .card:not(.card-reminder) {
-                    background: linear-gradient(135deg, var(--purple), var(--purple2)) !important;
-                    color: #fff !important;
-                    border-color: var(--finxi-line);
-                }
-                body.layout-desktop.theme-lavender #stocksPage .stock-card,
-                body.layout-mobile.theme-lavender #stocksPage .stock-card,
-                body.layout-desktop.theme-blue #stocksPage .stock-card,
-                body.layout-mobile.theme-blue #stocksPage .stock-card,
-                body.layout-desktop.theme-cream #stocksPage .stock-card,
-                body.layout-mobile.theme-cream #stocksPage .stock-card {
-                    background: linear-gradient(145deg, var(--surface), var(--surface-soft));
-                    border-color: var(--finxi-line);
-                }
+            }
+            .day.weekend {
+                color: #d94f5c;
+                font-weight: 900;
+            }
+            .day.holiday {
+                background: #ffe6eb;
+                color: #c43d50;
+                box-shadow: inset 0 0 0 2px #f3a9b4;
+            }
+            .day.sel.holiday,
+            .day.sel.weekend {
+                background: var(--purple);
+                color: #fff;
+            }
+            .holiday-label {
+                display: block;
+                margin-top: 3px;
+                color: #c43d50;
+                font-size: 9px;
+                line-height: 1.2;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sort-actions {
+                display: flex;
+                gap: 6px;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }
+            .scan-textarea {
+                height: 110px;
+                margin-top: 10px;
+            }
+            .diag-list {
+                margin: 10px 0 0;
+                padding-left: 18px;
+                color: var(--muted);
+                font-size: 12px;
+                line-height: 1.7;
+            }
         </style>
     </head>
+
     <body>
         <div id="app">
             <div class="pin-lock" id="pinLock">
@@ -3276,11 +3855,13 @@
                         </div>
                         <div class="field">
                             <label>分類</label
-                            ><select id="category" class="control"></select>
+                            ><input id="category" class="control" list="categoryOptions" placeholder="可選擇或自行輸入" />
+                            <datalist id="categoryOptions"></datalist>
                         </div>
                         <div class="field">
                             <label>子分類</label
-                            ><select id="subcategory" class="control"></select>
+                            ><input id="subcategory" class="control" list="subcategoryOptions" placeholder="可選擇或自行輸入" />
+                            <datalist id="subcategoryOptions"></datalist>
                         </div>
                         <div class="field">
                             <label>帳戶／信用卡</label
@@ -3375,7 +3956,9 @@
                     <button class="link-btn" id="newProjectBtn">＋ 建立</button>
                 </div>
                 <div id="projectFeature"></div>
-                <div class="section-head"><h2 style="font-size: 18px">全部專案</h2></div>
+                <div class="section-head">
+                    <h2 style="font-size: 18px">全部專案</h2>
+                </div>
                 <div class="list" id="projectList"></div>
             </section>
 
@@ -3389,7 +3972,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="section-head"><h2>未結清明細</h2></div>
+                <div class="section-head">
+                    <h2>未結清明細</h2>
+                </div>
                 <div class="list" id="splitList"></div>
             </section>
 
@@ -3438,9 +4023,15 @@
                             <div><small>信用卡負債</small><strong id="debtTotal"></strong></div>
                         </div>
                         <div class="asset-overview-grid">
-                            <div class="asset-overview-item"><small>帳戶數量</small><strong id="assetAccountCount">0</strong></div>
-                            <div class="asset-overview-item"><small>資產分類</small><strong id="assetCategoryCount">0</strong></div>
-                            <div class="asset-overview-item"><small>待繳卡片</small><strong id="assetDueCount">0 張</strong></div>
+                            <div class="asset-overview-item">
+                                <small>帳戶數量</small><strong id="assetAccountCount">0</strong>
+                            </div>
+                            <div class="asset-overview-item">
+                                <small>資產分類</small><strong id="assetCategoryCount">0</strong>
+                            </div>
+                            <div class="asset-overview-item">
+                                <small>待繳卡片</small><strong id="assetDueCount">0 張</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3457,7 +4048,9 @@
                 </div>
                 <div class="list" id="assetCardReminders"></div>
 
-                <div class="section-head"><h2>資產明細</h2></div>
+                <div class="section-head">
+                    <h2>資產明細</h2>
+                </div>
                 <div class="asset-category-wrap" id="assetRows"></div>
             </section>
 
@@ -3472,7 +4065,8 @@
                     ><button class="chip" data-accfilter="debt">負債</button>
                 </div>
                 <div class="account-category-guide">
-                    <strong>分類說明</strong><br />銀行活期與定存是銀行帳戶；電子支付是行動支付錢包；儲值卡／會員卡是預付型餘額；保險、股票與其它則依資產性質歸類。點擊帳戶可查看明細，按鉛筆可直接修改。
+                    <strong>分類說明</strong
+                    ><br />銀行活期與定存是銀行帳戶；電子支付是行動支付錢包；儲值卡／會員卡是預付型餘額；保險、股票與其它則依資產性質歸類。點擊帳戶可查看明細，按鉛筆可直接修改。
                 </div>
                 <div class="account-groups" id="accountGroups"></div>
             </section>
@@ -3491,9 +4085,13 @@
                         <div><small>餘額異動</small><strong id="accountHistoryCount"></strong></div>
                     </div>
                 </div>
-                <div class="section-head"><h2 style="font-size: 18px">歷史收支</h2></div>
+                <div class="section-head">
+                    <h2 style="font-size: 18px">歷史收支</h2>
+                </div>
                 <div class="list" id="accountTxHistory"></div>
-                <div class="section-head"><h2 style="font-size: 18px">手動餘額修改歷程</h2></div>
+                <div class="section-head">
+                    <h2 style="font-size: 18px">手動餘額修改歷程</h2>
+                </div>
                 <div class="list" id="accountBalanceHistory"></div>
             </section>
 
@@ -3532,7 +4130,9 @@
                     ><button class="chip" data-itab="funds">基金</button
                     ><button class="chip" data-itab="gold">黃金</button>
                 </div>
-                <div id="investStocks"><div class="invest-table" id="investTable"></div></div>
+                <div id="investStocks">
+                    <div class="invest-table" id="investTable"></div>
+                </div>
                 <div id="investFunds" style="display: none">
                     <div class="fund-box">
                         <h3 style="margin-top: 0">基金資產</h3>
@@ -3563,9 +4163,10 @@
                         <div class="scan-status" id="scanStatus">可拍照或上傳收據圖片</div>
                         <div class="scan-actions">
                             <button class="secondary" id="chooseReceipt">選擇圖片</button
-                            ><button class="primary" id="fakeRecognize">模擬辨識</button>
+                            ><button class="primary" id="fakeRecognize">解析發票</button>
                         </div>
                     </div>
+                    <textarea id="receiptRaw" class="control scan-textarea" placeholder="也可以貼上電子發票 QR Code 文字或明細文字"></textarea>
                     <input id="receiptFile" type="file" accept="image/*" capture="environment" hidden />
                 </div>
             </div>
@@ -3637,6 +4238,12 @@
                             <option value="#ffc84f">黃色</option>
                             <option value="#77d96c">綠色</option>
                             <option value="#59c6d4">青色</option>
+                            <option value="#ff8a80">珊瑚紅</option>
+                            <option value="#ffb74d">橘色</option>
+                            <option value="#4fc3f7">天空藍</option>
+                            <option value="#7986cb">靛藍</option>
+                            <option value="#f06292">玫瑰粉</option>
+                            <option value="#a1887f">棕灰</option>
                         </select>
                     </div>
                     <button class="primary" id="saveEvent">新增行程</button>
@@ -3697,6 +4304,11 @@
                         </div>
                     </div>
                     <div class="field">
+                        <label>綁定繳款帳戶</label>
+                        <select id="cardPaymentAccount" class="control"></select>
+                        <div class="field-hint">會用本期應繳餘額與帳戶餘額估算需要補進銀行的金額。</div>
+                    </div>
+                    <div class="field">
                         <label>備註</label
                         ><input id="cardMemo" class="control" placeholder="例如：英雄聯盟卡＋LINE PAY卡" />
                     </div>
@@ -3747,7 +4359,15 @@
                     </div>
                     <div class="field">
                         <label>目前餘額</label
-                        ><input id="accountBalance" class="control" type="number" min="0" step="0.01" inputmode="decimal" value="0" />
+                        ><input
+                            id="accountBalance"
+                            class="control"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            inputmode="decimal"
+                            value="0"
+                        />
                     </div>
                     <div class="field">
                         <label>備註</label
@@ -3818,6 +4438,15 @@
                                 <button class="secondary" id="changePinBtn">修改 PIN</button>
                             </div>
                             <button class="secondary setting-wide" id="logoutBtn" style="margin-top: 12px">登出</button>
+                            <div class="setting-row" style="margin-top: 12px">
+                                <span>本機帳號</span>
+                                <input id="profileName" class="setting-control" placeholder="例如：anan" />
+                            </div>
+                            <div class="settings-actions">
+                                <button class="secondary" id="registerProfileBtn">註冊/切換</button>
+                                <button class="secondary" id="profileExportLinkBtn">複製帳號連結</button>
+                            </div>
+                            <div class="setting-note" id="profileStatus">目前為本機單人資料。</div>
                         </div>
 
                         <div class="setting-card">
@@ -3886,7 +4515,9 @@
                     <div class="setting-pane" data-setting-pane="appearance">
                         <div class="setting-card">
                             <h3>版面模式</h3>
-                            <div class="desc">手機版適合窄螢幕操作；電腦版會延伸到整個瀏覽器寬度；自動會依裝置寬度選擇。</div>
+                            <div class="desc">
+                                手機版適合窄螢幕操作；電腦版會延伸到整個瀏覽器寬度；自動會依裝置寬度選擇。
+                            </div>
                             <div class="layout-picks">
                                 <button class="layout-pick" data-layout="auto"><span>↔</span>自動</button>
                                 <button class="layout-pick" data-layout="mobile"><span>▯</span>手機版</button>
@@ -3944,20 +4575,46 @@
                                 <button class="secondary" id="settingsImportBtn">匯入 JSON</button>
                             </div>
                             <input type="file" id="settingsImportFile" accept="application/json" hidden />
+                            <div class="setting-row" style="margin-top: 12px">
+                                <span>CSV 區間</span>
+                                <select id="csvRangeMode" class="setting-control">
+                                    <option value="all">全部資料</option>
+                                    <option value="range">指定日期區間</option>
+                                </select>
+                            </div>
+                            <div class="setting-row">
+                                <span>起訖日期</span>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(260px,100%)">
+                                    <input id="csvStartDate" class="setting-control" type="date" />
+                                    <input id="csvEndDate" class="setting-control" type="date" />
+                                </div>
+                            </div>
+                            <button class="secondary setting-wide" id="csvExportBtn" style="margin-top: 10px">下載 CSV</button>
                         </div>
 
                         <div class="setting-card">
                             <h3>Google 試算表</h3>
                             <div class="desc">
-                                透過 Google Apps Script Web App 同步本機資料。可貼上 Web App 網址，或用「複製手機連線連結」把網址帶到手機。
+                                透過 Google Apps Script Web App 同步本機資料。可貼上 Web App
+                                網址，或用「複製手機連線連結」把網址帶到手機。
                             </div>
                             <div class="field" style="margin-top: 12px">
                                 <label>Apps Script Web App 網址</label>
-                                <input id="sheetApiUrl" class="setting-control setting-wide" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+                                <input
+                                    id="sheetApiUrl"
+                                    class="setting-control setting-wide"
+                                    type="url"
+                                    placeholder="https://script.google.com/macros/s/.../exec"
+                                />
                             </div>
                             <div class="field">
                                 <label>同步安全碼（需與 Apps Script 相同）</label>
-                                <input id="sheetApiToken" class="setting-control setting-wide" type="password" placeholder="選填" />
+                                <input
+                                    id="sheetApiToken"
+                                    class="setting-control setting-wide"
+                                    type="password"
+                                    placeholder="選填"
+                                />
                             </div>
                             <div class="setting-row" style="margin-top: 12px">
                                 <span>同步狀態</span>
@@ -3968,8 +4625,16 @@
                                 <button class="secondary" id="sheetUploadBtn">上傳資料</button>
                                 <button class="secondary" id="sheetDownloadBtn">下載資料</button>
                             </div>
-                            <button class="secondary setting-wide" id="sheetShareConfigBtn" style="margin-top: 10px">複製手機連線連結</button>
-                            <button class="secondary setting-wide" id="sheetPreviewBtn" style="margin-top: 10px">查看資料表結構</button>
+                            <button class="secondary setting-wide" id="sheetShareConfigBtn" style="margin-top: 10px">
+                                複製手機連線連結
+                            </button>
+                            <button class="secondary setting-wide" id="sheetPreviewBtn" style="margin-top: 10px">
+                                查看資料表結構
+                            </button>
+                            <button class="secondary setting-wide" id="sheetDiagnoseBtn" style="margin-top: 10px">
+                                手機連線診斷
+                            </button>
+                            <ul class="diag-list" id="sheetDiagList"></ul>
                         </div>
 
                         <div class="setting-card">
@@ -4007,7 +4672,7 @@
                             <div class="setting-row">
                                 <div>
                                     <h3>收據掃描</h3>
-                                    <div class="desc">目前為模擬辨識；V4 可接真正 OCR。</div>
+                                    <div class="desc">可解析電子發票 QR Code；不支援掃描時可貼上 QR 文字或明細。</div>
                                 </div>
                                 <button class="switch" id="receiptFeatureSwitch"></button>
                             </div>
@@ -4146,7 +4811,10 @@
             const uid = () => crypto.randomUUID?.() || Date.now() + Math.random().toString(16).slice(2);
             const today = () => {
                 const d = new Date();
-                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(
+                    2,
+                    "0"
+                )}`;
             };
             function dateOnly(value) {
                 if (!value) return "";
@@ -4168,6 +4836,41 @@
             const stockMoney = (n) =>
                 "NT$ " + Number(n || 0).toLocaleString("zh-TW", {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
+
+            /*
+             * 中文模組地圖
+             * 1. 工具層：日期、金額、CSV、QR Code 解析等純函式，盡量不直接碰畫面。
+             * 2. 狀態層：DEFAULT、store、applyLoadedState 負責 localStorage 與 Google Sheet 回載資料的正規化。
+             * 3. 資產層：帳戶、信用卡、股票與總資產計算，所有金額顯示都走 display/accountMoney helper。
+             * 4. 記帳層：renderAdd/saveTransaction/openTransactionEditor 管理收入、支出、轉帳與信用卡刷卡效果。
+             * 5. 畫面層：renderCalendar/renderAssets/renderCards/renderAccountGroups 只負責把 state 畫到 DOM。
+             * 6. 同步層：sheetJsonpRequest/sheetFormPostRequest 避開 Apps Script CORS，手機端也用同一套流程。
+             */
+            const TW_HOLIDAYS = {
+                "2026-01-01": "開國紀念日",
+                "2026-02-14": "春節假期",
+                "2026-02-15": "春節假期",
+                "2026-02-16": "除夕",
+                "2026-02-17": "春節",
+                "2026-02-18": "春節",
+                "2026-02-19": "春節",
+                "2026-02-20": "春節補假",
+                "2026-02-27": "和平紀念日補假",
+                "2026-02-28": "和平紀念日",
+                "2026-04-03": "兒童節補假",
+                "2026-04-04": "兒童節/清明節",
+                "2026-04-05": "清明連假",
+                "2026-04-06": "清明節補假",
+                "2026-05-01": "勞動節",
+                "2026-06-19": "端午節",
+                "2026-09-25": "中秋節補假",
+                "2026-09-26": "中秋節",
+                "2026-09-28": "教師節",
+                "2026-10-09": "國慶日補假",
+                "2026-10-10": "國慶日",
+                "2026-10-26": "光復節補假",
+                "2026-12-25": "行憲紀念日",
+            };
             // Google Sheets sync bootstrap. Put the deployed /exec URL here if you want new devices to auto-fill it.
             // The sync token is intentionally not stored in share links to avoid leaking it through browser history.
             const SHEET_SYNC_DEFAULTS = {
@@ -4418,6 +5121,9 @@
                 sheetApiToken: "",
                 fxRates: {TWD: 1},
                 fxUpdatedAt: "",
+                activeProfile: "default",
+                profiles: [{id: "default", name: "安安"}],
+                customCategories: {},
             };
             function normalizeSheetApiUrl(url) {
                 const value = String(url || "").trim();
@@ -4426,9 +5132,12 @@
             }
             function applySheetBootstrapConfig() {
                 const params = new URLSearchParams(location.search);
-                const url = normalizeSheetApiUrl(params.get("sheetUrl") || params.get("syncUrl") || SHEET_SYNC_DEFAULTS.url);
+                const url = normalizeSheetApiUrl(
+                    params.get("sheetUrl") || params.get("syncUrl") || SHEET_SYNC_DEFAULTS.url
+                );
                 if (url && !state.settings.sheetApiUrl) state.settings.sheetApiUrl = url;
-                if (params.has("sheetUrl") || params.has("syncUrl")) {
+                if (params.has("sheetToken")) state.settings.sheetApiToken = params.get("sheetToken") || state.settings.sheetApiToken;
+                if (params.has("sheetUrl") || params.has("syncUrl") || params.has("sheetToken")) {
                     store.save();
                     history.replaceState(null, "", location.pathname + location.hash);
                 }
@@ -4436,8 +5145,13 @@
             if (!state.settings.pin || state.settings.pin === "1215") state.settings.pin = "0000";
             applySheetBootstrapConfig();
             state.settings.showAssetAmounts = state.settings.showAssetAmounts !== false;
-            state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
+            state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds)
+                ? state.settings.hiddenAccountIds
+                : [];
             state.settings.cardReminder = state.settings.cardReminder !== false;
+            state.settings.profiles = Array.isArray(state.settings.profiles) ? state.settings.profiles : [{id: "default", name: state.settings.displayName || "安安"}];
+            state.settings.activeProfile ||= "default";
+            state.settings.customCategories ||= {};
             state.balanceHistory ||= [];
             state.cards.forEach((c) => {
                 if (!c.dueDate && c.dueDay) {
@@ -4607,19 +5321,37 @@
                 state.settings.sheetApiToken ||= previousSettings.sheetApiToken || "";
                 state.settings.pin ||= previousSettings.pin || "0000";
                 state.settings.showAssetAmounts = state.settings.showAssetAmounts !== false;
-                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
+                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds)
+                    ? state.settings.hiddenAccountIds
+                    : [];
                 state.settings.cardReminder = state.settings.cardReminder !== false;
-                ["transactions", "accounts", "projects", "cards", "splits", "stocks", "funds", "goals", "events", "recurring", "balanceHistory"].forEach(
-                    (key) => (state[key] = Array.isArray(state[key]) ? state[key] : [])
-                );
+                state.settings.profiles = Array.isArray(state.settings.profiles) ? state.settings.profiles : [{id: "default", name: state.settings.displayName || "安安"}];
+                state.settings.activeProfile ||= "default";
+                state.settings.customCategories ||= {};
+                [
+                    "transactions",
+                    "accounts",
+                    "projects",
+                    "cards",
+                    "splits",
+                    "stocks",
+                    "funds",
+                    "goals",
+                    "events",
+                    "recurring",
+                    "balanceHistory",
+                ].forEach((key) => (state[key] = Array.isArray(state[key]) ? state[key] : []));
                 state.cards.forEach((c) => {
                     c.statementDate = dateOnly(c.statementDate);
                     c.dueDate = dateOnly(c.dueDate);
+                    c.paymentAccountId ||= "";
+                    c.sortOrder = Number.isFinite(+c.sortOrder) ? +c.sortOrder : state.cards.indexOf(c);
                 });
                 state.accounts.forEach((a) => {
                     a.type ||= a.name?.includes("現金") ? "cash" : "bank";
                     a.currency ||= "TWD";
                     a.memo ||= "";
+                    a.sortOrder = Number.isFinite(+a.sortOrder) ? +a.sortOrder : state.accounts.indexOf(a);
                 });
             }
             let accountFilter = "asset",
@@ -4680,7 +5412,9 @@
                 return paymentName(id);
             }
             function paymentOptions(type = txType) {
-                const accountOptions = state.accounts.map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`);
+                const accountOptions = state.accounts.map(
+                    (a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`
+                );
                 if (type === "expense") {
                     const cardOptions = state.cards.map(
                         (c) => `<option value="card:${c.id}">💳 ${c.name} · 未繳 ${money(c.balance || 0)}</option>`
@@ -4729,7 +5463,9 @@
                 return accBalance(a) * fxRateToTwd(a.currency);
             }
             function hiddenAccountIds() {
-                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds) ? state.settings.hiddenAccountIds : [];
+                state.settings.hiddenAccountIds = Array.isArray(state.settings.hiddenAccountIds)
+                    ? state.settings.hiddenAccountIds
+                    : [];
                 return state.settings.hiddenAccountIds;
             }
             function isAccountHidden(id) {
@@ -4743,7 +5479,9 @@
                 const original = accBalance(a),
                     converted = accountValueTwd(a);
                 if (a.currency === "TWD") return moneyExact(original);
-                return `${a.currency} ${original.toLocaleString("zh-TW", {maximumFractionDigits: 2})} · 約 ${moneyExact(converted)}`;
+                return `${a.currency} ${original.toLocaleString("zh-TW", {maximumFractionDigits: 2})} · 約 ${moneyExact(
+                    converted
+                )}`;
             }
             function accountBaseMoney(a) {
                 return isAccountHidden(a.id) ? accountMask() : moneyExact(a.balance || 0);
@@ -4902,14 +5640,19 @@
                 const sign = t.type === "income" ? "+" : t.type === "transfer" ? "" : "-";
                 const cls = t.type === "income" ? "green" : "red";
                 const p = state.projects.find((x) => x.id === t.projectId);
-                const payment = t.type === "transfer" ? accName(t.from) + " → " + accName(t.to) : paymentName(t.account);
+                const payment =
+                    t.type === "transfer" ? accName(t.from) + " → " + accName(t.to) : paymentName(t.account);
                 return `<div class="card tx" data-tx-card="${t.id}"><div class="tx-ico">${icon}</div><div><strong>${
                     t.note || t.subcategory || t.category || "轉帳"
                 }</strong><small>${t.date} · ${payment}${p ? " · " + p.name : ""}</small>${
                     p ? `<span class="badge">${p.type}</span>` : ""
                 }</div><div style="text-align:right"><div class="money ${cls}">${sign}${money(
                     t.amount
-                )}</div><div class="tx-actions"><button class="edit-mini" data-edit-tx="${t.id}">編輯</button><button class="edit-mini danger-mini" data-delete-tx="${t.id}">刪除</button></div></div></div>`;
+                )}</div><div class="tx-actions"><button class="edit-mini" data-edit-tx="${
+                    t.id
+                }">編輯</button><button class="edit-mini danger-mini" data-delete-tx="${
+                    t.id
+                }">刪除</button></div></div></div>`;
             }
             function renderHome() {
                 const owed = owedToMe(),
@@ -4959,14 +5702,14 @@
                 for (let d = 1; d <= days; d++) {
                     const iso = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
                         has = state.transactions.some((t) => t.date === iso),
-                        ev = state.events.find((e) => e.date === iso);
-                    html += `<div><button class="day ${iso === selectedDate ? "sel" : ""} ${
-                        has ? "has" : ""
-                    }" data-date="${iso}">${d}</button>${
-                        ev
-                            ? `<span class="event-chip" style="background:${ev.color}33;color:#5a496b">${ev.title}</span>`
-                            : ""
-                    }</div>`;
+                        ev = state.events.find((e) => e.date === iso),
+                        holiday = TW_HOLIDAYS[iso],
+                        weekend = new Date(iso + "T12:00:00").getDay() % 6 === 0;
+                    html += `<div><button class="day ${iso === selectedDate ? "sel" : ""} ${has ? "has" : ""} ${
+                        weekend ? "weekend" : ""
+                    } ${holiday ? "holiday" : ""}" data-date="${iso}" title="${holiday || ""}">${d}</button>${
+                        holiday ? `<span class="holiday-label">${holiday}</span>` : ""
+                    }${ev ? `<span class="event-chip" style="background:${ev.color}33;color:#5a496b">${ev.title}</span>` : ""}</div>`;
                 }
                 $("#calendarGrid").innerHTML = html;
                 $$("[data-date]").forEach(
@@ -4988,12 +5731,47 @@
                 $("#eventList").innerHTML =
                     state.events
                     .filter((e) => e.date.slice(0, 7) === monthKey(calDate))
-                    .map((e) => `<div class="card"><strong>${e.title}</strong><div class="muted">${e.date}</div></div>`)
+                    .map((e) => `<div class="card"><strong style="color:${e.color || "var(--purple)"}">${e.title}</strong><div class="muted">${e.date}</div></div>`)
                     .join("") || '<div class="empty">本月沒有行程</div>';
+            }
+            function categoryList(type = txType) {
+                const builtIn = Object.keys(cats[type] || {});
+                const custom = Object.keys(state.settings.customCategories?.[type] || {});
+                return [...new Set(builtIn.concat(custom))];
+            }
+            function subcategoryList(type = txType, category = $("#category").value) {
+                const builtIn = cats[type]?.[category] || [];
+                const custom = state.settings.customCategories?.[type]?.[category] || [];
+                return [...new Set(builtIn.concat(custom))];
+            }
+            function rememberCategory(type, category, subcategory) {
+                if (!category) return;
+                state.settings.customCategories ||= {};
+                state.settings.customCategories[type] ||= {};
+                state.settings.customCategories[type][category] ||= [];
+                if (subcategory && !state.settings.customCategories[type][category].includes(subcategory)) {
+                    state.settings.customCategories[type][category].push(subcategory);
+                }
+            }
+            function cardPaymentHint(card) {
+                if (!card?.paymentAccountId) return "尚未綁定繳款帳戶";
+                const account = state.accounts.find((a) => a.id === card.paymentAccountId);
+                if (!account) return "綁定帳戶不存在";
+                const shortage = Math.max(0, (+card.currentDue || 0) - accBalance(account));
+                return `${account.name} 繳款 · 需補 ${money(shortage)}`;
+            }
+            function moveById(collection, id, direction) {
+                const list = state[collection];
+                const index = list.findIndex((x) => x.id === id);
+                const target = index + direction;
+                if (index < 0 || target < 0 || target >= list.length) return;
+                [list[index], list[target]] = [list[target], list[index]];
+                list.forEach((item, order) => (item.sortOrder = order));
+                store.save();
             }
             function renderAdd() {
                 const editing = !!editingTxId;
-                $$('[data-txtype]').forEach((b) => b.classList.toggle('active', b.dataset.txtype === txType));
+                $$("[data-txtype]").forEach((b) => b.classList.toggle("active", b.dataset.txtype === txType));
                 $("#formTitle").textContent = editing
                     ? txType === "transfer"
                         ? "修改轉帳"
@@ -5009,10 +5787,11 @@
                 $("#normalFields").style.display = txType === "transfer" ? "none" : "block";
                 $("#transferFields").style.display = txType === "transfer" ? "block" : "none";
                 if (txType !== "transfer") {
-                    const c = cats[txType];
-                    $("#category").innerHTML = Object.keys(c)
-                    .map((x) => `<option>${x}</option>`)
-                    .join("");
+                    const options = categoryList(txType);
+                    $("#categoryOptions").innerHTML = options.map((x) => `<option value="${x}"></option>`).join("");
+                    if (!$("#category").value || !options.includes($("#category").value)) {
+                        $("#category").value = state.settings.defaultCategory || options[0] || "其他";
+                    }
                     fillSub();
                 }
                 const accountOpts = state.accounts
@@ -5027,8 +5806,9 @@
                 updateSplitPreview();
             }
             function fillSub() {
-                const arr = cats[txType]?.[$("#category").value] || [];
-                $("#subcategory").innerHTML = arr.map((x) => `<option>${x}</option>`).join("");
+                const arr = subcategoryList(txType, $("#category").value);
+                $("#subcategoryOptions").innerHTML = arr.map((x) => `<option value="${x}"></option>`).join("");
+                if (!$("#subcategory").value || !arr.includes($("#subcategory").value)) $("#subcategory").value = arr[0] || "";
             }
             function updateSplitPreview() {
                 if (txType === "transfer") return;
@@ -5057,6 +5837,8 @@
                 $("#date").value = date;
                 $("#transferDate").value = date;
                 $("#transferNote").value = "帳戶轉帳";
+                $("#category").value = "";
+                $("#subcategory").value = "";
                 $("#partySelf").classList.add("active");
                 $("#partyOther").classList.remove("active");
             }
@@ -5101,8 +5883,8 @@
                         type: txType,
                         amount,
                         date: $("#date").value || today(),
-                        category: $("#category").value,
-                        subcategory: $("#subcategory").value,
+                        category: $("#category").value.trim() || "其他",
+                        subcategory: $("#subcategory").value.trim(),
                         account: $("#account").value,
                         projectId: $("#project").value,
                         note: $("#note").value.trim(),
@@ -5116,6 +5898,7 @@
                 } else {
                     state.transactions.push(tx);
                 }
+                if (tx.type !== "transfer") rememberCategory(tx.type, tx.category, tx.subcategory);
                 applyTransactionEffects(tx);
                 store.save();
                 selectedDate = tx.date || today();
@@ -5139,7 +5922,7 @@
                     $("#transferNote").value = t.note || "帳戶轉帳";
                     return;
                 }
-                if (t.category && cats[txType]?.[t.category]) $("#category").value = t.category;
+                if (t.category) $("#category").value = t.category;
                 fillSub();
                 $("#subcategory").value = t.subcategory || $("#subcategory").value;
                 $("#account").value = t.account || "";
@@ -5151,7 +5934,10 @@
                 const split = state.splits.find((s) => s.id === t.splitId);
                 if (split && +t.amount) {
                     $("#splitPerson").value = split.person || "";
-                    const share = party === "self" ? ((+t.amount - +split.amount) / +t.amount) * 100 : (+split.amount / +t.amount) * 100;
+                    const share =
+                        party === "self"
+                            ? ((+t.amount - +split.amount) / +t.amount) * 100
+                            : (+split.amount / +t.amount) * 100;
                     $("#share").value = Math.max(0, Math.min(100, Math.round(share / 5) * 5));
                 } else {
                     $("#splitPerson").value = "";
@@ -5206,16 +5992,29 @@
             }
 
             function renderStocks() {
-                $("#stockGrid").innerHTML = state.stocks
+                $("#stockGrid").innerHTML =
+                    state.stocks
                     .map((s) => {
                         const price = stockPrice(s),
                             value = price * (+s.shares || 0),
                             cost = (+s.cost || 0) * (+s.shares || 0),
                             pnl = value - cost;
-                        return `<div class="stock-card"><div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${s.name || s.code}</h3><div class="muted">${s.code} · ${s.lastUpdated || "尚未更新"}</div></div><button class="edit-mini" data-edit-stock="${s.code}" title="修改持股">編輯</button></div><div class="stock-price">${price ? stockMoney(price) : "尚無報價"}</div><div class="stock-meta">持有 ${s.shares || 0} 股 · 市值 ${stockMoney(value)}<br><span class="${pnl >= 0 ? "money red" : "money green"}">損益 ${pnl >= 0 ? "+" : ""}${stockMoney(pnl)}</span></div></div>`;
+                        return `<div class="stock-card"><div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${
+                            s.name || s.code
+                        }</h3><div class="muted">${s.code} · ${
+                            s.lastUpdated || "尚未更新"
+                        }</div></div><button class="edit-mini" data-edit-stock="${
+                            s.code
+                        }" title="修改持股">編輯</button></div><div class="stock-price">${
+                            price ? stockMoney(price) : "尚無報價"
+                        }</div><div class="stock-meta">持有 ${s.shares || 0} 股 · 市值 ${stockMoney(
+                            value
+                        )}<br><span class="${pnl >= 0 ? "money red" : "money green"}">損益 ${
+                            pnl >= 0 ? "+" : ""
+                        }${stockMoney(pnl)}</span></div></div>`;
                     })
                     .join("") || '<div class="empty">尚未新增股票</div>';
-                $$('[data-edit-stock]').forEach((b) => (b.onclick = () => openStock(b.dataset.editStock)));
+                $$("[data-edit-stock]").forEach((b) => (b.onclick = () => openStock(b.dataset.editStock)));
                 if (current === "invest") renderInvestHub();
             }
             async function fetchQuote(stock) {
@@ -5247,7 +6046,9 @@
                 $("#investStatus").textContent = "正在更新台股行情…";
                 const results = await Promise.allSettled(stocks.map(fetchQuote));
                 const updated = results.filter((r) => r.status === "fulfilled").length;
-                const status = updated ? `已更新 ${updated}/${stocks.length} 檔 · ${new Date().toLocaleTimeString("zh-TW")}` : "行情更新失敗，請稍後再試或使用手動價格";
+                const status = updated
+                    ? `已更新 ${updated}/${stocks.length} 檔 · ${new Date().toLocaleTimeString("zh-TW")}`
+                    : "行情更新失敗，請稍後再試或使用手動價格";
                 $("#stockStatus").textContent = status;
                 $("#investStatus").textContent = status;
                 renderStocks();
@@ -5281,20 +6082,26 @@
                 } else $("#projectFeature").innerHTML = "";
                 $("#projectList").innerHTML =
                     state.projects
-                    .map(
-                        (p) => {
-                            const spent = projectSpend(p.id),
-                                pct = p.budget ? Math.min(100, (spent / p.budget) * 100) : 0;
-                            return `<div class="card project-item"><div class="project-item-top"><div><div class="row-title">${p.name}</div><div class="project-item-meta">${p.start} ～ ${
-                                p.end
-                            } · ${p.type}</div></div><div class="project-item-actions"><button class="edit-mini" data-edit-project="${p.id}" title="編輯專案">編輯</button><button class="edit-mini" data-delete-project="${p.id}" title="刪除專案">刪除</button></div></div><div class="project-item-budget"><span>已花 ${money(
-                                spent
-                            )}</span><strong>預算 ${money(p.budget)}</strong></div><div class="project-progress"><i style="width:${pct}%"></i></div></div>`;
-                        }
-                    )
+                    .map((p) => {
+                        const spent = projectSpend(p.id),
+                            pct = p.budget ? Math.min(100, (spent / p.budget) * 100) : 0;
+                        return `<div class="card project-item"><div class="project-item-top"><div><div class="row-title">${
+                            p.name
+                        }</div><div class="project-item-meta">${p.start} ～ ${p.end} · ${
+                            p.type
+                        }</div></div><div class="project-item-actions"><button class="edit-mini" data-edit-project="${
+                            p.id
+                        }" title="編輯專案">編輯</button><button class="edit-mini" data-delete-project="${
+                            p.id
+                        }" title="刪除專案">刪除</button></div></div><div class="project-item-budget"><span>已花 ${money(
+                            spent
+                        )}</span><strong>預算 ${money(
+                            p.budget
+                        )}</strong></div><div class="project-progress"><i style="width:${pct}%"></i></div></div>`;
+                    })
                     .join("") || '<div class="empty">目前沒有專案</div>';
-                $$('[data-edit-project]').forEach((b) => (b.onclick = () => openProjectEditor(b.dataset.editProject)));
-                $$('[data-delete-project]').forEach(
+                $$("[data-edit-project]").forEach((b) => (b.onclick = () => openProjectEditor(b.dataset.editProject)));
+                $$("[data-delete-project]").forEach(
                     (b) =>
                         (b.onclick = () => {
                             const id = b.dataset.deleteProject;
@@ -5409,13 +6216,17 @@
                     }</span></div>${arr
                     .map((a) => {
                         const hidden = isAccountHidden(a.id);
-                        return `<div class="asset-account-row" data-asset-account="${a.id}"><div class="aicon">${icon}</div><div><strong>${
-                            a.name
-                        }</strong><small>${a.currency || "TWD"}${a.memo ? " · " + a.memo : ""}</small></div><div class="aval"><span>${accountMoney(
+                        return `<div class="asset-account-row" data-asset-account="${
+                            a.id
+                        }"><div class="aicon">${icon}</div><div><strong>${a.name}</strong><small>${
+                            a.currency || "TWD"
+                        }${a.memo ? " · " + a.memo : ""}</small></div><div class="aval"><span>${accountMoney(
                             a
-                        )}</span><button class="asset-visibility ${hidden ? "muted-eye" : ""}" data-toggle-account-visibility="${a.id}" title="${
-                            hidden ? "顯示此資產" : "隱藏此資產"
-                        }">${hidden ? "◌" : "◉"}</button></div></div>`;
+                        )}</span><button class="asset-visibility ${
+                            hidden ? "muted-eye" : ""
+                        }" data-toggle-account-visibility="${a.id}" title="${hidden ? "顯示此資產" : "隱藏此資產"}">${
+                            hidden ? "◌" : "◉"
+                        }</button></div></div>`;
                     })
                     .join("")}</div>`;
                 });
@@ -5476,7 +6287,11 @@
                         (h) =>
                             `<div class="card"><strong>${new Date(h.changedAt).toLocaleString(
                                 "zh-TW"
-                            )}</strong><div class="balance-history-row">修改前：${isAccountHidden(a.id) ? accountMask() : money(h.oldBalance)}<br>修改後：${isAccountHidden(a.id) ? accountMask() : money(h.newBalance)}${h.note ? "<br>備註：" + h.note : ""}</div></div>`
+                            )}</strong><div class="balance-history-row">修改前：${
+                                isAccountHidden(a.id) ? accountMask() : money(h.oldBalance)
+                            }<br>修改後：${isAccountHidden(a.id) ? accountMask() : money(h.newBalance)}${
+                                h.note ? "<br>備註：" + h.note : ""
+                            }</div></div>`
                     )
                     .join("") || '<div class="empty">尚無手動修改餘額歷程。</div>';
             }
@@ -5493,8 +6308,8 @@
                       )
                       .join("")
                     : "";
-                const sorted = [...state.cards].sort((a, b) =>
-                    (dateOnly(a.dueDate) || "9999-12-31").localeCompare(dateOnly(b.dueDate) || "9999-12-31")
+                const sorted = [...state.cards].sort(
+                    (a, b) => (Number.isFinite(+a.sortOrder) ? +a.sortOrder : state.cards.indexOf(a)) - (Number.isFinite(+b.sortOrder) ? +b.sortOrder : state.cards.indexOf(b))
                 );
                 $("#cardList").innerHTML =
                     reminderHtml +
@@ -5505,7 +6320,7 @@
                                     c.name
                                 }</strong><div style="opacity:.75;font-size:12px;margin-top:4px">${
                                     c.memo || ""
-                                }</div></div><span>💳</span></div><div style="font-size:28px;font-weight:900;margin:18px 0">${displayMoney(
+                                }</div><div style="opacity:.85;font-size:12px;margin-top:4px">${cardPaymentHint(c)}</div></div><span>💳</span></div><div style="font-size:28px;font-weight:900;margin:18px 0">${displayMoney(
                                     c.balance
                                 )}</div><div class="card-detail-grid"><div><small style="opacity:.75">本期應繳</small><strong style="display:block;margin-top:4px">${displayMoney(
                                     c.currentDue || 0
@@ -5517,10 +6332,18 @@
                                     dateOnly(c.statementDate) || "未設定"
                                 }</strong></div></div><button class="card-edit-btn" data-edit-card="${
                                     c.id
-                                }">手動修改</button></div>`
+                                }">手動修改</button><div class="sort-actions"><button class="edit-mini" data-move-card="${c.id}" data-dir="-1">上移</button><button class="edit-mini" data-move-card="${c.id}" data-dir="1">下移</button></div></div>`
                         )
                         .join("") || '<div class="empty">尚未新增信用卡</div>';
                 $$("[data-edit-card]").forEach((b) => (b.onclick = () => openCardEditor(b.dataset.editCard)));
+                $$("[data-move-card]").forEach(
+                    (b) =>
+                        (b.onclick = () => {
+                            moveById("cards", b.dataset.moveCard, Number(b.dataset.dir));
+                            renderCards();
+                            renderAssets();
+                        })
+                );
             }
             function renderAccountGroups() {
                 const primaryTypes = ["bank", "bank_checking", "bank_deposit", "wallet", "cash", "cash_twd", "cash_fx"];
@@ -5540,7 +6363,9 @@
                                 const hidden = isAccountHidden(a.id);
                                 return `<div class="account-line" data-manage-account="${a.id}"><div><strong>${
                                     a.name
-                                }</strong><small>${a.memo || "帳戶資產"}</small></div><div class="account-meta"><strong>幣別／分類</strong>${
+                                }</strong><small>${
+                                    a.memo || "帳戶資產"
+                                }</small></div><div class="account-meta"><strong>幣別／分類</strong>${
                                     a.currency || "TWD"
                                 } · ${g}</div><div class="account-note"><strong>備註</strong>${
                                     a.memo || "尚未填寫備註"
@@ -5548,11 +6373,13 @@
                                     a
                                 )}</strong><span class="account-balance-sub">基準餘額 ${accountBaseMoney(
                                     a
-                                )}</span></div><button class="asset-visibility ${hidden ? "muted-eye" : ""}" data-toggle-account-visibility="${
+                                )}</span></div><button class="asset-visibility ${
+                                    hidden ? "muted-eye" : ""
+                                }" data-toggle-account-visibility="${a.id}" title="${
+                                    hidden ? "顯示此資產" : "隱藏此資產"
+                                }">${hidden ? "◌" : "◉"}</button><button class="edit-mini" data-move-account="${a.id}" data-dir="-1">上移</button><button class="edit-mini" data-move-account="${a.id}" data-dir="1">下移</button><button class="edit-mini" data-edit-manage="${
                                     a.id
-                                }" title="${hidden ? "顯示此資產" : "隱藏此資產"}">${
-                                    hidden ? "◌" : "◉"
-                                }</button><button class="edit-mini" data-edit-manage="${a.id}">編輯</button></div></div>`;
+                                }">編輯</button></div></div>`;
                             })
                             .join("")}</div>`
                     )
@@ -5569,6 +6396,16 @@
                         (el.onclick = (e) => {
                             e.stopPropagation();
                             toggleAccountVisibility(el.dataset.toggleAccountVisibility);
+                        })
+                );
+                $$("[data-move-account]").forEach(
+                    (el) =>
+                        (el.onclick = (e) => {
+                            e.stopPropagation();
+                            moveById("accounts", el.dataset.moveAccount, Number(el.dataset.dir));
+                            renderAccountGroups();
+                            renderAssets();
+                            refreshSettingsUI();
                         })
                 );
                 $$("[data-edit-manage]").forEach(
@@ -5620,9 +6457,9 @@
                             pnl = mv - cost;
                         return `<div class="invest-row"><div>${s.code}</div><div>${
                             p ? stockMoney(p) : "--"
-                        }</div><div class="${pnl >= 0 ? "money red" : "money green"}">${pnl >= 0 ? "+" : ""}${stockMoney(
-                            pnl
-                        )}</div><div>${stockMoney(mv)}</div></div>`;
+                        }</div><div class="${pnl >= 0 ? "money red" : "money green"}">${
+                            pnl >= 0 ? "+" : ""
+                        }${stockMoney(pnl)}</div><div>${stockMoney(mv)}</div></div>`;
                     })
                     .join("");
                 $("#fundArea").innerHTML = state.funds
@@ -5691,6 +6528,7 @@
                     note: $("#qNote").value || $("#qCategory").value,
                 };
                 state.transactions.push(tx);
+                if (tx.type !== "transfer") rememberCategory(tx.type, tx.category, tx.subcategory);
                 applyTransactionEffects(tx);
                 store.save();
                 qnum = "0";
@@ -5719,6 +6557,7 @@
                         renderAdd();
                     })
             );
+            $("#category").oninput = fillSub;
             $("#category").onchange = fillSub;
             $("#amount").oninput = updateSplitPreview;
             $("#share").oninput = updateSplitPreview;
@@ -5855,17 +6694,41 @@
                 $("#scanPreview").innerHTML = `<img src="${url}">`;
                 $("#scanStatus").textContent = "圖片已載入，可進行辨識";
             };
-            $("#fakeRecognize").onclick = () => {
-                if (!$("#receiptFile").files[0]) return toast("請先選擇收據圖片");
-                $("#scanStatus").textContent = "AI 正在辨識收據…";
-                setTimeout(() => {
-                    $("#scanStatus").textContent = "辨識完成：已帶入金額 NT$ 520";
-                    $("#amount").value = 520;
-                    $("#note").value = "掃描收據";
+            function parseTaiwanInvoiceText(raw) {
+                const text = String(raw || "").trim();
+                if (!text) return null;
+                const compact = text.replace(/\s+/g, "");
+                const qr = compact.match(/[A-Z]{2}\d{8}.{29,}/)?.[0] || compact;
+                const invoiceNo = qr.match(/[A-Z]{2}\d{8}/)?.[0] || "";
+                const totalHex = qr.length >= 37 ? qr.slice(29, 37) : "";
+                const total = /^[0-9A-Fa-f]{8}$/.test(totalHex) ? parseInt(totalHex, 16) : Number((text.match(/(?:總計|合計|金額)\D*(\d+)/) || [])[1] || 0);
+                const detail = text.includes(":") ? text.split(":").slice(1).join(" ").replace(/:/g, " ") : text;
+                return {invoiceNo, total, note: [invoiceNo && `發票 ${invoiceNo}`, detail && detail.slice(0, 80)].filter(Boolean).join(" · ") || "電子發票"};
+            }
+            async function scanReceiptImage(file) {
+                if (!file || !("BarcodeDetector" in window)) return "";
+                const detector = new BarcodeDetector({formats: ["qr_code"]});
+                const bitmap = await createImageBitmap(file);
+                const codes = await detector.detect(bitmap);
+                return codes.map((code) => code.rawValue).join("\n");
+            }
+            $("#fakeRecognize").onclick = async () => {
+                try {
+                    $("#scanStatus").textContent = "正在解析電子發票…";
+                    const file = $("#receiptFile").files[0];
+                    const scanned = file ? await scanReceiptImage(file).catch(() => "") : "";
+                    const parsed = parseTaiwanInvoiceText(scanned || $("#receiptRaw").value);
+                    if (!parsed) return toast("請選擇發票圖片，或貼上 QR Code/明細文字");
+                    if (parsed.total) $("#amount").value = parsed.total;
+                    $("#note").value = parsed.note;
+                    $("#scanStatus").textContent = parsed.total ? `已解析金額 ${money(parsed.total)}` : "已解析文字，請確認金額";
                     $("#scanModal").classList.remove("open");
                     openPage("add");
-                    toast("已帶入辨識結果");
-                }, 900);
+                    toast("已帶入發票資料");
+                } catch (error) {
+                    $("#scanStatus").textContent = "解析失敗，請改貼 QR Code 文字或手動輸入";
+                    toast("這個瀏覽器不支援直接掃描，請貼上發票 QR 文字");
+                }
             };
 
             function openAccountEditor(id = null) {
@@ -5896,7 +6759,7 @@
                     target.scrollIntoView({behavior: "smooth", block: "center"});
                 }
             }
-            $$('[data-account-step]').forEach((button) =>
+            $$("[data-account-step]").forEach((button) =>
                 button.addEventListener("click", () => focusAccountStep(button.dataset.accountStep))
             );
             function openCardEditor(id = null) {
@@ -5907,6 +6770,8 @@
                 $("#cardLimit").value = c?.limit ?? 0;
                 $("#cardBalance").value = c?.balance ?? 0;
                 $("#cardCurrentDue").value = c?.currentDue ?? 0;
+                $("#cardPaymentAccount").innerHTML = `<option value="">不綁定</option>` + state.accounts.map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`).join("");
+                $("#cardPaymentAccount").value = c?.paymentAccountId || "";
                 $("#statementDate").value = dateOnly(c?.statementDate) || "";
                 $("#dueDate").value = dateOnly(c?.dueDate) || "";
                 $("#cardMemo").value = c?.memo || "";
@@ -5925,9 +6790,11 @@
                     limit: +$("#cardLimit").value || 0,
                     balance: +$("#cardBalance").value || 0,
                     currentDue: +$("#cardCurrentDue").value || 0,
+                    paymentAccountId: $("#cardPaymentAccount").value,
                     statementDate: dateOnly($("#statementDate").value),
                     dueDate: dateOnly($("#dueDate").value),
                     memo: $("#cardMemo").value.trim(),
+                    sortOrder: state.cards.find((x) => x.id === id)?.sortOrder ?? state.cards.length,
                 };
                 const i = state.cards.findIndex((x) => x.id === id);
                 if (i >= 0) state.cards[i] = {...state.cards[i], ...data};
@@ -5980,6 +6847,7 @@
                     currency: $("#accountCurrency").value,
                     balance: newBalance,
                     memo: $("#accountMemo").value.trim(),
+                    sortOrder: old?.sortOrder ?? state.accounts.length,
                 };
                 const i = state.accounts.findIndex((x) => x.id === id);
                 if (i >= 0) state.accounts[i] = {...state.accounts[i], ...data};
@@ -6117,14 +6985,22 @@
                 );
                 document.body.classList.add("theme-" + s.theme);
                 const requestedLayout = s.layout || "auto";
-                const layout = requestedLayout === "auto" ? (window.matchMedia("(min-width: 760px)").matches ? "desktop" : "mobile") : requestedLayout;
+                const layout =
+                    requestedLayout === "auto"
+                        ? window.matchMedia("(min-width: 760px)").matches
+                            ? "desktop"
+                            : "mobile"
+                        : requestedLayout;
                 document.body.classList.add("layout-" + layout);
                 if (s.compact) document.body.classList.add("compact");
                 if (s.largeText) document.body.classList.add("large-text");
             }
             function refreshSettingsUI() {
                 const s = state.settings;
+                renderSheetDiagnostics();
                 $("#settingDisplayName").value = s.displayName || "";
+                $("#profileName").value = s.displayName || "";
+                $("#profileStatus").textContent = `目前帳號：${s.displayName || "安安"}（本機資料）`;
                 $("#settingCurrency").value = s.currency || "TWD";
                 $("#settingDefaultAccount").innerHTML = state.accounts
                 .map((a) => `<option value="${a.id}">${a.name}</option>`)
@@ -6138,7 +7014,9 @@
                 sw($("#compactSwitch"), s.compact);
                 sw($("#largeTextSwitch"), s.largeText);
                 $("#weekStartSetting").value = s.weekStart || "sun";
-                $$("[data-layout]").forEach((b) => b.classList.toggle("active", b.dataset.layout === (s.layout || "auto")));
+                $$("[data-layout]").forEach((b) =>
+                    b.classList.toggle("active", b.dataset.layout === (s.layout || "auto"))
+                );
                 $$(".theme-pick").forEach((b) => b.classList.toggle("active", b.dataset.theme === s.theme));
                 sw($("#quickEntrySwitch"), s.quickEntry);
                 sw($("#splitFeatureSwitch"), s.splitFeature);
@@ -6242,6 +7120,17 @@
                 URL.revokeObjectURL(a.href);
             };
             $("#settingsImportBtn").onclick = () => $("#settingsImportFile").click();
+            $("#csvExportBtn").onclick = exportTransactionsCsv;
+            $("#sheetDiagnoseBtn").onclick = () => {
+                renderSheetDiagnostics();
+                toast("已更新手機連線診斷");
+            };
+            $("#registerProfileBtn").onclick = registerLocalProfile;
+            $("#profileExportLinkBtn").onclick = async () => {
+                const link = `${location.origin}${location.pathname}?profile=${encodeURIComponent(state.settings.activeProfile || "default")}`;
+                try { await navigator.clipboard.writeText(link); toast("帳號連結已複製"); }
+                catch (error) { prompt("複製這個帳號連結", link); }
+            };
             $("#settingsImportFile").onchange = async (e) => {
                 const f = e.target.files[0];
                 if (!f) return;
@@ -6256,8 +7145,67 @@
                     toast("備份檔格式錯誤");
                 }
             };
+            function csvEscape(value) {
+                const text = value === undefined || value === null ? "" : String(value);
+                return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+            }
+            function downloadTextFile(filename, content, type = "text/plain;charset=utf-8") {
+                const blob = new Blob([content], {type});
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }
+            function exportTransactionsCsv() {
+                const mode = $("#csvRangeMode").value;
+                const start = $("#csvStartDate").value || "0000-01-01";
+                const end = $("#csvEndDate").value || "9999-12-31";
+                const rows = state.transactions.filter((t) => mode === "all" || (t.date >= start && t.date <= end));
+                const headers = ["日期", "類型", "金額", "分類", "子分類", "帳戶/卡片", "轉出", "轉入", "專案", "備註"];
+                const body = rows.map((t) => [
+                    t.date,
+                    t.type,
+                    t.amount,
+                    t.category || "",
+                    t.subcategory || "",
+                    t.account ? paymentName(t.account) : "",
+                    t.from ? accName(t.from) : "",
+                    t.to ? accName(t.to) : "",
+                    state.projects.find((p) => p.id === t.projectId)?.name || "",
+                    t.note || "",
+                ].map(csvEscape).join(","));
+                const suffix = mode === "all" ? "all" : `${start}_${end}`;
+                downloadTextFile(`anan-money-transactions-${suffix}.csv`, "\ufeff" + [headers.join(","), ...body].join("\n"), "text/csv;charset=utf-8");
+                toast(`已匯出 ${rows.length} 筆 CSV`);
+            }
+            function renderSheetDiagnostics() {
+                const url = normalizeSheetApiUrl(state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url);
+                const checks = [
+                    [!!url, "已設定 Apps Script /exec 網址"],
+                    [/\/exec$/.test(url), "網址結尾必須是 /exec，不是 /dev"],
+                    [location.protocol === "https:" || location.hostname === "localhost", "建議使用 HTTPS GitHub Pages 或 localhost"],
+                    [!!state.settings.sheetApiToken, "手機端需輸入同步安全碼，連結不會夾帶安全碼"],
+                    [navigator.cookieEnabled, "瀏覽器 Cookie/站台資料未完全關閉"],
+                ];
+                $("#sheetDiagList").innerHTML = checks.map(([ok, label]) => `<li>${ok ? "✓" : "!"} ${label}</li>`).join("");
+            }
+            function registerLocalProfile() {
+                const name = $("#profileName").value.trim();
+                if (!name) return toast("請輸入本機帳號名稱");
+                const id = name.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-|-$/g, "") || uid();
+                state.settings.profiles ||= [];
+                if (!state.settings.profiles.some((p) => p.id === id)) state.settings.profiles.push({id, name});
+                state.settings.activeProfile = id;
+                state.settings.displayName = name;
+                store.save();
+                refreshSettingsUI();
+                toast("本機帳號已建立；正式多人登入需後端驗證服務");
+            }
             function sheetConfig() {
-                const url = normalizeSheetApiUrl($("#sheetApiUrl").value || state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url),
+                const url = normalizeSheetApiUrl(
+                        $("#sheetApiUrl").value || state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url
+                    ),
                     token = ($("#sheetApiToken").value || state.settings.sheetApiToken || "").trim();
                 if (!url) {
                     toast("請先輸入 Apps Script Web App 網址，或在 SHEET_SYNC_DEFAULTS.url 設定預設網址");
@@ -6294,6 +7242,7 @@
                 return new Promise((resolve, reject) => {
                     const callback = `ananSheetCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
                     const script = document.createElement("script");
+                    script.referrerPolicy = "no-referrer";
                     let done = false;
                     const cleanup = () => {
                         if (done) return;
@@ -6316,9 +7265,9 @@
                         reject(new Error("連線失敗"));
                     };
                     const separator = config.url.includes("?") ? "&" : "?";
-                    script.src = `${config.url}${separator}action=${encodeURIComponent(action)}&token=${encodeURIComponent(
-                        config.token
-                    )}&callback=${encodeURIComponent(callback)}`;
+                    script.src = `${config.url}${separator}action=${encodeURIComponent(
+                        action
+                    )}&token=${encodeURIComponent(config.token)}&callback=${encodeURIComponent(callback)}`;
                     document.body.appendChild(script);
                 });
             }
@@ -6421,16 +7370,20 @@
             $("#sheetShareConfigBtn").onclick = async () => {
                 const config = sheetConfig();
                 if (!config) return;
-                const link = `${location.origin}${location.pathname}?sheetUrl=${encodeURIComponent(config.url)}`;
+                const includeToken = config.token && confirm("要把同步安全碼一起放進手機連線連結嗎？只建議傳給自己的手機。");
+                const tokenPart = includeToken ? `&sheetToken=${encodeURIComponent(config.token)}` : "";
+                const link = `${location.origin}${location.pathname}?sheetUrl=${encodeURIComponent(config.url)}${tokenPart}`;
                 try {
                     await navigator.clipboard.writeText(link);
-                    toast("手機連線連結已複製，安全碼需在手機輸入一次");
+                    toast(includeToken ? "手機連線連結已複製，已包含安全碼" : "手機連線連結已複製，安全碼需在手機輸入一次");
                 } catch (error) {
-                    prompt("複製這個連結到手機開啟；安全碼需在手機輸入一次", link);
+                    prompt(includeToken ? "複製這個連結到手機開啟；已包含安全碼" : "複製這個連結到手機開啟；安全碼需在手機輸入一次", link);
                 }
             };
             $("#sheetPreviewBtn").onclick = () =>
-                toast("試算表分頁：Transactions、Accounts、Projects、Cards、Splits、Stocks、Funds、Goals、Events、Recurring、BalanceHistory、Metadata、Settings");
+                toast(
+                    "試算表分頁：Transactions、Accounts、Projects、Cards、Splits、Stocks、Funds、Goals、Events、Recurring、BalanceHistory、Metadata、Settings"
+                );
             $("#resetDataBtn").onclick = () => {
                 if (!confirm("確定要重設為示範資料嗎？目前資料會被清除。")) return;
                 localStorage.removeItem(store.key);
