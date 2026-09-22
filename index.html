@@ -4253,7 +4253,8 @@
             <div class="modal" id="eventModal">
                 <div class="sheet">
                     <div class="sheet-handle"></div>
-                    <h2>新增行程</h2>
+                    <h2 id="eventModalTitle">新增行程</h2>
+                    <input type="hidden" id="editingEventId" />
                     <div class="field"><label>日期</label><input id="eventDate" class="control" type="date" /></div>
                     <div class="field">
                         <label>標題</label><input id="eventTitle" class="control" placeholder="例如：排球少年展" />
@@ -4273,7 +4274,11 @@
                             <option value="#a1887f">棕灰</option>
                         </select>
                     </div>
-                    <button class="primary" id="saveEvent">新增行程</button>
+                    <div class="modal-footer-2">
+                        <button class="secondary" id="cancelEventBtn">取消</button>
+                        <button class="secondary" id="deleteEventBtn" style="display:none;color:#c34c59">刪除行程</button>
+                        <button class="primary" id="saveEvent">新增行程</button>
+                    </div>
                 </div>
             </div>
 
@@ -5395,7 +5400,8 @@
                 selectedDate = today(),
                 calView = "daily",
                 currentStock = null,
-                editingTxId = null;
+                editingTxId = null,
+                editingEventId = null;
             const cats = {
                 expense: {
                     食品: ["早餐", "午餐", "晚餐", "外送", "飲料"],
@@ -5761,8 +5767,18 @@
                 $("#eventList").innerHTML =
                     state.events
                     .filter((e) => e.date.slice(0, 7) === monthKey(calDate))
-                    .map((e) => `<div class="card"><strong style="color:${e.color || "var(--purple)"}">${e.title}</strong><div class="muted">${e.date}</div></div>`)
+                    .sort((a, b) => a.date.localeCompare(b.date))
+                    .map(
+                        (e) =>
+                            `<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><strong style="color:${
+                                e.color || "var(--purple)"
+                            }">${e.title}</strong><div class="muted">${e.date}</div></div><div class="tx-actions"><button class="edit-mini" data-edit-event="${
+                                e.id
+                            }">編輯</button><button class="edit-mini danger-mini" data-delete-event="${e.id}">刪除</button></div></div></div>`
+                    )
                     .join("") || '<div class="empty">本月沒有行程</div>';
+                $$("[data-edit-event]").forEach((b) => (b.onclick = () => openEventEditor(b.dataset.editEvent)));
+                $$("[data-delete-event]").forEach((b) => (b.onclick = () => deleteEvent(b.dataset.deleteEvent)));
             }
             function categoryList(type = txType) {
                 const builtIn = Object.keys(cats[type] || {});
@@ -6644,19 +6660,63 @@
                         $("#eventPane").style.display = calView === "events" ? "block" : "none";
                     })
             );
+            function resetEventForm(date = selectedDate) {
+                editingEventId = null;
+                $("#editingEventId").value = "";
+                $("#eventModalTitle").textContent = "新增行程";
+                $("#eventDate").value = date;
+                $("#eventTitle").value = "";
+                $("#eventColor").value = "#caa7ef";
+                $("#saveEvent").textContent = "新增行程";
+                $("#deleteEventBtn").style.display = "none";
+            }
+            function openEventEditor(id) {
+                const event = state.events.find((e) => e.id === id);
+                if (!event) return;
+                editingEventId = id;
+                $("#editingEventId").value = id;
+                $("#eventModalTitle").textContent = "修改行程";
+                $("#eventDate").value = event.date || selectedDate;
+                $("#eventTitle").value = event.title || "";
+                $("#eventColor").value = event.color || "#caa7ef";
+                $("#saveEvent").textContent = "更新行程";
+                $("#deleteEventBtn").style.display = "block";
+                $("#eventModal").classList.add("open");
+            }
+            function deleteEvent(id = editingEventId) {
+                if (!id) return;
+                if (!confirm("確定刪除這個行程？")) return;
+                state.events = state.events.filter((e) => e.id !== id);
+                store.save();
+                resetEventForm(selectedDate);
+                $("#eventModal").classList.remove("open");
+                renderCalendar();
+                toast("行程已刪除");
+            }
             $("#newEventBtn").onclick = () => {
-                $("#eventDate").value = selectedDate;
+                resetEventForm(selectedDate);
                 $("#eventModal").classList.add("open");
             };
+            $("#cancelEventBtn").onclick = () => {
+                resetEventForm(selectedDate);
+                $("#eventModal").classList.remove("open");
+            };
+            $("#deleteEventBtn").onclick = () => deleteEvent(editingEventId || $("#editingEventId").value);
             $("#saveEvent").onclick = () => {
                 const title = $("#eventTitle").value.trim();
                 if (!title) return toast("請輸入行程名稱");
-                state.events.push({id: uid(), date: $("#eventDate").value, title, color: $("#eventColor").value});
+                const id = editingEventId || $("#editingEventId").value;
+                const data = {id: id || uid(), date: $("#eventDate").value || selectedDate, title, color: $("#eventColor").value};
+                const index = state.events.findIndex((e) => e.id === id);
+                if (index >= 0) state.events[index] = {...state.events[index], ...data};
+                else state.events.push(data);
                 store.save();
+                selectedDate = data.date;
+                calDate = new Date(selectedDate + "T12:00:00");
+                resetEventForm(selectedDate);
                 $("#eventModal").classList.remove("open");
-                $("#eventTitle").value = "";
                 renderCalendar();
-                toast("行程已新增");
+                toast(index >= 0 ? "行程已更新" : "行程已新增");
             };
             $("#settleAll").onclick = () => {
                 state.splits.forEach((s) => (s.settled = true));
