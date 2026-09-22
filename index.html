@@ -4474,14 +4474,24 @@
                             </div>
                             <button class="secondary setting-wide" id="logoutBtn" style="margin-top: 12px">登出</button>
                             <div class="setting-row" style="margin-top: 12px">
-                                <span>本機帳號</span>
+                                <span>切換使用者</span>
+                                <select id="profileSelect" class="setting-control"></select>
+                            </div>
+                            <div class="setting-row">
+                                <span>使用者名稱</span>
                                 <input id="profileName" class="setting-control" placeholder="例如：anan" />
+                            </div>
+                            <div class="setting-row">
+                                <span>Google 帳號</span>
+                                <input id="profileGoogleEmail" class="setting-control" type="email" placeholder="name@gmail.com" />
                             </div>
                             <div class="settings-actions">
                                 <button class="secondary" id="registerProfileBtn">註冊/切換</button>
+                                <button class="secondary" id="bindGoogleBtn">綁定 Google</button>
                                 <button class="secondary" id="profileExportLinkBtn">複製帳號連結</button>
                             </div>
                             <div class="setting-note" id="profileStatus">目前為本機單人資料。</div>
+                            <div class="setting-note">正式 Google OAuth 需另外申請 Google Cloud OAuth Client ID；目前會用 Google Email 綁定每個人的試算表設定。</div>
                         </div>
 
                         <div class="setting-card">
@@ -4909,7 +4919,7 @@
             // Google Sheets sync bootstrap. Put the deployed /exec URL here if you want new devices to auto-fill it.
             // The sync token is intentionally not stored in share links to avoid leaking it through browser history.
             const SHEET_SYNC_DEFAULTS = {
-                url: "https://script.google.com/macros/s/AKfycbwWPzIno1sTroTaknqjK_zlg6804WlClyELozm2Cise4Hz5gavqs-LOmN2fqr1CrTkx/exec",
+                url: "",
             };
 
             // Demo data and the full app state shape used when this browser has no saved data yet.
@@ -5112,17 +5122,70 @@
                 goals: [{id: uid(), name: "東京旅費", target: 0, saved: 0}],
                 events: [],
             };
-            // localStorage is the offline-first database for the app; Google Sheets is an optional sync target.
-            const store = {
-                key: "anan-money-v35",
+            // 使用者索引存在全域 key；每位使用者的記帳資料存在獨立 key，避免多人資料混在一起。
+            const PROFILE_INDEX_KEY = "anan-money-profiles-v1";
+            const LEGACY_STORE_KEY = "anan-money-v35";
+            function profileSlug(value) {
+                return String(value || "")
+                    .trim()
+                    .toLowerCase()
+                    .replace(/[^a-z0-9@._-]+/g, "-")
+                    .replace(/^-|-$/g, "") || "default";
+            }
+            const profileStore = {
                 load() {
                     try {
-                        return JSON.parse(localStorage.getItem(this.key)) || structuredClone(DEFAULT);
+                        const index = JSON.parse(localStorage.getItem(PROFILE_INDEX_KEY));
+                        if (index?.profiles?.length) return index;
+                    } catch (error) {}
+                    return {activeProfile: "default", profiles: [{id: "default", name: "安安", googleEmail: ""}]};
+                },
+                save(index) {
+                    localStorage.setItem(PROFILE_INDEX_KEY, JSON.stringify(index));
+                },
+                activeId() {
+                    const params = new URLSearchParams(location.search);
+                    return profileSlug(params.get("profile") || this.load().activeProfile || "default");
+                },
+                upsert(profile) {
+                    const index = this.load();
+                    const id = profileSlug(profile.id || profile.name || profile.googleEmail);
+                    const existing = index.profiles.find((p) => p.id === id);
+                    if (existing) Object.assign(existing, profile, {id});
+                    else index.profiles.push({id, name: profile.name || id, googleEmail: profile.googleEmail || ""});
+                    index.activeProfile = id;
+                    this.save(index);
+                    return id;
+                },
+            };
+            // localStorage is the offline-first database for the app; Google Sheets is an optional sync target.
+            const store = {
+                baseKey: LEGACY_STORE_KEY,
+                get profileId() {
+                    return profileStore.activeId();
+                },
+                get key() {
+                    return `${this.baseKey}:${this.profileId}`;
+                },
+                load() {
+                    try {
+                        const saved = localStorage.getItem(this.key);
+                        if (saved) return JSON.parse(saved);
+                        if (this.profileId === "default") {
+                            const legacy = localStorage.getItem(LEGACY_STORE_KEY);
+                            if (legacy) {
+                                localStorage.setItem(this.key, legacy);
+                                return JSON.parse(legacy);
+                            }
+                        }
+                        return structuredClone(DEFAULT);
                     } catch (e) {
                         return structuredClone(DEFAULT);
                     }
                 },
                 save() {
+                    state.settings ||= {};
+                    state.settings.activeProfile = this.profileId;
                     localStorage.setItem(this.key, JSON.stringify(state));
                 },
             };
@@ -5174,7 +5237,11 @@
                 if (params.has("sheetToken")) state.settings.sheetApiToken = params.get("sheetToken") || state.settings.sheetApiToken;
                 if (params.has("sheetUrl") || params.has("syncUrl") || params.has("sheetToken")) {
                     store.save();
-                    history.replaceState(null, "", location.pathname + location.hash);
+                    const cleanUrl = new URL(location.href);
+                    cleanUrl.searchParams.delete("sheetUrl");
+                    cleanUrl.searchParams.delete("syncUrl");
+                    cleanUrl.searchParams.delete("sheetToken");
+                    history.replaceState(null, "", cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
                 }
             }
             if (!state.settings.pin || state.settings.pin === "1215") state.settings.pin = "0000";
@@ -5185,8 +5252,9 @@
                 : [];
             state.settings.cardReminder = state.settings.cardReminder !== false;
             state.settings.profiles = Array.isArray(state.settings.profiles) ? state.settings.profiles : [{id: "default", name: state.settings.displayName || "安安"}];
-            state.settings.activeProfile ||= "default";
+            state.settings.activeProfile = store.profileId;
             state.settings.customCategories ||= {};
+            profileStore.upsert({id: store.profileId, name: state.settings.displayName || "安安", googleEmail: state.settings.googleEmail || ""});
             state.balanceHistory ||= [];
             state.cards.forEach((c) => {
                 if (!c.dueDate && c.dueDay) {
@@ -5361,7 +5429,7 @@
                     : [];
                 state.settings.cardReminder = state.settings.cardReminder !== false;
                 state.settings.profiles = Array.isArray(state.settings.profiles) ? state.settings.profiles : [{id: "default", name: state.settings.displayName || "安安"}];
-                state.settings.activeProfile ||= "default";
+                state.settings.activeProfile = store.profileId;
                 state.settings.customCategories ||= {};
                 [
                     "transactions",
@@ -7085,12 +7153,34 @@
                 if (s.compact) document.body.classList.add("compact");
                 if (s.largeText) document.body.classList.add("large-text");
             }
+            function activeProfileRecord() {
+                const index = profileStore.load();
+                return index.profiles.find((p) => p.id === store.profileId) || index.profiles[0] || {id: "default", name: "安安", googleEmail: ""};
+            }
+            function updateProfileRecord(fields = {}) {
+                const profile = activeProfileRecord();
+                return profileStore.upsert({...profile, ...fields, id: profile.id || store.profileId});
+            }
+            function switchProfile(profileId) {
+                store.save();
+                const index = profileStore.load();
+                index.activeProfile = profileSlug(profileId);
+                profileStore.save(index);
+                const url = new URL(location.href);
+                url.searchParams.set("profile", index.activeProfile);
+                location.href = url.toString();
+            }
             function refreshSettingsUI() {
                 const s = state.settings;
                 renderSheetDiagnostics();
-                $("#settingDisplayName").value = s.displayName || "";
-                $("#profileName").value = s.displayName || "";
-                $("#profileStatus").textContent = `目前帳號：${s.displayName || "安安"}（本機資料）`;
+                const profileIndex = profileStore.load();
+                const activeProfile = activeProfileRecord();
+                $("#profileSelect").innerHTML = profileIndex.profiles.map((p) => `<option value="${p.id}">${p.name || p.id}${p.googleEmail ? " · " + p.googleEmail : ""}</option>`).join("");
+                $("#profileSelect").value = store.profileId;
+                $("#settingDisplayName").value = s.displayName || activeProfile.name || "";
+                $("#profileName").value = activeProfile.name || s.displayName || "";
+                $("#profileGoogleEmail").value = activeProfile.googleEmail || s.googleEmail || "";
+                $("#profileStatus").textContent = `目前使用者：${activeProfile.name || s.displayName || "安安"}（資料庫 ${store.key}）`;
                 $("#settingCurrency").value = s.currency || "TWD";
                 $("#settingDefaultAccount").innerHTML = state.accounts
                 .map((a) => `<option value="${a.id}">${a.name}</option>`)
@@ -7137,7 +7227,9 @@
                 refreshSettingsUI();
             }
             function saveSettingsFromForm(showToast = true) {
-                state.settings.displayName = $("#settingDisplayName").value.trim() || "安安";
+                state.settings.displayName = $("#settingDisplayName").value.trim() || $("#profileName").value.trim() || "安安";
+                state.settings.googleEmail = $("#profileGoogleEmail").value.trim();
+                updateProfileRecord({name: $("#profileName").value.trim() || state.settings.displayName, googleEmail: state.settings.googleEmail});
                 state.settings.currency = $("#settingCurrency").value || "TWD";
                 state.settings.defaultAccount = $("#settingDefaultAccount").value || state.accounts[0]?.id || "";
                 state.settings.defaultCategory = $("#settingDefaultCategory").value || "食品";
@@ -7241,8 +7333,18 @@
                 toast("已更新手機連線診斷");
             };
             $("#registerProfileBtn").onclick = registerLocalProfile;
+            $("#profileSelect").onchange = (e) => switchProfile(e.target.value);
+            $("#bindGoogleBtn").onclick = () => {
+                const email = $("#profileGoogleEmail").value.trim();
+                if (!email) return toast("請先輸入 Google 帳號 Email");
+                updateProfileRecord({googleEmail: email, name: $("#profileName").value.trim() || email});
+                state.settings.googleEmail = email;
+                store.save();
+                refreshSettingsUI();
+                toast("已綁定 Google 帳號 Email；請在檔案頁設定此帳號的 GAS/試算表");
+            };
             $("#profileExportLinkBtn").onclick = async () => {
-                const link = `${location.origin}${location.pathname}?profile=${encodeURIComponent(state.settings.activeProfile || "default")}`;
+                const link = `${location.origin}${location.pathname}?profile=${encodeURIComponent(store.profileId || "default")}`;
                 try { await navigator.clipboard.writeText(link); toast("帳號連結已複製"); }
                 catch (error) { prompt("複製這個帳號連結", link); }
             };
@@ -7307,15 +7409,25 @@
             }
             function registerLocalProfile() {
                 const name = $("#profileName").value.trim();
-                if (!name) return toast("請輸入本機帳號名稱");
-                const id = name.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-|-$/g, "") || uid();
-                state.settings.profiles ||= [];
-                if (!state.settings.profiles.some((p) => p.id === id)) state.settings.profiles.push({id, name});
-                state.settings.activeProfile = id;
-                state.settings.displayName = name;
-                store.save();
-                refreshSettingsUI();
-                toast("本機帳號已建立；正式多人登入需後端驗證服務");
+                const googleEmail = $("#profileGoogleEmail").value.trim();
+                if (!name && !googleEmail) return toast("請輸入使用者名稱或 Google 帳號");
+                const id = profileSlug(googleEmail || name);
+                const isNew = !localStorage.getItem(`${LEGACY_STORE_KEY}:${id}`);
+                profileStore.upsert({id, name: name || googleEmail, googleEmail});
+                if (isNew) {
+                    const newState = structuredClone(DEFAULT);
+                    newState.settings = {
+                        ...(state.settings || {}),
+                        displayName: name || googleEmail,
+                        googleEmail,
+                        activeProfile: id,
+                        sheetApiUrl: "",
+                        sheetApiToken: "",
+                    };
+                    localStorage.setItem(`${LEGACY_STORE_KEY}:${id}`, JSON.stringify(newState));
+                }
+                toast(isNew ? "使用者已註冊，正在切換資料庫" : "正在切換使用者資料庫");
+                switchProfile(id);
             }
             function sheetConfig() {
                 const url = normalizeSheetApiUrl(
@@ -7323,7 +7435,7 @@
                     ),
                     token = ($("#sheetApiToken").value || state.settings.sheetApiToken || "").trim();
                 if (!url) {
-                    toast("請先輸入 Apps Script Web App 網址，或在 SHEET_SYNC_DEFAULTS.url 設定預設網址");
+                    toast("請先為目前使用者輸入 Apps Script Web App /exec 網址");
                     return null;
                 }
                 if (/\/dev\/?$/.test(url)) {

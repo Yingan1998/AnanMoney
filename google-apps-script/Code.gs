@@ -1,12 +1,55 @@
 ﻿/**
  * Anan Money Google Sheets 同步端點。
  * 部署方式：Google Apps Script Web App，Execute as Me，Who has access: Anyone。
- * 手機/GitHub Pages 不走一般 fetch CORS：GET 用 JSONP，POST 用隱藏 iframe + postMessage。
+ * GET 使用 JSONP，POST 使用隱藏 iframe + postMessage，避免 GitHub Pages/手機瀏覽器 CORS 限制。
  */
 const SYNC_TOKEN = "AnanMoney1998";
-const SHEETS = ["Transactions", "Accounts", "Projects", "Cards", "Splits", "Stocks", "Funds", "Goals", "Events", "Recurring", "BalanceHistory", "Metadata", "Settings"];
 
-// doGet：提供 ping/load，支援 callback 參數輸出 JSONP，避免瀏覽器 CORS 擋住下載。
+const TABLES = [
+  {stateKey: "transactions", sheet: "記帳紀錄", legacy: "Transactions", description: "收入、支出、轉帳與信用卡刷卡紀錄", columns: {
+    id: ["ID", "文字"], type: ["類型", "文字：expense/income/transfer"], amount: ["金額", "數字"], date: ["日期", "日期 yyyy-MM-dd"],
+    category: ["分類", "文字"], subcategory: ["子分類", "文字"], account: ["帳戶或信用卡ID", "文字"], projectId: ["專案ID", "文字"],
+    note: ["備註", "文字"], party: ["付款者", "文字：self/other"], splitId: ["分帳ID", "文字"], from: ["轉出帳戶ID", "文字"], to: ["轉入帳戶ID", "文字"]
+  }},
+  {stateKey: "accounts", sheet: "帳戶", legacy: "Accounts", description: "銀行、現金、電子支付與其他資產帳戶", columns: {
+    id: ["ID", "文字"], name: ["名稱", "文字"], type: ["資產分類", "文字"], currency: ["幣別", "文字"], balance: ["餘額", "數字"], memo: ["備註", "文字"], sortOrder: ["排序", "數字"]
+  }},
+  {stateKey: "projects", sheet: "專案", legacy: "Projects", description: "旅行、活動等專案預算", columns: {
+    id: ["ID", "文字"], name: ["名稱", "文字"], type: ["類型", "文字"], budget: ["預算", "數字"], start: ["開始日期", "日期 yyyy-MM-dd"], end: ["結束日期", "日期 yyyy-MM-dd"]
+  }},
+  {stateKey: "cards", sheet: "信用卡", legacy: "Cards", description: "信用卡額度、未繳與繳款資訊", columns: {
+    id: ["ID", "文字"], name: ["名稱", "文字"], memo: ["備註", "文字"], limit: ["信用額度", "數字"], balance: ["刷卡未繳總額", "數字"], currentDue: ["本期應繳", "數字"],
+    statementDay: ["結帳日", "數字"], dueDay: ["繳款日", "數字"], statementDate: ["下一次結帳日", "日期 yyyy-MM-dd"], dueDate: ["本期繳款截止日", "日期 yyyy-MM-dd"],
+    paymentAccountId: ["繳款帳戶ID", "文字"], sortOrder: ["排序", "數字"]
+  }},
+  {stateKey: "splits", sheet: "分帳", legacy: "Splits", description: "未結清分帳資料", columns: {
+    id: ["ID", "文字"], person: ["對象", "文字"], amount: ["金額", "數字"], direction: ["方向", "文字：owed_to_me/i_owe"], settled: ["是否結清", "布林"], date: ["日期", "日期 yyyy-MM-dd"], note: ["備註", "文字"]
+  }},
+  {stateKey: "stocks", sheet: "股票", legacy: "Stocks", description: "持股、成本與報價", columns: {
+    code: ["代號", "文字"], name: ["名稱", "文字"], shares: ["股數", "數字"], cost: ["平均成本", "數字"], lastPrice: ["最後價格", "數字"], lastUpdated: ["最後更新", "文字/日期"], manualPrice: ["手動價格", "數字"]
+  }},
+  {stateKey: "funds", sheet: "基金", legacy: "Funds", description: "基金單位與淨值", columns: {
+    id: ["ID", "文字"], name: ["名稱", "文字"], nickname: ["暱稱", "文字"], units: ["單位數", "數字"], cost: ["成本", "數字"], nav: ["淨值", "數字"]
+  }},
+  {stateKey: "goals", sheet: "目標", legacy: "Goals", description: "儲蓄目標", columns: {
+    id: ["ID", "文字"], name: ["名稱", "文字"], target: ["目標金額", "數字"], saved: ["已存金額", "數字"]
+  }},
+  {stateKey: "events", sheet: "行事曆", legacy: "Events", description: "行事曆事件", columns: {
+    id: ["ID", "文字"], date: ["日期", "日期 yyyy-MM-dd"], title: ["標題", "文字"], color: ["顏色", "文字 HEX"]
+  }},
+  {stateKey: "recurring", sheet: "定期收支", legacy: "Recurring", description: "預留定期收支", columns: {
+    id: ["ID", "文字"], type: ["類型", "文字"], amount: ["金額", "數字"], category: ["分類", "文字"], account: ["帳戶ID", "文字"], note: ["備註", "文字"]
+  }},
+  {stateKey: "balanceHistory", sheet: "餘額歷程", legacy: "BalanceHistory", description: "帳戶餘額手動修改紀錄", columns: {
+    id: ["ID", "文字"], accountId: ["帳戶ID", "文字"], oldBalance: ["修改前餘額", "數字"], newBalance: ["修改後餘額", "數字"], changedAt: ["修改時間", "日期時間"], note: ["備註", "文字"]
+  }}
+];
+
+const META_TABLE = {sheet: "中繼資料", legacy: "Metadata", description: "全域彙總資料", columns: {key: ["鍵", "文字"], value: ["值", "文字/數字"]}};
+const SETTINGS_TABLE = {sheet: "設定", legacy: "Settings", description: "前端設定 JSON", columns: {json: ["設定JSON", "JSON 文字"]}};
+const SCHEMA_SHEET = "資料表結構";
+
+// doGet：提供 ping/load，支援 JSONP，讓 GitHub Pages 與手機瀏覽器可以避開 CORS 下載資料。
 function doGet(e) {
   const callback = e.parameter.callback || "";
   try {
@@ -19,7 +62,8 @@ function doGet(e) {
     return output_({ok: false, error: error.message}, callback);
   }
 }
-// doPost：接收整包 state 存入試算表，並用 parent.postMessage 回覆前端 iframe。
+
+// doPost：接收前端整包 state，寫入目前綁定的試算表，再透過 iframe postMessage 回覆。
 function doPost(e) {
   const requestId = e.parameter.requestId || "";
   try {
@@ -33,101 +77,105 @@ function doPost(e) {
     return postOutput_({ok: false, error: error.message}, requestId);
   }
 }
+
 function authorize_(token) {
-  if (SYNC_TOKEN && SYNC_TOKEN !== "CHANGE_ME" && token !== SYNC_TOKEN) {
-    throw new Error("Invalid sync token");
-  }
+  if (SYNC_TOKEN && SYNC_TOKEN !== "CHANGE_ME" && token !== SYNC_TOKEN) throw new Error("Invalid sync token");
 }
 
-// writeState_：把前端 state 拆成多個工作表，便於人眼檢查與後續擴充。
+// writeState_：把前端 state 拆成多個繁中工作表，並同步輸出資料表結構說明。
 function writeState_(state) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const collections = {
-    Transactions: state.transactions || [],
-    Accounts: state.accounts || [],
-    Projects: state.projects || [],
-    Cards: state.cards || [],
-    Splits: state.splits || [],
-    Stocks: state.stocks || [],
-    Funds: state.funds || [],
-    Goals: state.goals || [],
-    Events: state.events || [],
-    Recurring: state.recurring || [],
-    BalanceHistory: state.balanceHistory || [],
-  };
-  Object.keys(collections).forEach(function (name) {
-    writeRows_(spreadsheet, name, collections[name]);
+  TABLES.forEach(function (table) {
+    writeRows_(spreadsheet, table, state[table.stateKey] || []);
   });
-  writeRows_(spreadsheet, "Metadata", [{key: "budget", value: state.budget || 0}]);
-  writeRows_(spreadsheet, "Settings", [{json: JSON.stringify(state.settings || {})}]);
+  writeRows_(spreadsheet, META_TABLE, [{key: "budget", value: state.budget || 0}]);
+  writeRows_(spreadsheet, SETTINGS_TABLE, [{json: JSON.stringify(state.settings || {})}]);
+  writeSchema_(spreadsheet);
 }
 
-// readState_：從所有工作表回組前端 state，日期欄位會在 readRows_ 轉成 yyyy-MM-dd。
+// readState_：優先讀繁中工作表，也相容舊版英文工作表，最後回組成前端 state。
 function readState_() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const state = {
-    transactions: readRows_(spreadsheet, "Transactions"),
-    accounts: readRows_(spreadsheet, "Accounts"),
-    projects: readRows_(spreadsheet, "Projects"),
-    cards: readRows_(spreadsheet, "Cards"),
-    splits: readRows_(spreadsheet, "Splits"),
-    stocks: readRows_(spreadsheet, "Stocks"),
-    funds: readRows_(spreadsheet, "Funds"),
-    goals: readRows_(spreadsheet, "Goals"),
-    events: readRows_(spreadsheet, "Events"),
-    recurring: readRows_(spreadsheet, "Recurring"),
-    balanceHistory: readRows_(spreadsheet, "BalanceHistory"),
-    budget: 0,
-    settings: {},
-  };
-  readRows_(spreadsheet, "Metadata").forEach(function (row) {
+  const state = {budget: 0, settings: {}};
+  TABLES.forEach(function (table) {
+    state[table.stateKey] = readRows_(spreadsheet, table);
+  });
+  readRows_(spreadsheet, META_TABLE).forEach(function (row) {
     if (row.key === "budget") state.budget = Number(row.value) || 0;
   });
-  const settings = readRows_(spreadsheet, "Settings");
+  const settings = readRows_(spreadsheet, SETTINGS_TABLE);
   if (settings[0] && settings[0].json) {
     state.settings = typeof settings[0].json === "string" ? JSON.parse(settings[0].json) : settings[0].json;
   }
   return state;
 }
 
-function writeRows_(spreadsheet, name, rows) {
-  const sheet = spreadsheet.getSheetByName(name) || spreadsheet.insertSheet(name);
+// writeRows_：依 TABLES 欄位定義輸出固定欄位順序，避免試算表欄位漂移。
+function writeRows_(spreadsheet, table, rows) {
+  const sheet = spreadsheet.getSheetByName(table.sheet) || spreadsheet.insertSheet(table.sheet);
   sheet.clearContents();
-  if (!rows.length) return;
-  const columns = Array.from(new Set(rows.reduce(function (all, row) {
-    return all.concat(Object.keys(row));
-  }, [])));
-  const values = [columns].concat(rows.map(function (row) {
-    return columns.map(function (column) {
-      const value = row[column];
+  const keys = Object.keys(table.columns);
+  const headers = keys.map(function (key) { return table.columns[key][0]; });
+  const values = [headers];
+  (rows || []).forEach(function (row) {
+    values.push(keys.map(function (key) {
+      const value = row[key];
       return value === undefined || value === null ? "" : typeof value === "object" ? JSON.stringify(value) : value;
-    });
-  }));
-  sheet.getRange(1, 1, values.length, columns.length).setValues(values);
+    }));
+  });
+  sheet.getRange(1, 1, values.length, headers.length).setValues(values);
   sheet.setFrozenRows(1);
-  sheet.autoResizeColumns(1, columns.length);
+  sheet.autoResizeColumns(1, headers.length);
 }
 
-function readRows_(spreadsheet, name) {
-  const sheet = spreadsheet.getSheetByName(name);
+// readRows_：將試算表的繁中欄位名稱轉回程式 key，日期物件固定轉成 yyyy-MM-dd。
+function readRows_(spreadsheet, table) {
+  const sheet = spreadsheet.getSheetByName(table.sheet) || spreadsheet.getSheetByName(table.legacy);
   if (!sheet || sheet.getLastRow() < 2) return [];
   const values = sheet.getDataRange().getValues();
   const headers = values.shift();
+  const headerToKey = headerMap_(table);
   return values.filter(function (row) {
     return row.some(function (value) { return value !== ""; });
   }).map(function (row) {
     const result = {};
     headers.forEach(function (header, index) {
+      const key = headerToKey[String(header)] || String(header);
       let value = row[index];
       if (Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime())) {
         value = Utilities.formatDate(value, spreadsheet.getSpreadsheetTimeZone(), "yyyy-MM-dd");
       } else if (typeof value === "string" && /^[\[{]/.test(value)) {
         try { value = JSON.parse(value); } catch (error) {}
       }
-      result[header] = value;
+      result[key] = value;
     });
     return result;
   });
+}
+
+// headerMap_：同時支援繁中欄名與舊版英文欄名，讓舊資料能無痛回載。
+function headerMap_(table) {
+  const map = {};
+  Object.keys(table.columns).forEach(function (key) {
+    map[key] = key;
+    map[table.columns[key][0]] = key;
+  });
+  return map;
+}
+
+// writeSchema_：產生「資料表結構」分頁，供使用者與維護者查欄位用途與型態。
+function writeSchema_(spreadsheet) {
+  const sheet = spreadsheet.getSheetByName(SCHEMA_SHEET) || spreadsheet.insertSheet(SCHEMA_SHEET);
+  const rows = [["分頁", "英文舊分頁", "資料用途", "欄位", "程式欄位", "欄位型態"]];
+  TABLES.concat([META_TABLE, SETTINGS_TABLE]).forEach(function (table) {
+    Object.keys(table.columns).forEach(function (key) {
+      rows.push([table.sheet, table.legacy || "", table.description || "系統資料", table.columns[key][0], key, table.columns[key][1]]);
+    });
+  });
+  sheet.clearContents();
+  sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, rows[0].length);
 }
 
 function output_(value, callback) {
@@ -137,24 +185,13 @@ function output_(value, callback) {
 
 function postOutput_(value, requestId) {
   if (!requestId) return json_(value);
-  const message = {
-    ananSheetSync: true,
-    requestId: String(requestId),
-    result: value,
-  };
-  return HtmlService.createHtmlOutput(
-    '<!doctype html><meta charset="utf-8"><script>parent.postMessage(' +
-      JSON.stringify(message) +
-      ', "*");</script>'
-  );
+  const message = {ananSheetSync: true, requestId: String(requestId), result: value};
+  return HtmlService.createHtmlOutput('<!doctype html><meta charset="utf-8"><script>parent.postMessage(' + JSON.stringify(message) + ', "*");</script>');
 }
+
 function jsonp_(callback, value) {
-  if (!/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/.test(callback)) {
-    return json_({ok: false, error: "Invalid callback"});
-  }
-  return ContentService
-    .createTextOutput(callback + "(" + JSON.stringify(value) + ");")
-    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  if (!/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/.test(callback)) return json_({ok: false, error: "Invalid callback"});
+  return ContentService.createTextOutput(callback + "(" + JSON.stringify(value) + ");").setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 function json_(value) {

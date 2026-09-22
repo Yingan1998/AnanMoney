@@ -18,7 +18,7 @@ AnanMoney 是一個以單頁 HTML 為主的個人記帳工具，資料預設儲�
 3. 若要同步 Google 試算表，請將 `google-apps-script/Code.gs` 部署為 Web App：
    - Execute as：Me
    - Who has access：Anyone
-   - 前端填入 `/exec` 結尾的 Web App 網址與同步安全碼。
+   - 每位使用者需在前端填入自己 `/exec` 結尾的 Web App 網址與同步安全碼。
 4. 手機端若無法同步，請在設定中心使用「手機連線診斷」並確認：
    - 網址是 `/exec`，不是 `/dev`。
    - 安全碼與 `Code.gs` 的 `SYNC_TOKEN` 完全相同。
@@ -33,6 +33,9 @@ AnanMoney 是一個以單頁 HTML 為主的個人記帳工具，資料預設儲�
 ## 版本修改歷程
 
 ### 2026-09-22
+- 新增多使用者 profile 資料分離，每位使用者會使用獨立的瀏覽器資料庫 key。
+- Google Email 可綁定到使用者 profile，每位使用者可保存自己的 GAS/試算表同步設定。
+- Google Apps Script 同步分頁與欄位改為繁體中文，並新增「資料表結構」分頁說明欄位型態。
 
 - 補上中文模組註解與 README。
 - 修正記帳紀錄的編輯/刪除按鈕在手機上的尺寸與換行。
@@ -57,6 +60,6 @@ AnanMoney 是一個以單頁 HTML 為主的個人記帳工具，資料預設儲�
 
 ## 注意事項
 
-- 目前「本機帳號」不是雲端驗證帳號，只是同裝置內的使用者資料欄位雛形。若要提供多人正式使用，建議改接 Firebase/Auth、Supabase 或自建後端。
+- 目前「本機帳號」與 Google Email 綁定是同裝置 profile 分流，不是正式 Google OAuth 登入。若要提供多人正式登入，建議改接 Firebase/Auth、Supabase 或自建後端。
 - 電子發票掃描依賴瀏覽器 `BarcodeDetector`；不支援時可貼上 QR Code 文字或明細文字解析。
 - 2026 假日資料參考行政院人事行政總處公告，跨年度需更新 `TW_HOLIDAYS`。
