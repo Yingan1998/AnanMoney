@@ -4640,11 +4640,10 @@
                         <div class="setting-card">
                             <h3>Google 試算表</h3>
                             <div class="desc">
-                                透過 Google Apps Script Web App 同步本機資料。可貼上 Web App
-                                網址，或用「複製手機連線連結」把網址帶到手機。
+                                透過共用 Google Apps Script Web App 同步資料。若站台已預設 Web App，一般使用者不用填；資料會依使用者ID分開儲存。
                             </div>
                             <div class="field" style="margin-top: 12px">
-                                <label>Apps Script Web App 網址</label>
+                                <label>Apps Script Web App 網址（管理者可預設）</label>
                                 <input
                                     id="sheetApiUrl"
                                     class="setting-control setting-wide"
@@ -4653,7 +4652,7 @@
                                 />
                             </div>
                             <div class="field">
-                                <label>同步安全碼（需與 Apps Script 相同）</label>
+                                <label>同步安全碼（管理者可預設）</label>
                                 <input
                                     id="sheetApiToken"
                                     class="setting-control setting-wide"
@@ -4916,10 +4915,11 @@
                 "2026-10-26": "光復節補假",
                 "2026-12-25": "行憲紀念日",
             };
-            // Google Sheets sync bootstrap. Put the deployed /exec URL here if you want new devices to auto-fill it.
-            // The sync token is intentionally not stored in share links to avoid leaking it through browser history.
+            // Google Sheets sync bootstrap. Site owners can set one shared /exec URL here so normal users do not need GAS setup.
+            // Each request sends userKey, so the shared sheet stores profiles in separate rows.
             const SHEET_SYNC_DEFAULTS = {
                 url: "",
+                token: "",
             };
 
             // Demo data and the full app state shape used when this browser has no saved data yet.
@@ -7402,7 +7402,8 @@
                     [!!url, "已設定 Apps Script /exec 網址"],
                     [/\/exec$/.test(url), "網址結尾必須是 /exec，不是 /dev"],
                     [location.protocol === "https:" || location.hostname === "localhost", "建議使用 HTTPS GitHub Pages 或 localhost"],
-                    [!!state.settings.sheetApiToken, "手機端需輸入同步安全碼，連結不會夾帶安全碼"],
+                    [!!(state.settings.sheetApiToken || SHEET_SYNC_DEFAULTS.token), "已設定同步安全碼"],
+                    [sheetUserKey() !== "default", "已設定使用者識別，避免多人資料混在一起"],
                     [navigator.cookieEnabled, "瀏覽器 Cookie/站台資料未完全關閉"],
                 ];
                 $("#sheetDiagList").innerHTML = checks.map(([ok, label]) => `<li>${ok ? "✓" : "!"} ${label}</li>`).join("");
@@ -7429,17 +7430,26 @@
                 toast(isNew ? "使用者已註冊，正在切換資料庫" : "正在切換使用者資料庫");
                 switchProfile(id);
             }
+            function sheetUserKey() {
+                const profile = activeProfileRecord();
+                return profileSlug(profile.googleEmail || state.settings.googleEmail || store.profileId || "default");
+            }
             function sheetConfig() {
                 const url = normalizeSheetApiUrl(
                         $("#sheetApiUrl").value || state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url
                     ),
-                    token = ($("#sheetApiToken").value || state.settings.sheetApiToken || "").trim();
+                    token = ($("#sheetApiToken").value || state.settings.sheetApiToken || SHEET_SYNC_DEFAULTS.token || "").trim();
                 if (!url) {
-                    toast("請先為目前使用者輸入 Apps Script Web App /exec 網址");
+                    toast("站台尚未設定共用 Apps Script /exec 網址；管理者設定後使用者就不用填");
                     return null;
                 }
                 if (/\/dev\/?$/.test(url)) {
                     toast("請使用部署後的 /exec 網址，不要使用 /dev 測試網址");
+                    return null;
+                }
+                const userKey = sheetUserKey();
+                if (userKey === "default") {
+                    toast("請先在帳號設定註冊使用者或填 Google Email，再進行同步");
                     return null;
                 }
                 state.settings.sheetApiUrl = url;
@@ -7447,7 +7457,7 @@
                 $("#sheetApiUrl").value = url;
                 $("#sheetApiToken").value = token;
                 store.save();
-                return {url, token};
+                return {url, token, userKey};
             }
             $("#sheetApiUrl").addEventListener("input", (e) => {
                 state.settings.sheetApiUrl = e.target.value.trim();
@@ -7494,7 +7504,7 @@
                     const separator = config.url.includes("?") ? "&" : "?";
                     script.src = `${config.url}${separator}action=${encodeURIComponent(
                         action
-                    )}&token=${encodeURIComponent(config.token)}&callback=${encodeURIComponent(callback)}`;
+                    )}&token=${encodeURIComponent(config.token)}&userKey=${encodeURIComponent(config.userKey)}&callback=${encodeURIComponent(callback)}`;
                     document.body.appendChild(script);
                 });
             }
@@ -7542,7 +7552,7 @@
                     form.action = config.url;
                     form.target = requestId;
                     form.style.display = "none";
-                    addInput("payload", JSON.stringify({action, token: config.token, data}));
+                    addInput("payload", JSON.stringify({action, token: config.token, userKey: config.userKey, data}));
                     addInput("requestId", requestId);
                     document.body.append(iframe, form);
                     form.submit();
@@ -7609,7 +7619,7 @@
             };
             $("#sheetPreviewBtn").onclick = () =>
                 toast(
-                    "試算表分頁：Transactions、Accounts、Projects、Cards、Splits、Stocks、Funds、Goals、Events、Recurring、BalanceHistory、Metadata、Settings"
+                    "試算表分頁：記帳紀錄、帳戶、專案、信用卡、分帳、股票、基金、目標、行事曆、定期收支、餘額歷程、中繼資料、設定、資料表結構；各分頁用 使用者ID 分流"
                 );
             $("#resetDataBtn").onclick = () => {
                 if (!confirm("確定要重設為示範資料嗎？目前資料會被清除。")) return;

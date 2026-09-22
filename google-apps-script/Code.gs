@@ -4,6 +4,7 @@
  * GET 使用 JSONP，POST 使用隱藏 iframe + postMessage，避免 GitHub Pages/手機瀏覽器 CORS 限制。
  */
 const SYNC_TOKEN = "AnanMoney1998";
+const USER_KEY_COLUMN = "使用者ID";
 
 const TABLES = [
   {stateKey: "transactions", sheet: "記帳紀錄", legacy: "Transactions", description: "收入、支出、轉帳與信用卡刷卡紀錄", columns: {
@@ -45,8 +46,8 @@ const TABLES = [
   }}
 ];
 
-const META_TABLE = {sheet: "中繼資料", legacy: "Metadata", description: "全域彙總資料", columns: {key: ["鍵", "文字"], value: ["值", "文字/數字"]}};
-const SETTINGS_TABLE = {sheet: "設定", legacy: "Settings", description: "前端設定 JSON", columns: {json: ["設定JSON", "JSON 文字"]}};
+const META_TABLE = {sheet: "中繼資料", legacy: "Metadata", description: "每位使用者的全域彙總資料", columns: {key: ["鍵", "文字"], value: ["值", "文字/數字"]}};
+const SETTINGS_TABLE = {sheet: "設定", legacy: "Settings", description: "每位使用者的前端設定 JSON", columns: {json: ["設定JSON", "JSON 文字"]}};
 const SCHEMA_SHEET = "資料表結構";
 
 // doGet：提供 ping/load，支援 JSONP，讓 GitHub Pages 與手機瀏覽器可以避開 CORS 下載資料。
@@ -54,16 +55,17 @@ function doGet(e) {
   const callback = e.parameter.callback || "";
   try {
     authorize_(e.parameter.token || "");
+    const userKey = normalizeUserKey_(e.parameter.userKey || e.parameter.profile || "default");
     const action = e.parameter.action || "ping";
-    if (action === "ping") return output_({ok: true, message: "connected"}, callback);
-    if (action === "load") return output_({ok: true, data: readState_()}, callback);
+    if (action === "ping") return output_({ok: true, message: "connected", userKey: userKey}, callback);
+    if (action === "load") return output_({ok: true, data: readState_(userKey), userKey: userKey}, callback);
     return output_({ok: false, error: "Unsupported action"}, callback);
   } catch (error) {
     return output_({ok: false, error: error.message}, callback);
   }
 }
 
-// doPost：接收前端整包 state，寫入目前綁定的試算表，再透過 iframe postMessage 回覆。
+// doPost：接收前端整包 state，只更新目前 userKey 的資料列，不覆蓋其他使用者。
 function doPost(e) {
   const requestId = e.parameter.requestId || "";
   try {
@@ -71,8 +73,9 @@ function doPost(e) {
     const payload = JSON.parse(rawPayload);
     authorize_(payload.token || "");
     if (payload.action !== "save" || !payload.data) throw new Error("Invalid save request");
-    writeState_(payload.data);
-    return postOutput_({ok: true, message: "saved"}, requestId);
+    const userKey = normalizeUserKey_(payload.userKey || e.parameter.userKey || payload.data.settings && payload.data.settings.googleEmail || "default");
+    writeState_(payload.data, userKey);
+    return postOutput_({ok: true, message: "saved", userKey: userKey}, requestId);
   } catch (error) {
     return postOutput_({ok: false, error: error.message}, requestId);
   }
@@ -82,65 +85,89 @@ function authorize_(token) {
   if (SYNC_TOKEN && SYNC_TOKEN !== "CHANGE_ME" && token !== SYNC_TOKEN) throw new Error("Invalid sync token");
 }
 
+function normalizeUserKey_(value) {
+  const key = String(value || "").trim().toLowerCase().replace(/[^a-z0-9@._-]+/g, "-").replace(/^-|-$/g, "");
+  return key || "default";
+}
+
 // writeState_：把前端 state 拆成多個繁中工作表，並同步輸出資料表結構說明。
-function writeState_(state) {
+function writeState_(state, userKey) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   TABLES.forEach(function (table) {
-    writeRows_(spreadsheet, table, state[table.stateKey] || []);
+    writeRows_(spreadsheet, table, state[table.stateKey] || [], userKey);
   });
-  writeRows_(spreadsheet, META_TABLE, [{key: "budget", value: state.budget || 0}]);
-  writeRows_(spreadsheet, SETTINGS_TABLE, [{json: JSON.stringify(state.settings || {})}]);
+  writeRows_(spreadsheet, META_TABLE, [{key: "budget", value: state.budget || 0}], userKey);
+  writeRows_(spreadsheet, SETTINGS_TABLE, [{json: JSON.stringify(state.settings || {})}], userKey);
   writeSchema_(spreadsheet);
 }
 
-// readState_：優先讀繁中工作表，也相容舊版英文工作表，最後回組成前端 state。
-function readState_() {
+// readState_：只讀取目前 userKey 的資料；舊版沒有使用者ID的資料歸到 default。
+function readState_(userKey) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const state = {budget: 0, settings: {}};
   TABLES.forEach(function (table) {
-    state[table.stateKey] = readRows_(spreadsheet, table);
+    state[table.stateKey] = readRows_(spreadsheet, table, userKey);
   });
-  readRows_(spreadsheet, META_TABLE).forEach(function (row) {
+  readRows_(spreadsheet, META_TABLE, userKey).forEach(function (row) {
     if (row.key === "budget") state.budget = Number(row.value) || 0;
   });
-  const settings = readRows_(spreadsheet, SETTINGS_TABLE);
+  const settings = readRows_(spreadsheet, SETTINGS_TABLE, userKey);
   if (settings[0] && settings[0].json) {
     state.settings = typeof settings[0].json === "string" ? JSON.parse(settings[0].json) : settings[0].json;
   }
   return state;
 }
 
-// writeRows_：依 TABLES 欄位定義輸出固定欄位順序，避免試算表欄位漂移。
-function writeRows_(spreadsheet, table, rows) {
+// writeRows_：保留其他 userKey 的既有資料，只替換目前使用者的資料列。
+function writeRows_(spreadsheet, table, rows, userKey) {
   const sheet = spreadsheet.getSheetByName(table.sheet) || spreadsheet.insertSheet(table.sheet);
-  sheet.clearContents();
   const keys = Object.keys(table.columns);
-  const headers = keys.map(function (key) { return table.columns[key][0]; });
+  const headers = [USER_KEY_COLUMN].concat(keys.map(function (key) { return table.columns[key][0]; }));
+  const existingRows = readStoredRows_(spreadsheet, table);
+  const preservedRows = existingRows.filter(function (row) { return row.__userKey !== userKey; });
+  const nextRows = preservedRows.concat((rows || []).map(function (row) {
+    const copy = Object.assign({}, row);
+    copy.__userKey = userKey;
+    return copy;
+  }));
   const values = [headers];
-  (rows || []).forEach(function (row) {
-    values.push(keys.map(function (key) {
+  nextRows.forEach(function (row) {
+    values.push([row.__userKey || "default"].concat(keys.map(function (key) {
       const value = row[key];
       return value === undefined || value === null ? "" : typeof value === "object" ? JSON.stringify(value) : value;
-    }));
+    })));
   });
+  sheet.clearContents();
   sheet.getRange(1, 1, values.length, headers.length).setValues(values);
   sheet.setFrozenRows(1);
   sheet.autoResizeColumns(1, headers.length);
 }
 
-// readRows_：將試算表的繁中欄位名稱轉回程式 key，日期物件固定轉成 yyyy-MM-dd。
-function readRows_(spreadsheet, table) {
+// readRows_：將試算表的繁中欄位名稱轉回程式 key，並依 userKey 過濾。
+function readRows_(spreadsheet, table, userKey) {
+  return readStoredRows_(spreadsheet, table).filter(function (row) {
+    return row.__userKey === userKey;
+  }).map(function (row) {
+    const clean = Object.assign({}, row);
+    delete clean.__userKey;
+    return clean;
+  });
+}
+
+function readStoredRows_(spreadsheet, table) {
   const sheet = spreadsheet.getSheetByName(table.sheet) || spreadsheet.getSheetByName(table.legacy);
   if (!sheet || sheet.getLastRow() < 2) return [];
   const values = sheet.getDataRange().getValues();
-  const headers = values.shift();
+  const headers = values.shift().map(function (header) { return String(header); });
   const headerToKey = headerMap_(table);
+  const userIndex = headers.indexOf(USER_KEY_COLUMN) >= 0 ? headers.indexOf(USER_KEY_COLUMN) : headers.indexOf("userKey");
   return values.filter(function (row) {
     return row.some(function (value) { return value !== ""; });
   }).map(function (row) {
-    const result = {};
+    const result = {__userKey: normalizeUserKey_(userIndex >= 0 ? row[userIndex] : "default")};
     headers.forEach(function (header, index) {
-      const key = headerToKey[String(header)] || String(header);
+      if (index === userIndex) return;
+      const key = headerToKey[header] || header;
       let value = row[index];
       if (Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime())) {
         value = Utilities.formatDate(value, spreadsheet.getSpreadsheetTimeZone(), "yyyy-MM-dd");
@@ -168,6 +195,7 @@ function writeSchema_(spreadsheet) {
   const sheet = spreadsheet.getSheetByName(SCHEMA_SHEET) || spreadsheet.insertSheet(SCHEMA_SHEET);
   const rows = [["分頁", "英文舊分頁", "資料用途", "欄位", "程式欄位", "欄位型態"]];
   TABLES.concat([META_TABLE, SETTINGS_TABLE]).forEach(function (table) {
+    rows.push([table.sheet, table.legacy || "", table.description || "系統資料", USER_KEY_COLUMN, "userKey", "文字：同步使用者識別"]);
     Object.keys(table.columns).forEach(function (key) {
       rows.push([table.sheet, table.legacy || "", table.description || "系統資料", table.columns[key][0], key, table.columns[key][1]]);
     });
