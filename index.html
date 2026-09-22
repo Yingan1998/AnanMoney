@@ -1291,10 +1291,29 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                gap: 12px;
                 padding: 17px;
                 border-bottom: 1px solid var(--finxi-line);
             }
 
+            .settings-title-actions {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-shrink: 0;
+            }
+
+            .settings-save-btn {
+                width: auto;
+                height: 38px;
+                min-width: 72px;
+                border: 0;
+                border-radius: 13px;
+                background: var(--finxi);
+                color: #fff;
+                font-weight: 900;
+                padding: 0 14px;
+            }
             .settings-tabs {
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
@@ -4417,7 +4436,10 @@
                             <h2 style="margin: 0">⚙ 設定中心</h2>
                             <div class="muted" style="margin-top: 3px">安安 Money V3.9</div>
                         </div>
-                        <button class="round" id="closeSettingsCenter">×</button>
+                        <div class="settings-title-actions">
+                            <button class="settings-save-btn" id="saveSettingsBtn">儲存</button>
+                            <button class="round" id="closeSettingsCenter">×</button>
+                        </div>
                     </div>
 
                     <div class="settings-tabs">
@@ -7046,6 +7068,30 @@
                 applySettings();
                 refreshSettingsUI();
             }
+            function saveSettingsFromForm(showToast = true) {
+                state.settings.displayName = $("#settingDisplayName").value.trim() || "安安";
+                state.settings.currency = $("#settingCurrency").value || "TWD";
+                state.settings.defaultAccount = $("#settingDefaultAccount").value || state.accounts[0]?.id || "";
+                state.settings.defaultCategory = $("#settingDefaultCategory").value || "食品";
+                state.settings.weekStart = $("#weekStartSetting").value || "sun";
+                state.settings.stockRefreshMode = $("#stockRefreshMode").value || "open";
+                state.settings.noEntryTime = $("#noEntryTime").value || "20:00";
+                state.settings.noEntryRepeat = $("#noEntryRepeat").value || "once";
+                state.settings.cardReminderDays = Number($("#cardReminderDays").value || 3);
+                state.settings.sheetApiUrl = $("#sheetApiUrl").value.trim();
+                state.settings.sheetApiToken = $("#sheetApiToken").value;
+                const layout = document.querySelector("[data-layout].active")?.dataset.layout;
+                const theme = document.querySelector(".theme-pick.active")?.dataset.theme;
+                const tone = document.querySelector("[data-tone].active")?.dataset.tone;
+                if (layout) state.settings.layout = layout;
+                if (theme) state.settings.theme = theme;
+                if (tone) state.settings.tone = tone;
+                state.budget = Number($("#settingBudget").value || 0);
+                store.save();
+                applySettings();
+                refreshSettingsUI();
+                if (showToast) toast("設定已儲存");
+            }
             function updateTonePreview() {
                 const tone = state.settings.tone;
                 const samples = {
@@ -7073,6 +7119,7 @@
                 $("#settingsCenter").classList.add("open");
             };
             $("#closeSettingsCenter").onclick = () => $("#settingsCenter").classList.remove("open");
+            $("#saveSettingsBtn").onclick = () => saveSettingsFromForm(true);
 
             $("#settingDisplayName").onchange = (e) => persistSetting("displayName", e.target.value.trim() || "安安");
             $("#settingCurrency").onchange = (e) => persistSetting("currency", e.target.value);
