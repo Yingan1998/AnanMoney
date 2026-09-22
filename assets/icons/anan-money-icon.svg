@@ -1,0 +1,36 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Anan Money icon">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="48" x2="440" y2="464" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBEAF2"/>
+      <stop offset="0.52" stop-color="#E7D9F7"/>
+      <stop offset="1" stop-color="#BFA8E4"/>
+    </linearGradient>
+    <linearGradient id="wallet" x1="104" y1="136" x2="416" y2="384" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8F70C1"/>
+      <stop offset="1" stop-color="#5E458C"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#4E356D" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="386" cy="126" r="46" fill="#FFFFFF" opacity="0.58"/>
+  <circle cx="116" cy="396" r="34" fill="#FFFFFF" opacity="0.35"/>
+  <g filter="url(#shadow)">
+    <rect x="92" y="144" width="328" height="244" rx="52" fill="url(#wallet)"/>
+    <path d="M128 180h238c30 0 54 24 54 54v30H128c-22 0-40-18-40-40v-4c0-22 18-40 40-40Z" fill="#A98CD3" opacity="0.95"/>
+    <rect x="296" y="238" width="132" height="92" rx="34" fill="#F7ECF4"/>
+    <circle cx="340" cy="284" r="16" fill="#7357A6"/>
+  </g>
+  <g transform="translate(138 206)">
+    <rect x="0" y="0" width="136" height="124" rx="24" fill="#FFFFFF" opacity="0.96"/>
+    <rect x="0" y="0" width="136" height="34" rx="20" fill="#FF8A80"/>
+    <rect x="24" y="54" width="22" height="22" rx="7" fill="#7357A6" opacity="0.88"/>
+    <rect x="57" y="54" width="22" height="22" rx="7" fill="#7357A6" opacity="0.35"/>
+    <rect x="90" y="54" width="22" height="22" rx="7" fill="#7357A6" opacity="0.35"/>
+    <rect x="24" y="86" width="22" height="22" rx="7" fill="#30A66E" opacity="0.85"/>
+    <rect x="57" y="86" width="22" height="22" rx="7" fill="#7357A6" opacity="0.35"/>
+    <rect x="90" y="86" width="22" height="22" rx="7" fill="#7357A6" opacity="0.35"/>
+  </g>
+  <text x="256" y="382" text-anchor="middle" font-family="Arial, 'Noto Sans TC', sans-serif" font-size="70" font-weight="900" fill="#FFFFFF">NT$</text>
+</svg>
