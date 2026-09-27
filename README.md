@@ -9,7 +9,7 @@ AnanMoney 是一個以單頁 HTML 為主的個人記帳工具，資料預設儲�
 - 帳戶、信用卡、股票、專案與資產總覽。
 - 信用卡可綁定繳款帳戶，估算本期繳款前需要補進銀行的金額。
 - 資料可匯出 JSON 備份或指定區間 CSV。
-- Google 試算表同步：GET 使用 JSONP，POST 使用隱藏 iframe，避開 GitHub Pages/手機瀏覽器 CORS 限制。
+- Google 試算表同步：GET 使用 JSONP，POST 使用 no-cors 表單請求並回讀驗證，避開 GitHub Pages/手機瀏覽器 CORS 與 iframe 限制。
 
 ## 使用方式
 

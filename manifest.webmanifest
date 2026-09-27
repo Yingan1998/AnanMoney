@@ -2,7 +2,7 @@
   "name": "Anan的記帳本",
   "short_name": "Anan Money",
   "description": "安安的記帳、資產與信用卡管理工具",
-  "start_url": "./index.html",
+  "start_url": "./index.html?v=20260927-sync2",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fbf7fa",

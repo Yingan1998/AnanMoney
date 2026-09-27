@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <meta name="theme-color" content="#7357a6" />
         <meta name="application-name" content="Anan Money" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="Anan Money" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -462,6 +463,11 @@
                 text-overflow: ellipsis;
             }
 
+            .cal-day-cell {
+                min-width: 0;
+                overflow: hidden;
+            }
+
             .day-info {
                 padding: 18px;
             }
@@ -475,6 +481,22 @@
             .day-info h2 {
                 margin: 0;
                 font-size: 28px;
+            }
+
+            .selected-holiday {
+                display: none;
+                margin-top: 8px;
+                padding: 8px 10px;
+                border-radius: 12px;
+                background: #ffe6eb;
+                color: #b64252;
+                font-size: 13px;
+                font-weight: 850;
+                line-height: 1.35;
+            }
+
+            .selected-holiday.show {
+                display: block;
             }
 
             .outline-btn {
@@ -2246,6 +2268,80 @@
                     padding: 0;
                 }
 
+                body.layout-mobile .settings-center {
+                    align-items: stretch !important;
+                    justify-content: flex-end;
+                    padding: 0 !important;
+                }
+
+                body.layout-mobile .settings-panel {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    height: 100dvh;
+                    max-height: 100dvh !important;
+                    border-radius: 0 !important;
+                    overflow-x: hidden;
+                }
+
+                body.layout-mobile .settings-title {
+                    gap: 10px;
+                    padding: 14px 14px 10px;
+                }
+
+                body.layout-mobile .settings-title h2 {
+                    font-size: clamp(18px, 5.4vw, 22px);
+                }
+
+                body.layout-mobile .settings-tabs {
+                    display: flex;
+                    gap: 8px;
+                    padding: 0 14px 10px;
+                    overflow-x: auto;
+                    overscroll-behavior-x: contain;
+                    scroll-snap-type: x proximity;
+                }
+
+                body.layout-mobile .settings-tabs button {
+                    flex: 0 0 auto;
+                    min-width: 86px;
+                    scroll-snap-align: start;
+                }
+
+                body.layout-mobile .setting-pane {
+                    padding: 0 14px calc(24px + var(--safe));
+                }
+
+                body.layout-mobile .setting-card {
+                    min-width: 0;
+                    overflow: hidden;
+                }
+
+                body.layout-mobile .setting-row {
+                    align-items: flex-start;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+
+                body.layout-mobile .setting-row > span,
+                body.layout-mobile .setting-row > div {
+                    width: 100%;
+                    min-width: 0;
+                }
+
+                body.layout-mobile .setting-control {
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                body.layout-mobile .settings-actions,
+                body.layout-mobile [data-setting-pane="files"] .settings-actions {
+                    grid-template-columns: 1fr;
+                }
+
+                body.layout-mobile #sheetSyncStatus {
+                    align-self: flex-start;
+                }
+
                 body.layout-mobile .sheet {
                     width: 100%;
                     max-width: 100%;
@@ -3842,6 +3938,7 @@
                         <h2 id="dayTitle"></h2>
                         <div id="daySum" style="text-align: right; font-size: 12px"></div>
                     </div>
+                    <div class="selected-holiday" id="selectedHoliday"></div>
                     <button class="outline-btn" id="addForDay">＋ 新增這一天的收支</button>
                     <div id="dayList"></div>
                 </div>
@@ -4888,7 +4985,7 @@
              * 3. 資產層：帳戶、信用卡、股票與總資產計算，所有金額顯示都走 display/accountMoney helper。
              * 4. 記帳層：renderAdd/saveTransaction/openTransactionEditor 管理收入、支出、轉帳與信用卡刷卡效果。
              * 5. 畫面層：renderCalendar/renderAssets/renderCards/renderAccountGroups 只負責把 state 畫到 DOM。
-             * 6. 同步層：sheetJsonpRequest/sheetFormPostRequest 避開 Apps Script CORS，手機端也用同一套流程。
+             * 6. 同步層：GET 用 JSONP、POST 用 no-cors fetch + 回讀驗證，避開 Apps Script CORS/iframe 限制。
              */
             const TW_HOLIDAYS = {
                 "2026-01-01": "開國紀念日",
@@ -5809,7 +5906,7 @@
                         ev = state.events.find((e) => e.date === iso),
                         holiday = TW_HOLIDAYS[iso],
                         weekend = new Date(iso + "T12:00:00").getDay() % 6 === 0;
-                    html += `<div><button class="day ${iso === selectedDate ? "sel" : ""} ${has ? "has" : ""} ${
+                    html += `<div class="cal-day-cell"><button class="day ${iso === selectedDate ? "sel" : ""} ${has ? "has" : ""} ${
                         weekend ? "weekend" : ""
                     } ${holiday ? "holiday" : ""}" data-date="${iso}" title="${holiday || ""}">${d}</button>${
                         holiday ? `<span class="holiday-label">${holiday}</span>` : ""
@@ -5825,6 +5922,9 @@
                 );
                 const d = new Date(selectedDate + "T12:00:00");
                 $("#dayTitle").textContent = `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+                const selectedHoliday = TW_HOLIDAYS[selectedDate] || "";
+                $("#selectedHoliday").textContent = selectedHoliday;
+                $("#selectedHoliday").classList.toggle("show", !!selectedHoliday);
                 const s = sum((t) => t.date === selectedDate);
                 $("#daySum").innerHTML = `收入 ${money(s.i)}<br>支出 ${money(s.e)}`;
                 $("#dayList").innerHTML =
@@ -7508,59 +7608,37 @@
                     document.body.appendChild(script);
                 });
             }
-            // POST uses a hidden form + iframe so GitHub Pages/mobile browsers can upload without CORS.
-            function sheetFormPostRequest(action, data) {
+            // POST cannot rely on hidden iframes because script.google.com blocks framing.
+            // Send an opaque no-cors request, then JSONP-load the saved marker to verify the sheet received it.
+            async function sheetFetchPostRequest(action, data) {
                 const config = sheetConfig();
-                if (!config) return Promise.reject(new Error("missing url"));
-                return new Promise((resolve, reject) => {
-                    const requestId = `ananSheetPost_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-                    const iframe = document.createElement("iframe");
-                    const form = document.createElement("form");
-                    let done = false;
-                    const cleanup = () => {
-                        if (done) return;
-                        done = true;
-                        clearTimeout(timer);
-                        window.removeEventListener("message", onMessage);
-                        form.remove();
-                        setTimeout(() => iframe.remove(), 0);
-                    };
-                    const fail = (message) => {
-                        cleanup();
-                        reject(new Error(message));
-                    };
-                    const timer = setTimeout(() => fail("連線逾時"), 30000);
-                    const onMessage = (event) => {
-                        const payload = event.data;
-                        if (!payload || payload.ananSheetSync !== true || payload.requestId !== requestId) return;
-                        cleanup();
-                        if (!payload.result?.ok) reject(new Error(payload.result?.error || "同步失敗"));
-                        else resolve(payload.result);
-                    };
-                    const addInput = (name, value) => {
-                        const input = document.createElement("input");
-                        input.type = "hidden";
-                        input.name = name;
-                        input.value = value;
-                        form.appendChild(input);
-                    };
-                    window.addEventListener("message", onMessage);
-                    iframe.name = requestId;
-                    iframe.style.display = "none";
+                if (!config) throw new Error("missing url");
+                if (!window.fetch) throw new Error("此瀏覽器不支援背景上傳，請更新瀏覽器後再試");
+                const uploadId = `upload-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+                const dataToSave = JSON.parse(JSON.stringify(data));
+                dataToSave.settings = {...(dataToSave.settings || {}), sheetLastUploadId: uploadId};
+                state.settings.sheetLastUploadId = uploadId;
+                store.save();
 
-                    form.method = "POST";
-                    form.action = config.url;
-                    form.target = requestId;
-                    form.style.display = "none";
-                    addInput("payload", JSON.stringify({action, token: config.token, userKey: config.userKey, data}));
-                    addInput("requestId", requestId);
-                    document.body.append(iframe, form);
-                    form.submit();
+                const body = new URLSearchParams();
+                body.set("payload", JSON.stringify({action, token: config.token, userKey: config.userKey, data: dataToSave}));
+                await fetch(config.url, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body,
+                    credentials: "omit",
+                    cache: "no-store",
                 });
+                await new Promise((resolve) => setTimeout(resolve, 1200));
+                const verified = await sheetJsonpRequest("load");
+                if (verified?.data?.settings?.sheetLastUploadId !== uploadId) {
+                    throw new Error("上傳後驗證失敗，請稍後再試或重新部署 Apps Script");
+                }
+                return {ok: true, message: "saved", userKey: config.userKey};
             }
             async function sheetRequest(method, action, data) {
                 if (method === "GET") return sheetJsonpRequest(action);
-                return sheetFormPostRequest(action, data);
+                return sheetFetchPostRequest(action, data);
             }
             $("#sheetTestBtn").onclick = async () => {
                 try {
