@@ -422,11 +422,14 @@
             }
 
             .day {
-                aspect-ratio: 1;
+                width: 30px;
+                height: 30px;
                 border-radius: 50%;
                 border: 0;
                 background: transparent;
                 position: relative;
+                flex: 0 0 auto;
+                font-weight: 850;
             }
 
             .day.sel {
@@ -435,15 +438,7 @@
             }
 
             .day.has:after {
-                content: "";
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                bottom: 3px;
-                width: 13px;
-                height: 3px;
-                border-radius: 99px;
-                background: #7558a8;
+                display: none;
             }
 
             .day.sel:after {
@@ -465,7 +460,71 @@
 
             .cal-day-cell {
                 min-width: 0;
+                min-height: 96px;
+                padding: 5px 4px;
                 overflow: hidden;
+                border-radius: 14px;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 3px;
+                text-align: left;
+            }
+
+            .cal-day-cell.selected {
+                background: #f4eef9;
+            }
+
+            .cal-day-cell.empty {
+                min-height: 96px;
+            }
+
+            .cal-chip-list {
+                min-height: 42px;
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .cal-chip {
+                display: block;
+                width: 100%;
+                border-radius: 7px;
+                padding: 2px 4px;
+                font-size: 9px;
+                line-height: 1.25;
+                font-weight: 850;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .cal-chip.holiday {
+                background: #ffe6eb;
+                color: #c43d50;
+            }
+
+            .cal-chip.event {
+                background: #e8ddf7;
+                color: #654a8a;
+            }
+
+            .cal-chip.tx {
+                background: #e7f4ef;
+                color: #317a59;
+            }
+
+            .cal-chip.card-due {
+                background: #ffe8d9;
+                color: #ad573d;
+            }
+
+            .cal-more {
+                display: block;
+                padding-left: 4px;
+                color: var(--muted);
+                font-size: 9px;
+                font-weight: 800;
             }
 
             .day-info {
@@ -631,6 +690,63 @@
 
             .split-preview strong {
                 color: var(--green);
+            }
+
+            .split-summary-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin: 12px 0;
+            }
+
+            .split-summary-item,
+            .split-detail-line {
+                background: rgba(255, 255, 255, 0.72);
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                padding: 10px;
+                min-width: 0;
+            }
+
+            .split-summary-item small,
+            .split-detail-line small {
+                display: block;
+                color: var(--muted);
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+
+            .split-summary-item strong {
+                display: block;
+                font-size: clamp(13px, 3.5vw, 16px);
+                overflow-wrap: anywhere;
+            }
+
+            .split-flow {
+                display: grid;
+                gap: 8px;
+                margin-top: 10px;
+            }
+
+            .split-flow-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+            .split-flow-row strong {
+                color: var(--ink);
+                font-size: 15px;
+            }
+
+            .csv-date-range {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                width: min(260px, 100%);
             }
 
             .form-actions {
@@ -1140,6 +1256,57 @@
                 font-weight: 800;
             }
 
+            .recurring-box {
+                display: none;
+                margin-bottom: 12px;
+                padding: 12px;
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                background: #fff;
+            }
+
+            .recurring-box.show {
+                display: block;
+            }
+
+            .recurring-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+
+            .recurring-head strong {
+                font-size: 14px;
+            }
+
+            .recurring-list {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .recurring-chip {
+                flex: 0 0 auto;
+                border: 1px solid var(--finxi-line);
+                border-radius: 14px;
+                background: var(--finxi-soft);
+                color: var(--finxi-dark);
+                padding: 9px 11px;
+                text-align: left;
+                font-weight: 850;
+            }
+
+            .recurring-chip small {
+                display: block;
+                color: var(--muted);
+                font-size: 11px;
+                font-weight: 700;
+                margin-top: 2px;
+            }
+
             .q-tabs {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -1602,12 +1769,22 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                min-width: 0;
+                flex-wrap: nowrap;
             }
 
             .account-amount-wrap {
-                display: grid;
-                gap: 3px;
-                justify-items: end;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 8px;
+                min-width: 0;
+                white-space: nowrap;
+            }
+
+            .account-amount-wrap strong,
+            .account-balance-sub {
+                white-space: nowrap;
             }
 
             .edit-mini {
@@ -1620,10 +1797,9 @@
             }
 
             .account-balance-sub {
-                display: block;
+                display: inline;
                 color: var(--muted);
                 font-size: 11px;
-                margin-top: 3px;
                 text-align: right;
             }
 
@@ -1652,7 +1828,6 @@
             }
 
             .card-edit-btn {
-                margin-top: 14px;
                 width: 100%;
                 height: 40px;
                 border: 1px solid #ffffff55;
@@ -1660,6 +1835,32 @@
                 background: #ffffff18;
                 color: #fff;
                 font-weight: 800;
+            }
+
+            .card-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-top: 14px;
+            }
+
+            .card-actions button {
+                width: 100%;
+                min-width: 0;
+                height: 46px;
+                margin: 0;
+            }
+
+            .card-overdue-pay-btn {
+                border: 1px solid #fff;
+                border-radius: 13px;
+                background: #fff;
+                color: var(--finxi-dark) !important;
+                font-weight: 900;
+                display: grid;
+                place-items: center;
+                font-size: 15px;
+                box-shadow: 0 6px 14px rgba(255, 255, 255, 0.12);
             }
 
             /* ===== V4.0 incremental upgrade on V3.9 ===== */
@@ -2140,6 +2341,27 @@
                 .cal-grid {
                     gap: 4px;
                 }
+
+                .cal-day-cell,
+                .cal-day-cell.empty {
+                    min-height: 78px;
+                    padding: 4px 2px;
+                    border-radius: 12px;
+                }
+
+                .day {
+                    width: 26px;
+                    height: 26px;
+                }
+
+                .cal-chip-list {
+                    min-height: 36px;
+                }
+
+                .cal-chip {
+                    font-size: 8px;
+                    padding-inline: 3px;
+                }
             }
 
             @media (max-width: 759px) {
@@ -2333,6 +2555,11 @@
                     max-width: 100%;
                 }
 
+                body.layout-mobile .csv-date-range {
+                    width: 100%;
+                    grid-template-columns: 1fr;
+                }
+
                 body.layout-mobile .settings-actions,
                 body.layout-mobile [data-setting-pane="files"] .settings-actions {
                     grid-template-columns: 1fr;
@@ -2507,6 +2734,12 @@
             body.layout-desktop .quick-grid {
                 max-width: 1400px;
                 margin-inline: auto;
+            }
+
+            body.layout-desktop .cal-day-cell,
+            body.layout-desktop .cal-day-cell.empty {
+                min-height: 116px;
+                padding: 8px 6px;
             }
 
             body.layout-desktop .bottom-nav,
@@ -2829,12 +3062,24 @@
 
             body.layout-desktop .account-line {
                 display: grid;
-                grid-template-columns: minmax(220px, 1.25fr) minmax(150px, 0.8fr) minmax(180px, 1fr) minmax(
-                        180px,
-                        0.8fr
-                    );
+                grid-template-columns: minmax(180px, 1fr) minmax(160px, 0.75fr) minmax(170px, 0.85fr) minmax(420px, auto);
                 align-items: center;
-                gap: 18px;
+                gap: 16px;
+                overflow: hidden;
+            }
+
+            body.layout-desktop .account-line > div {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            body.layout-desktop .account-line > div:first-child strong,
+            body.layout-desktop .account-line > div:first-child small {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             body.layout-desktop .account-line .account-meta,
@@ -2842,15 +3087,18 @@
                 min-width: 0;
                 color: var(--muted);
                 font-size: 12px;
-                line-height: 1.45;
+                line-height: 1.3;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             body.layout-desktop .account-line .account-meta strong,
             body.layout-desktop .account-line .account-note strong {
-                display: block;
+                display: inline;
                 color: var(--ink);
                 font-size: 11px;
-                margin-bottom: 3px;
+                margin: 0 6px 0 0;
             }
 
             body.layout-desktop .account-line .account-note {
@@ -2861,6 +3109,7 @@
 
             body.layout-desktop .account-line .account-edit {
                 justify-content: flex-end;
+                overflow: visible;
             }
 
             @media (max-width: 700px) {
@@ -3241,6 +3490,15 @@
                 background: #d76b50;
                 color: #fff;
                 box-shadow: 0 6px 14px rgba(215, 107, 80, 0.18);
+                height: 46px;
+                margin: 0;
+            }
+
+            body.layout-desktop #cardList > .card:not(.card-reminder) .card-overdue-pay-btn,
+            body.layout-mobile #cardList > .card:not(.card-reminder) .card-overdue-pay-btn {
+                background: #fff !important;
+                color: #674f8c !important;
+                border-color: #fff !important;
             }
 
             body.layout-desktop #cardList > .card:not(.card-reminder) .card-detail-grid small,
@@ -3957,6 +4215,13 @@
                     <button class="chip" data-txtype="income">收入</button>
                     <button class="chip" data-txtype="transfer">轉帳</button>
                 </div>
+                <div class="form recurring-box" id="recurringBox">
+                    <div class="recurring-head">
+                        <strong>固定支出</strong>
+                        <span class="muted">點一下直接記帳</span>
+                    </div>
+                    <div class="recurring-list" id="recurringList"></div>
+                </div>
                 <form class="form">
                     <h2 id="formTitle">新增支出</h2>
                     <div class="field">
@@ -3979,13 +4244,13 @@
                         </div>
                         <div class="field">
                             <label>分類</label
-                            ><input id="category" class="control" list="categoryOptions" placeholder="可選擇或自行輸入" />
-                            <datalist id="categoryOptions"></datalist>
+                            ><select id="category" class="control"></select>
+                            <input id="categoryCustom" class="control" placeholder="輸入自訂分類" style="display: none; margin-top: 8px" />
                         </div>
                         <div class="field">
                             <label>子分類</label
-                            ><input id="subcategory" class="control" list="subcategoryOptions" placeholder="可選擇或自行輸入" />
-                            <datalist id="subcategoryOptions"></datalist>
+                            ><select id="subcategory" class="control"></select>
+                            <input id="subcategoryCustom" class="control" placeholder="輸入自訂子分類" style="display: none; margin-top: 8px" />
                         </div>
                         <div class="field">
                             <label>帳戶／信用卡</label
@@ -4012,6 +4277,10 @@
                             <label>備註</label
                             ><textarea id="note" class="control" placeholder="例如：火鍋、東京迪士尼門票"></textarea>
                         </div>
+                        <label class="setting-note" style="display:flex;align-items:center;gap:10px">
+                            <input id="saveAsRecurring" type="checkbox" />
+                            <span>設定為固定支出，以後可一鍵記帳</span>
+                        </label>
                     </div>
                     <div id="transferFields" style="display: none">
                         <div class="field">
@@ -4435,7 +4704,15 @@
                     <div class="field">
                         <label>綁定繳款帳戶</label>
                         <select id="cardPaymentAccount" class="control"></select>
-                        <div class="field-hint">會用本期應繳餘額與帳戶餘額估算需要補進銀行的金額。</div>
+                        <div class="field-hint">信用卡繳款會從這個帳戶扣款，並沖減信用卡未繳金額。</div>
+                    </div>
+                    <div class="field">
+                        <label>到期日自動記帳繳款</label>
+                        <select id="cardAutoPayment" class="control">
+                            <option value="false">關閉</option>
+                            <option value="true">開啟</option>
+                        </select>
+                        <div class="field-hint">開啟後，繳款截止日當天會以本期應繳餘額自動建立一筆信用卡繳款。</div>
                     </div>
                     <div class="field">
                         <label>備註</label
@@ -4447,6 +4724,38 @@
                             刪除卡片
                         </button>
                         <button class="primary" id="saveCard">儲存卡片</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="cardPaymentModal">
+                <div class="sheet">
+                    <div class="sheet-handle"></div>
+                    <h2 id="cardPaymentModalTitle">信用卡繳款</h2>
+                    <input type="hidden" id="editingCardPaymentId" />
+                    <div class="field">
+                        <label>信用卡</label>
+                        <select id="cardPaymentCard" class="control"></select>
+                    </div>
+                    <div class="field">
+                        <label>扣款帳戶</label>
+                        <select id="cardPaymentFrom" class="control"></select>
+                    </div>
+                    <div class="field">
+                        <label>繳款金額</label>
+                        <input id="cardPaymentAmount" class="control" type="number" inputmode="decimal" />
+                    </div>
+                    <div class="field">
+                        <label>繳款日期</label>
+                        <input id="cardPaymentDate" class="control" type="date" />
+                    </div>
+                    <div class="field">
+                        <label>備註</label>
+                        <input id="cardPaymentNote" class="control" placeholder="例如：本期信用卡自動扣繳" />
+                    </div>
+                    <div class="modal-footer-2">
+                        <button class="secondary" id="cancelCardPaymentBtn">取消</button>
+                        <button class="primary" id="saveCardPaymentBtn">記錄繳款</button>
                     </div>
                 </div>
             </div>
@@ -4726,7 +5035,7 @@
                             </div>
                             <div class="setting-row">
                                 <span>起訖日期</span>
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(260px,100%)">
+                                <div class="csv-date-range">
                                     <input id="csvStartDate" class="setting-control" type="date" />
                                     <input id="csvEndDate" class="setting-control" type="date" />
                                 </div>
@@ -4970,6 +5279,16 @@
                 if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
                 const parsed = new Date(text);
                 return Number.isNaN(parsed.getTime()) ? text : toLocalIsoDate(parsed);
+            }
+            function addMonthsToIsoDate(value, months = 1) {
+                const iso = dateOnly(value);
+                const match = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+                if (!match) return iso;
+                const year = Number(match[1]);
+                const monthIndex = Number(match[2]) - 1;
+                const day = Number(match[3]);
+                const lastDay = new Date(year, monthIndex + months + 1, 0).getDate();
+                return dateOnly(new Date(year, monthIndex + months, Math.min(day, lastDay)));
             }
             const money = (n) => "NT$ " + Math.round(Number(n || 0)).toLocaleString("zh-TW");
             const moneyExact = (n) =>
@@ -5353,7 +5672,27 @@
             state.settings.customCategories ||= {};
             profileStore.upsert({id: store.profileId, name: state.settings.displayName || "安安", googleEmail: state.settings.googleEmail || ""});
             state.balanceHistory ||= [];
+            state.splits ||= [];
+            state.splits.forEach((s) => {
+                s.amount = +s.amount || 0;
+                s.direction = s.direction === "i_owe" ? "i_owe" : "owed_to_me";
+                s.totalAmount = +s.totalAmount || 0;
+                s.selfAmount = Number.isFinite(+s.selfAmount) ? +s.selfAmount : 0;
+                s.otherAmount = Number.isFinite(+s.otherAmount) ? +s.otherAmount : 0;
+                if (!s.totalAmount) {
+                    s.totalAmount = s.selfAmount + s.otherAmount || s.amount;
+                    if (!s.selfAmount && !s.otherAmount) {
+                        s.selfAmount = s.direction === "i_owe" ? s.amount : 0;
+                        s.otherAmount = s.direction === "owed_to_me" ? s.amount : 0;
+                    }
+                }
+                s.share = Number.isFinite(+s.share) ? +s.share : s.totalAmount ? Math.round((s.selfAmount / s.totalAmount) * 100) : 100;
+                s.paidBy ||= s.direction === "i_owe" ? "other" : "self";
+                s.payerName ||= s.paidBy === "other" ? s.person || "對方" : state.settings.displayName || "我";
+            });
             state.cards.forEach((c) => {
+                c.paymentAccountId ||= "";
+                c.autoPayment = c.autoPayment === true;
                 if (!c.dueDate && c.dueDay) {
                     const d = new Date(),
                         y = d.getFullYear(),
@@ -5492,6 +5831,9 @@
             if (state.settings.ananAccountDefaultsApplied !== "2026-09-04") applyAnanAccountDefaults(false);
 
             state.funds ||= [{id: uid(), name: "安聯台灣科技基金", nickname: "呱呱", units: 0, cost: 0, nav: 0}];
+            state.stocks.forEach((s) => {
+                s.code = normalizeStockCode(s.code);
+            });
             state.accounts.forEach((a) => {
                 a.type ||= a.name.includes("現金") ? "cash" : "bank";
                 a.currency ||= "TWD";
@@ -5541,11 +5883,32 @@
                     "recurring",
                     "balanceHistory",
                 ].forEach((key) => (state[key] = Array.isArray(state[key]) ? state[key] : []));
+                state.splits.forEach((s) => {
+                    s.amount = +s.amount || 0;
+                    s.direction = s.direction === "i_owe" ? "i_owe" : "owed_to_me";
+                    s.totalAmount = +s.totalAmount || 0;
+                    s.selfAmount = Number.isFinite(+s.selfAmount) ? +s.selfAmount : 0;
+                    s.otherAmount = Number.isFinite(+s.otherAmount) ? +s.otherAmount : 0;
+                    if (!s.totalAmount) {
+                        s.totalAmount = s.selfAmount + s.otherAmount || s.amount;
+                        if (!s.selfAmount && !s.otherAmount) {
+                            s.selfAmount = s.direction === "i_owe" ? s.amount : 0;
+                            s.otherAmount = s.direction === "owed_to_me" ? s.amount : 0;
+                        }
+                    }
+                    s.share = Number.isFinite(+s.share) ? +s.share : s.totalAmount ? Math.round((s.selfAmount / s.totalAmount) * 100) : 100;
+                    s.paidBy ||= s.direction === "i_owe" ? "other" : "self";
+                    s.payerName ||= s.paidBy === "other" ? s.person || "對方" : state.settings.displayName || "我";
+                });
                 state.cards.forEach((c) => {
                     c.statementDate = dateOnly(c.statementDate);
                     c.dueDate = dateOnly(c.dueDate);
                     c.paymentAccountId ||= "";
+                    c.autoPayment = c.autoPayment === true;
                     c.sortOrder = Number.isFinite(+c.sortOrder) ? +c.sortOrder : state.cards.indexOf(c);
+                });
+                state.stocks.forEach((s) => {
+                    s.code = normalizeStockCode(s.code);
                 });
                 state.accounts.forEach((a) => {
                     a.type ||= a.name?.includes("現金") ? "cash" : "bank";
@@ -5624,11 +5987,42 @@
                 }
                 return accountOptions.join("");
             }
+            function accountOptions(selected = "") {
+                return state.accounts
+                .map(
+                    (a) =>
+                        `<option value="${a.id}" ${a.id === selected ? "selected" : ""}>${a.name} · ${money(
+                            accBalance(a)
+                        )}</option>`
+                )
+                .join("");
+            }
+            function cardOptions(selected = "") {
+                return state.cards
+                .map(
+                    (c) =>
+                        `<option value="${c.id}" ${c.id === selected ? "selected" : ""}>${c.name} · 應繳 ${money(
+                            c.currentDue || 0
+                        )}</option>`
+                )
+                .join("");
+            }
             function applyCardCharge(paymentId, delta) {
                 if (!isCardPayment(paymentId) || !delta) return;
                 const card = state.cards.find((c) => c.id === cardIdFromPayment(paymentId));
                 if (!card) return;
                 card.balance = Math.max(0, (+card.balance || 0) + delta);
+            }
+            function applyCardPaymentEffect(cardId, delta) {
+                const card = state.cards.find((c) => c.id === cardId);
+                if (!card || !delta) return;
+                card.balance = Math.max(0, (+card.balance || 0) - delta);
+                card.currentDue = Math.max(0, (+card.currentDue || 0) - delta);
+            }
+            function advanceCardDueDateAfterFullPayment(card, paidAmount, previousCurrentDue) {
+                if (!card || paidAmount <= 0 || previousCurrentDue <= 0 || paidAmount < previousCurrentDue) return;
+                if ((+card.currentDue || 0) > 0 || !dateOnly(card.dueDate)) return;
+                card.dueDate = addMonthsToIsoDate(card.dueDate, 1);
             }
             function removeSplitById(id) {
                 if (!id) return;
@@ -5637,17 +6031,20 @@
             function reverseTransactionEffects(t) {
                 if (!t) return;
                 if (t.type === "expense") applyCardCharge(t.account, -(+t.amount || 0));
+                if (t.type === "card_payment") applyCardPaymentEffect(t.cardId, -(+t.amount || 0));
                 removeSplitById(t.splitId);
             }
             function applyTransactionEffects(t) {
                 if (!t) return;
                 if (t.type === "expense") applyCardCharge(t.account, +t.amount || 0);
+                if (t.type === "card_payment") applyCardPaymentEffect(t.cardId, +t.amount || 0);
             }
             function accBalance(a) {
                 let b = +a.balance || 0;
                 state.transactions.forEach((t) => {
                     if (t.type === "expense" && t.account === a.id) b -= +t.amount;
                     if (t.type === "income" && t.account === a.id) b += +t.amount;
+                    if (t.type === "card_payment" && t.from === a.id) b -= +t.amount;
                     if (t.type === "transfer") {
                         if (t.from === a.id) b -= +t.amount;
                         if (t.to === a.id) b += +t.amount;
@@ -5719,6 +6116,11 @@
             function stockPrice(s) {
                 return Number(s.manualPrice ?? s.lastPrice ?? 0);
             }
+            function normalizeStockCode(code) {
+                const digits = String(code || "").trim().replace(/\D/g, "");
+                if (!digits) return "";
+                return digits.length < 4 ? digits.padStart(4, "0") : digits;
+            }
             function stockValue() {
                 return state.stocks.reduce((sum, s) => sum + stockPrice(s) * (+s.shares || 0), 0);
             }
@@ -5784,10 +6186,12 @@
                 return Math.ceil((b - a) / 86400000);
             }
             function dueReminderText(c, d) {
-                if (d === 0) return `${c.name} 今天是繳款截止日，本期應繳 ${money(c.currentDue || 0)}。`;
-                if (d === 3) return `${c.name} 3 天後到期，本期應繳 ${money(c.currentDue || 0)}。`;
-                if (d === 7) return `${c.name} 7 天後到期，先預留 ${money(c.currentDue || 0)}。`;
-                return `${c.name} 距離繳款還有 ${d} 天，本期應繳 ${money(c.currentDue || 0)}。`;
+                const account = state.accounts.find((a) => a.id === c.paymentAccountId);
+                const source = account ? `，扣款帳戶：${account.name}${c.autoPayment ? "（自動記帳）" : ""}` : "，尚未設定扣款帳戶";
+                if (d === 0) return `${c.name} 今天是繳款截止日，本期應繳 ${money(c.currentDue || 0)}${source}。`;
+                if (d === 3) return `${c.name} 3 天後到期，本期應繳 ${money(c.currentDue || 0)}${source}。`;
+                if (d === 7) return `${c.name} 7 天後到期，先預留 ${money(c.currentDue || 0)}${source}。`;
+                return `${c.name} 距離繳款還有 ${d} 天，本期應繳 ${money(c.currentDue || 0)}${source}。`;
             }
             function upcomingCards() {
                 return state.cards
@@ -5837,14 +6241,20 @@
                         ? "💰"
                         : t.type === "transfer"
                         ? "↔"
+                        : t.type === "card_payment"
+                        ? "💳"
                         : {食品: "🍜", 交通: "🚆", 居家: "🏠", 購物: "🛍️", 娛樂: "🎫", 旅行: "🧳"}[t.category] || "🧾";
                 const sign = t.type === "income" ? "+" : t.type === "transfer" ? "" : "-";
                 const cls = t.type === "income" ? "green" : "red";
                 const p = state.projects.find((x) => x.id === t.projectId);
                 const payment =
-                    t.type === "transfer" ? accName(t.from) + " → " + accName(t.to) : paymentName(t.account);
+                    t.type === "transfer"
+                        ? accName(t.from) + " → " + accName(t.to)
+                        : t.type === "card_payment"
+                        ? `${accName(t.from)} → ${state.cards.find((c) => c.id === t.cardId)?.name || "信用卡"}`
+                        : paymentName(t.account);
                 return `<div class="card tx" data-tx-card="${t.id}"><div class="tx-ico">${icon}</div><div><strong>${
-                    t.note || t.subcategory || t.category || "轉帳"
+                    t.note || t.subcategory || t.category || (t.type === "card_payment" ? "信用卡繳款" : "轉帳")
                 }</strong><small>${t.date} · ${payment}${p ? " · " + p.name : ""}</small>${
                     p ? `<span class="badge">${p.type}</span>` : ""
                 }</div><div style="text-align:right"><div class="money ${cls}">${sign}${money(
@@ -5882,13 +6292,67 @@
                 $("#recentList").innerHTML = list.map(txCard).join("") || '<div class="empty">還沒有紀錄</div>';
             }
             function splitCard(s) {
+                const receivable = s.direction === "owed_to_me",
+                    total = +s.totalAmount || +s.selfAmount + +s.otherAmount || +s.amount || 0,
+                    self = Number.isFinite(+s.selfAmount) ? +s.selfAmount : receivable ? Math.max(0, total - +s.amount) : +s.amount,
+                    other = Number.isFinite(+s.otherAmount) ? +s.otherAmount : receivable ? +s.amount : Math.max(0, total - +s.amount),
+                    payer = s.payerName || (s.paidBy === "other" ? s.person : state.settings.displayName || "我");
                 return `<div class="card tx"><div class="tx-ico">👥</div><div><strong>${
-                    s.note || s.person
-                }</strong><small>${s.date} · ${s.person}</small><span class="badge">${
-                    s.direction === "owed_to_me" ? "對方付給你" : "你付給對方"
-                }</span></div><div class="money ${s.direction === "owed_to_me" ? "green" : "red"}">${
-                    s.direction === "owed_to_me" ? "+" : "-"
+                    s.note || "分帳"
+                }</strong><small>${s.date} · ${payer} 先付 ${money(total)}</small><span class="badge">${
+                    receivable ? `${s.person} 欠你` : `你欠 ${s.person}`
+                }</span><div class="split-flow-row"><span>你負擔 ${money(self)}</span><span>${s.person} 負擔 ${money(
+                    other
+                )}</span></div></div><div class="money ${receivable ? "green" : "red"}">${
+                    receivable ? "+" : "-"
                 }${money(s.amount)}</div></div>`;
+            }
+
+            function cardDueItemsForDate(iso) {
+                return state.cards
+                    .filter((c) => dateOnly(c.dueDate) === iso)
+                    .map((c) => ({
+                        type: "card-due",
+                        title: `繳卡費 ${c.name}`,
+                        card: c,
+                    }));
+            }
+
+            function transactionItemsForDate(iso) {
+                const txs = state.transactions.filter((t) => t.date === iso),
+                    expense = txs.filter((t) => t.type === "expense").reduce((n, t) => n + (+t.amount || 0), 0),
+                    income = txs.filter((t) => t.type === "income").reduce((n, t) => n + (+t.amount || 0), 0),
+                    paidCards = txs.filter((t) => t.type === "card_payment");
+                return [
+                    ...(expense ? [{type: "tx", title: `支出 ${money(expense)}`}] : []),
+                    ...(income ? [{type: "tx", title: `收入 ${money(income)}`}] : []),
+                    ...paidCards.slice(0, 1).map((t) => ({
+                        type: "card-due",
+                        title: `已繳 ${state.cards.find((c) => c.id === t.cardId)?.name || "信用卡"}`,
+                    })),
+                ];
+            }
+
+            function calendarItemsForDate(iso) {
+                const holiday = TW_HOLIDAYS[iso],
+                    items = holiday ? [{type: "holiday", title: holiday}] : [];
+                state.events
+                    .filter((e) => e.date === iso)
+                    .forEach((e) => items.push({type: "event", title: e.title, color: e.color}));
+                return items.concat(cardDueItemsForDate(iso), transactionItemsForDate(iso));
+            }
+
+            function calendarChip(item) {
+                const style = item.color ? ` style="background:${item.color}33;color:#5a496b"` : "";
+                return `<span class="cal-chip ${item.type}"${style} title="${item.title}">${item.title}</span>`;
+            }
+
+            function cardDueDetail(c) {
+                const account = state.accounts.find((a) => a.id === c.paymentAccountId),
+                    source = account ? `扣款帳戶：${account.name}` : "尚未設定扣款帳戶";
+                return `<div class="card"><div><strong>信用卡繳款：${c.name}</strong><small>本期應繳 ${money(
+                    c.currentDue || 0
+                )} · ${source}</small></div></div>`;
             }
 
             function renderCalendar() {
@@ -5899,18 +6363,22 @@
                 const first = new Date(y, m, 1),
                     start = first.getDay(),
                     days = new Date(y, m + 1, 0).getDate();
-                for (let i = 0; i < start; i++) html += "<div></div>";
+                for (let i = 0; i < start; i++) html += '<div class="cal-day-cell empty"></div>';
                 for (let d = 1; d <= days; d++) {
                     const iso = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
                         has = state.transactions.some((t) => t.date === iso),
-                        ev = state.events.find((e) => e.date === iso),
                         holiday = TW_HOLIDAYS[iso],
-                        weekend = new Date(iso + "T12:00:00").getDay() % 6 === 0;
-                    html += `<div class="cal-day-cell"><button class="day ${iso === selectedDate ? "sel" : ""} ${has ? "has" : ""} ${
+                        weekend = new Date(iso + "T12:00:00").getDay() % 6 === 0,
+                        items = calendarItemsForDate(iso),
+                        visibleItems = items.slice(0, 3),
+                        more = items.length - visibleItems.length;
+                    html += `<div class="cal-day-cell ${iso === selectedDate ? "selected" : ""}"><button class="day ${
+                        iso === selectedDate ? "sel" : ""
+                    } ${has ? "has" : ""} ${
                         weekend ? "weekend" : ""
-                    } ${holiday ? "holiday" : ""}" data-date="${iso}" title="${holiday || ""}">${d}</button>${
-                        holiday ? `<span class="holiday-label">${holiday}</span>` : ""
-                    }${ev ? `<span class="event-chip" style="background:${ev.color}33;color:#5a496b">${ev.title}</span>` : ""}</div>`;
+                    } ${holiday ? "holiday" : ""}" data-date="${iso}" title="${holiday || ""}">${d}</button><div class="cal-chip-list">${visibleItems
+                        .map(calendarChip)
+                        .join("")}${more > 0 ? `<span class="cal-more">+${more}</span>` : ""}</div></div>`;
                 }
                 $("#calendarGrid").innerHTML = html;
                 $$("[data-date]").forEach(
@@ -5927,11 +6395,10 @@
                 $("#selectedHoliday").classList.toggle("show", !!selectedHoliday);
                 const s = sum((t) => t.date === selectedDate);
                 $("#daySum").innerHTML = `收入 ${money(s.i)}<br>支出 ${money(s.e)}`;
-                $("#dayList").innerHTML =
-                    state.transactions
-                    .filter((t) => t.date === selectedDate)
-                    .map(txCard)
-                    .join("") || '<div class="empty">這一天還沒有收支</div>';
+                const selectedCardDues = cardDueItemsForDate(selectedDate).map((x) => x.card),
+                    selectedTransactions = state.transactions.filter((t) => t.date === selectedDate),
+                    dayCards = selectedCardDues.map(cardDueDetail).join("") + selectedTransactions.map(txCard).join("");
+                $("#dayList").innerHTML = dayCards || '<div class="empty">這一天還沒有收支</div>';
                 $("#eventList").innerHTML =
                     state.events
                     .filter((e) => e.date.slice(0, 7) === monthKey(calDate))
@@ -5958,6 +6425,36 @@
                 const custom = state.settings.customCategories?.[type]?.[category] || [];
                 return [...new Set(builtIn.concat(custom))];
             }
+            function selectedCategoryValue() {
+                return $("#category").value === "其他"
+                    ? $("#categoryCustom").value.trim() || "其他"
+                    : $("#category").value || "其他";
+            }
+            function selectedSubcategoryValue() {
+                return $("#subcategory").value === "其他"
+                    ? $("#subcategoryCustom").value.trim() || "其他"
+                    : $("#subcategory").value || "";
+            }
+            function setCategoryFields(category = "", subcategory = "") {
+                const options = categoryList(txType);
+                if (category && options.includes(category)) {
+                    $("#category").value = category;
+                    $("#categoryCustom").value = "";
+                } else {
+                    $("#category").value = "其他";
+                    $("#categoryCustom").value = category && category !== "其他" ? category : "";
+                }
+                fillSub();
+                const subOptions = subcategoryList(txType, $("#category").value);
+                if (subcategory && subOptions.includes(subcategory)) {
+                    $("#subcategory").value = subcategory;
+                    $("#subcategoryCustom").value = "";
+                } else if (subcategory) {
+                    $("#subcategory").value = "其他";
+                    $("#subcategoryCustom").value = subcategory === "其他" ? "" : subcategory;
+                }
+                $("#subcategoryCustom").style.display = $("#subcategory").value === "其他" ? "block" : "none";
+            }
             function rememberCategory(type, category, subcategory) {
                 if (!category) return;
                 state.settings.customCategories ||= {};
@@ -5967,12 +6464,83 @@
                     state.settings.customCategories[type][category].push(subcategory);
                 }
             }
+            function recurringKey(data) {
+                return [
+                    data.type || "expense",
+                    data.amount || 0,
+                    data.category || "",
+                    data.subcategory || "",
+                    data.account || "",
+                    data.projectId || "",
+                    data.note || "",
+                ].join("|");
+            }
+            function saveRecurringTemplate(tx) {
+                if (tx.type !== "expense") return;
+                state.recurring ||= [];
+                const data = {
+                    id: uid(),
+                    type: tx.type,
+                    amount: +tx.amount || 0,
+                    category: tx.category || "其他",
+                    subcategory: tx.subcategory || "",
+                    account: tx.account || "",
+                    projectId: tx.projectId || "",
+                    note: tx.note || tx.subcategory || tx.category || "固定支出",
+                    party: tx.party || "self",
+                };
+                const key = recurringKey(data);
+                const existing = state.recurring.find((item) => recurringKey(item) === key);
+                if (existing) Object.assign(existing, data, {id: existing.id});
+                else state.recurring.push(data);
+            }
+            function renderRecurringShortcuts() {
+                const list = (state.recurring || []).filter((r) => r.type === "expense");
+                $("#recurringBox").classList.toggle("show", txType === "expense" && list.length > 0);
+                $("#recurringList").innerHTML = list
+                .map(
+                    (r) =>
+                        `<button type="button" class="recurring-chip" data-recurring="${r.id}">${
+                            r.note || r.subcategory || r.category || "固定支出"
+                        }<small>${money(r.amount)} · ${paymentName(r.account)}</small></button>`
+                )
+                .join("");
+                $$("[data-recurring]").forEach((button) => (button.onclick = () => createRecurringTransaction(button.dataset.recurring)));
+            }
+            function createRecurringTransaction(id) {
+                const r = (state.recurring || []).find((item) => item.id === id);
+                if (!r) return toast("找不到固定支出");
+                const tx = {
+                    id: uid(),
+                    type: "expense",
+                    amount: +r.amount || 0,
+                    date: today(),
+                    category: r.category || "其他",
+                    subcategory: r.subcategory || "",
+                    account: r.account || state.settings.defaultAccount || state.accounts[0]?.id || "",
+                    projectId: r.projectId || "",
+                    note: r.note || r.subcategory || r.category || "固定支出",
+                    party: r.party || "self",
+                    splitId: "",
+                };
+                if (!tx.amount) return toast("固定支出金額為 0，請重新設定");
+                state.transactions.push(tx);
+                rememberCategory(tx.type, tx.category, tx.subcategory);
+                applyTransactionEffects(tx);
+                store.save();
+                selectedDate = tx.date;
+                calDate = new Date(selectedDate + "T12:00:00");
+                renderRecurringShortcuts();
+                if (current === "assets") renderAssets();
+                if (current === "calendar") renderCalendar();
+                toast("已用固定支出記帳");
+            }
             function cardPaymentHint(card) {
                 if (!card?.paymentAccountId) return "尚未綁定繳款帳戶";
                 const account = state.accounts.find((a) => a.id === card.paymentAccountId);
                 if (!account) return "綁定帳戶不存在";
                 const shortage = Math.max(0, (+card.currentDue || 0) - accBalance(account));
-                return `${account.name} 繳款 · 需補 ${money(shortage)}`;
+                return `${account.name} 扣款 · ${card.autoPayment ? "到期日自動記帳" : "手動記帳"} · 需補 ${money(shortage)}`;
             }
             function moveById(collection, id, direction) {
                 const list = state[collection];
@@ -6000,11 +6568,15 @@
                 $("#saveTx").textContent = editing ? "更新這一筆" : "儲存這一筆";
                 $("#normalFields").style.display = txType === "transfer" ? "none" : "block";
                 $("#transferFields").style.display = txType === "transfer" ? "block" : "none";
+                $("#saveAsRecurring").closest("label").style.display = txType === "expense" ? "flex" : "none";
                 if (txType !== "transfer") {
                     const options = categoryList(txType);
-                    $("#categoryOptions").innerHTML = options.map((x) => `<option value="${x}"></option>`).join("");
+                    const categoryOptions = [...new Set(options.concat("其他"))];
+                    $("#category").innerHTML = categoryOptions.map((x) => `<option value="${x}">${x}</option>`).join("");
                     if (!$("#category").value || !options.includes($("#category").value)) {
-                        $("#category").value = state.settings.defaultCategory || options[0] || "其他";
+                        $("#category").value = categoryOptions.includes(state.settings.defaultCategory)
+                            ? state.settings.defaultCategory
+                            : options[0] || "其他";
                     }
                     fillSub();
                 }
@@ -6017,28 +6589,38 @@
                 $("#project").innerHTML =
                     `<option value="">不指定專案</option>` +
                     state.projects.map((p) => `<option value="${p.id}">${p.name}</option>`).join("");
+                renderRecurringShortcuts();
                 updateSplitPreview();
             }
             function fillSub() {
-                const arr = subcategoryList(txType, $("#category").value);
-                $("#subcategoryOptions").innerHTML = arr.map((x) => `<option value="${x}"></option>`).join("");
-                if (!$("#subcategory").value || !arr.includes($("#subcategory").value)) $("#subcategory").value = arr[0] || "";
+                const isCustomCategory = $("#category").value === "其他";
+                $("#categoryCustom").style.display = isCustomCategory ? "block" : "none";
+                const arr = isCustomCategory ? ["其他"] : subcategoryList(txType, $("#category").value);
+                const subOptions = [...new Set(arr.concat("其他"))];
+                $("#subcategory").innerHTML = subOptions.map((x) => `<option value="${x}">${x}</option>`).join("");
+                if (!$("#subcategory").value || !subOptions.includes($("#subcategory").value)) $("#subcategory").value = subOptions[0] || "其他";
+                $("#subcategoryCustom").style.display = $("#subcategory").value === "其他" ? "block" : "none";
             }
             function updateSplitPreview() {
                 if (txType === "transfer") return;
                 const amt = +$("#amount").value || 0,
-                    share = +$("#share").value || 0;
+                    share = Math.max(0, Math.min(100, Number($("#share").value || 0)));
                 $("#shareLabel").textContent = share + "%";
                 const self = (amt * share) / 100,
                     other = amt - self;
+                const person = $("#splitPerson").value.trim() || "對方";
                 let tail = "";
-                if ($("#splitPerson").value.trim() && other > 0) {
+                if ($("#splitPerson").value.trim()) {
                     tail =
                         party === "self"
-                            ? `<br><strong>對方付給你 +${money(other)}</strong>`
-                            : `<br><strong>你付給對方 ${money(self)}</strong>`;
+                            ? other > 0
+                                ? `<br><strong>${person} 欠你 ${money(other)}</strong>`
+                                : `<br><strong>全部由你負擔，不產生分帳</strong>`
+                            : self > 0
+                            ? `<br><strong>你欠 ${person} ${money(self)}</strong>`
+                            : `<br><strong>全部由 ${person} 負擔，不產生分帳</strong>`;
                 }
-                $("#splitPreview").innerHTML = `自己負擔 ${money(self)} · 對方負擔 ${money(other)}${tail}`;
+                $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>你負擔 ${money(self)} · ${person} 負擔 ${money(other)}${tail}`;
             }
             function resetTransactionForm(date = today()) {
                 editingTxId = null;
@@ -6053,24 +6635,38 @@
                 $("#transferNote").value = "帳戶轉帳";
                 $("#category").value = "";
                 $("#subcategory").value = "";
+                $("#categoryCustom").value = "";
+                $("#subcategoryCustom").value = "";
+                $("#categoryCustom").style.display = "none";
+                $("#subcategoryCustom").style.display = "none";
+                $("#saveAsRecurring").checked = false;
                 $("#partySelf").classList.add("active");
                 $("#partyOther").classList.remove("active");
             }
             function splitPayloadForForm(amount) {
                 const person = $("#splitPerson").value.trim(),
-                    share = +$("#share").value || 100;
-                if (!person || share >= 100) return "";
+                    share = Math.max(0, Math.min(100, Number($("#share").value || 0)));
+                if (!person) return "";
                 const self = (amount * share) / 100,
                     other = amount - self,
+                    receivable = party === "self" ? other : 0,
+                    payable = party === "other" ? self : 0,
                     splitId = uid();
+                if (receivable <= 0 && payable <= 0) return "";
                 state.splits.push({
                     id: splitId,
                     person,
-                    amount: party === "self" ? other : self,
+                    amount: party === "self" ? receivable : payable,
+                    totalAmount: amount,
+                    selfAmount: self,
+                    otherAmount: other,
+                    share,
+                    paidBy: party,
+                    payerName: party === "self" ? state.settings.displayName || "我" : person,
                     direction: party === "self" ? "owed_to_me" : "i_owe",
                     settled: false,
                     date: $("#date").value || today(),
-                    note: $("#note").value || $("#subcategory").value,
+                    note: $("#note").value || selectedSubcategoryValue(),
                 });
                 return splitId;
             }
@@ -6097,8 +6693,8 @@
                         type: txType,
                         amount,
                         date: $("#date").value || today(),
-                        category: $("#category").value.trim() || "其他",
-                        subcategory: $("#subcategory").value.trim(),
+                        category: selectedCategoryValue(),
+                        subcategory: selectedSubcategoryValue(),
                         account: $("#account").value,
                         projectId: $("#project").value,
                         note: $("#note").value.trim(),
@@ -6113,6 +6709,7 @@
                     state.transactions.push(tx);
                 }
                 if (tx.type !== "transfer") rememberCategory(tx.type, tx.category, tx.subcategory);
+                if (!existing && tx.type === "expense" && $("#saveAsRecurring").checked) saveRecurringTemplate(tx);
                 applyTransactionEffects(tx);
                 store.save();
                 selectedDate = tx.date || today();
@@ -6124,6 +6721,10 @@
             function openTransactionEditor(id) {
                 const t = state.transactions.find((x) => x.id === id);
                 if (!t) return;
+                if (t.type === "card_payment") {
+                    openCardPaymentEditor(id, t.cardId);
+                    return;
+                }
                 editingTxId = id;
                 txType = t.type;
                 party = t.party || "self";
@@ -6136,9 +6737,7 @@
                     $("#transferNote").value = t.note || "帳戶轉帳";
                     return;
                 }
-                if (t.category) $("#category").value = t.category;
-                fillSub();
-                $("#subcategory").value = t.subcategory || $("#subcategory").value;
+                setCategoryFields(t.category || "", t.subcategory || "");
                 $("#account").value = t.account || "";
                 $("#project").value = t.projectId || "";
                 $("#date").value = t.date || today();
@@ -6149,7 +6748,9 @@
                 if (split && +t.amount) {
                     $("#splitPerson").value = split.person || "";
                     const share =
-                        party === "self"
+                        Number.isFinite(+split.share)
+                            ? +split.share
+                            : party === "self"
                             ? ((+t.amount - +split.amount) / +t.amount) * 100
                             : (+split.amount / +t.amount) * 100;
                     $("#share").value = Math.max(0, Math.min(100, Math.round(share / 5) * 5));
@@ -6172,6 +6773,7 @@
                 if (current === "ledger") renderLedgerGroups();
                 if (current === "assets") renderAssets();
                 if (current === "cards") renderCards();
+                if (current === "accountDetail") renderAccountDetail();
             }
             function renderSplits() {
                 const owed = owedToMe(),
@@ -6179,21 +6781,47 @@
                     net = owed - owe;
                 $("#splitNet").textContent = (net >= 0 ? "+" : "-") + money(Math.abs(net));
                 $("#splitCount").textContent = `${openSplits().length} 筆未結清款項`;
-                $("#splitList").innerHTML =
-                    openSplits()
+                const splitRows = openSplits()
                     .map(
-                        (s) =>
-                            `<div class="card tx"><div class="tx-ico">👥</div><div><strong>${s.person}</strong><small>${
-                                s.date
-                            } · ${s.note || "分帳"}</small><span class="badge">${
-                                s.direction === "owed_to_me" ? "對方付給你" : "你付給對方"
-                            }</span></div><div style="text-align:right"><div class="money ${
-                                s.direction === "owed_to_me" ? "green" : "red"
-                            }">${money(s.amount)}</div><button class="secondary" data-settle="${
+                        (s) => {
+                            const receivable = s.direction === "owed_to_me",
+                                total = +s.totalAmount || +s.selfAmount + +s.otherAmount || +s.amount || 0,
+                                self = Number.isFinite(+s.selfAmount)
+                                    ? +s.selfAmount
+                                    : receivable
+                                    ? Math.max(0, total - +s.amount)
+                                    : +s.amount,
+                                other = Number.isFinite(+s.otherAmount)
+                                    ? +s.otherAmount
+                                    : receivable
+                                    ? +s.amount
+                                    : Math.max(0, total - +s.amount),
+                                payer = s.payerName || (s.paidBy === "other" ? s.person : state.settings.displayName || "我");
+                            return `<div class="card tx"><div class="tx-ico">👥</div><div><strong>${
+                                s.note || "分帳"
+                            }</strong><small>${s.date} · ${payer} 先付 ${money(total)}</small><span class="badge">${
+                                receivable ? `${s.person} 欠你` : `你欠 ${s.person}`
+                            }</span><div class="split-flow"><div class="split-flow-row"><span>你負擔</span><strong>${money(
+                                self
+                            )}</strong></div><div class="split-flow-row"><span>${s.person} 負擔</span><strong>${money(
+                                other
+                            )}</strong></div></div></div><div style="text-align:right"><div class="money ${
+                                receivable ? "green" : "red"
+                            }">${receivable ? "+" : "-"}${money(s.amount)}</div><button class="secondary" data-settle="${
                                 s.id
-                            }" style="height:32px;margin-top:6px">結清</button></div></div>`
+                            }" style="height:32px;margin-top:6px">結清</button></div></div>`;
+                        }
                     )
-                    .join("") || '<div class="empty">沒有未結清款項</div>';
+                    .join("");
+                $("#splitList").innerHTML =
+                    `<div class="split-summary-grid"><div class="split-summary-item"><small>我該收</small><strong class="money green">+${money(
+                        owed
+                    )}</strong></div><div class="split-summary-item"><small>我該付</small><strong class="money red">-${money(
+                        owe
+                    )}</strong></div><div class="split-summary-item"><small>淨額</small><strong>${net >= 0 ? "+" : "-"}${money(
+                        Math.abs(net)
+                    )}</strong></div></div>` +
+                    (splitRows || '<div class="empty">沒有未結清款項</div>');
                 $$("[data-settle]").forEach(
                     (b) =>
                         (b.onclick = () => {
@@ -6235,6 +6863,7 @@
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 8000);
                 try {
+                    stock.code = normalizeStockCode(stock.code);
                     const response = await fetch(`stock-proxy.php?code=${encodeURIComponent(stock.code)}`, {
                         signal: controller.signal,
                         cache: "no-store",
@@ -6528,9 +7157,9 @@
                 $("#cardList").innerHTML =
                     reminderHtml +
                         sorted
-                        .map(
-                            (c) =>
-                                `<div class="card" style="background:linear-gradient(145deg,#7c62a7,#a78ac8);color:#fff"><div style="display:flex;justify-content:space-between"><div><strong>${
+                        .map((c) => {
+                            const overdue = daysUntil(c.dueDate) < 0 && (+c.currentDue || 0) > 0;
+                            return `<div class="card" style="background:linear-gradient(145deg,#7c62a7,#a78ac8);color:#fff"><div style="display:flex;justify-content:space-between"><div><strong>${
                                     c.name
                                 }</strong><div style="opacity:.75;font-size:12px;margin-top:4px">${
                                     c.memo || ""
@@ -6544,20 +7173,17 @@
                                     dateOnly(c.dueDate) || "未設定"
                                 }</strong></div><div><small style="opacity:.75">下一次結帳日</small><strong style="display:block;margin-top:4px">${
                                     dateOnly(c.statementDate) || "未設定"
-                                }</strong></div></div><button class="card-edit-btn" data-edit-card="${
+                                }</strong></div></div><div class="card-actions">${
+                                    overdue
+                                        ? `<button class="card-overdue-pay-btn" data-overdue-card="${c.id}">逾期繳款</button>`
+                                        : ""
+                                }<button class="card-edit-btn" data-edit-card="${
                                     c.id
-                                }">手動修改</button><div class="sort-actions"><button class="edit-mini" data-move-card="${c.id}" data-dir="-1">上移</button><button class="edit-mini" data-move-card="${c.id}" data-dir="1">下移</button></div></div>`
-                        )
+                                }">手動修改</button></div></div>`;
+                        })
                         .join("") || '<div class="empty">尚未新增信用卡</div>';
                 $$("[data-edit-card]").forEach((b) => (b.onclick = () => openCardEditor(b.dataset.editCard)));
-                $$("[data-move-card]").forEach(
-                    (b) =>
-                        (b.onclick = () => {
-                            moveById("cards", b.dataset.moveCard, Number(b.dataset.dir));
-                            renderCards();
-                            renderAssets();
-                        })
-                );
+                $$("[data-overdue-card]").forEach((b) => (b.onclick = () => payOverdueCard(b.dataset.overdueCard)));
             }
             function renderAccountGroups() {
                 const primaryTypes = ["bank", "bank_checking", "bank_deposit", "wallet", "cash", "cash_twd", "cash_fx"];
@@ -6771,8 +7397,15 @@
                         renderAdd();
                     })
             );
-            $("#category").oninput = fillSub;
-            $("#category").onchange = fillSub;
+            $("#category").onchange = () => {
+                if ($("#category").value !== "其他") $("#categoryCustom").value = "";
+                fillSub();
+            };
+            $("#subcategory").onchange = () => {
+                const custom = $("#subcategory").value === "其他";
+                $("#subcategoryCustom").style.display = custom ? "block" : "none";
+                if (!custom) $("#subcategoryCustom").value = "";
+            };
             $("#amount").oninput = updateSplitPreview;
             $("#share").oninput = updateSplitPreview;
             $("#splitPerson").oninput = updateSplitPreview;
@@ -7030,12 +7663,128 @@
                 $("#cardCurrentDue").value = c?.currentDue ?? 0;
                 $("#cardPaymentAccount").innerHTML = `<option value="">不綁定</option>` + state.accounts.map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`).join("");
                 $("#cardPaymentAccount").value = c?.paymentAccountId || "";
+                $("#cardAutoPayment").value = c?.autoPayment ? "true" : "false";
                 $("#statementDate").value = dateOnly(c?.statementDate) || "";
                 $("#dueDate").value = dateOnly(c?.dueDate) || "";
                 $("#cardMemo").value = c?.memo || "";
                 $("#deleteCardBtn").style.display = c ? "block" : "none";
                 $("#cardModal .card-modal-actions").classList.toggle("two-actions", !c);
                 $("#cardModal").classList.add("open");
+            }
+            function openCardPaymentEditor(txId = null, cardId = "") {
+                const tx = txId ? state.transactions.find((t) => t.id === txId) : null;
+                const card = state.cards.find((c) => c.id === (tx?.cardId || cardId)) || state.cards[0];
+                if (!card) return toast("請先新增信用卡");
+                editingTxId = null;
+                $("#editingCardPaymentId").value = tx?.id || "";
+                $("#cardPaymentModalTitle").textContent = tx ? "修改信用卡繳款" : "信用卡繳款";
+                $("#cardPaymentCard").innerHTML = cardOptions(card?.id || "");
+                $("#cardPaymentFrom").innerHTML = accountOptions(tx?.from || card?.paymentAccountId || state.settings.defaultAccount || state.accounts[0]?.id || "");
+                $("#cardPaymentAmount").value = tx?.amount ?? card?.currentDue ?? card?.balance ?? 0;
+                $("#cardPaymentDate").value = tx?.date || today();
+                $("#cardPaymentNote").value = tx?.note || `${card?.name || "信用卡"} 繳款`;
+                $("#cardPaymentModal").classList.add("open");
+            }
+            function saveCardPayment() {
+                const amount = +$("#cardPaymentAmount").value || 0,
+                    cardId = $("#cardPaymentCard").value,
+                    from = $("#cardPaymentFrom").value,
+                    date = $("#cardPaymentDate").value || today(),
+                    card = state.cards.find((c) => c.id === cardId);
+                if (!card) return toast("請選擇信用卡");
+                if (!from) return toast("請選擇扣款帳戶");
+                if (amount <= 0) return toast("請輸入繳款金額");
+                const editingId = $("#editingCardPaymentId").value;
+                const existingIndex = editingId ? state.transactions.findIndex((t) => t.id === editingId) : -1;
+                const existing = existingIndex >= 0 ? state.transactions[existingIndex] : null;
+                const previousCurrentDue = +card.currentDue || 0;
+                const tx = {
+                    id: existing?.id || uid(),
+                    type: "card_payment",
+                    amount,
+                    date,
+                    from,
+                    cardId,
+                    note: $("#cardPaymentNote").value.trim() || `${card.name} 繳款`,
+                    autoKey: existing?.autoKey || "",
+                };
+                if (existing) {
+                    reverseTransactionEffects(existing);
+                    state.transactions[existingIndex] = tx;
+                } else {
+                    state.transactions.push(tx);
+                }
+                applyTransactionEffects(tx);
+                if (!existing) advanceCardDueDateAfterFullPayment(card, amount, previousCurrentDue);
+                store.save();
+                selectedDate = date;
+                calDate = new Date(selectedDate + "T12:00:00");
+                $("#cardPaymentModal").classList.remove("open");
+                renderCards();
+                renderAssets();
+                if (current === "calendar") renderCalendar();
+                toast(existing ? "信用卡繳款已更新" : "已記錄信用卡繳款");
+            }
+            function payOverdueCard(cardId) {
+                const card = state.cards.find((c) => c.id === cardId);
+                if (!card) return toast("找不到信用卡");
+                if (daysUntil(card.dueDate) >= 0) return toast("這張卡尚未逾期");
+                const amount = +card.currentDue || 0;
+                if (amount <= 0) return toast("本期應繳金額為 0");
+                if (!card.paymentAccountId) return toast("請先在手動修改中設定約定扣款帳戶");
+                const account = state.accounts.find((a) => a.id === card.paymentAccountId);
+                if (!account) return toast("約定扣款帳戶不存在");
+                const previousCurrentDue = +card.currentDue || 0;
+                const tx = {
+                    id: uid(),
+                    type: "card_payment",
+                    amount,
+                    date: today(),
+                    from: account.id,
+                    cardId: card.id,
+                    note: `${card.name} 逾期繳款`,
+                    autoKey: `card-overdue-payment:${card.id}:${today()}:${Date.now()}`,
+                };
+                state.transactions.push(tx);
+                applyTransactionEffects(tx);
+                advanceCardDueDateAfterFullPayment(card, amount, previousCurrentDue);
+                store.save();
+                selectedDate = tx.date;
+                calDate = new Date(selectedDate + "T12:00:00");
+                renderCards();
+                renderAssets();
+                if (current === "calendar") renderCalendar();
+                toast("已記錄逾期繳款並沖帳");
+            }
+            function runDueCardAutoPayments() {
+                const d = today();
+                let count = 0;
+                state.cards.forEach((card) => {
+                    const amount = +card.currentDue || 0,
+                        from = card.paymentAccountId,
+                        autoKey = `card-payment:${card.id}:${d}`;
+                    if (!card.autoPayment || !from || dateOnly(card.dueDate) !== d || amount <= 0) return;
+                    if (state.transactions.some((t) => t.type === "card_payment" && t.autoKey === autoKey)) return;
+                    const tx = {
+                        id: uid(),
+                        type: "card_payment",
+                        amount,
+                        date: d,
+                        from,
+                        cardId: card.id,
+                        note: `${card.name} 自動繳款`,
+                        autoKey,
+                    };
+                    state.transactions.push(tx);
+                    const previousCurrentDue = +card.currentDue || 0;
+                    applyTransactionEffects(tx);
+                    advanceCardDueDateAfterFullPayment(card, amount, previousCurrentDue);
+                    count++;
+                });
+                if (count) {
+                    store.save();
+                    toast(`已自動記錄 ${count} 筆信用卡繳款`);
+                }
             }
             $("#newCardBtn").onclick = () => openCardEditor();
             $("#saveCard").onclick = () => {
@@ -7049,6 +7798,7 @@
                     balance: +$("#cardBalance").value || 0,
                     currentDue: +$("#cardCurrentDue").value || 0,
                     paymentAccountId: $("#cardPaymentAccount").value,
+                    autoPayment: $("#cardAutoPayment").value === "true",
                     statementDate: dateOnly($("#statementDate").value),
                     dueDate: dateOnly($("#dueDate").value),
                     memo: $("#cardMemo").value.trim(),
@@ -7059,9 +7809,20 @@
                 else state.cards.push(data);
                 store.save();
                 $("#cardModal").classList.remove("open");
+                runDueCardAutoPayments();
                 renderCards();
                 renderAssets();
+                if (current === "calendar") renderCalendar();
                 toast("信用卡已儲存");
+            };
+            $("#cancelCardPaymentBtn").onclick = () => $("#cardPaymentModal").classList.remove("open");
+            $("#saveCardPaymentBtn").onclick = saveCardPayment;
+            $("#cardPaymentCard").onchange = () => {
+                const card = state.cards.find((c) => c.id === $("#cardPaymentCard").value);
+                if (!card) return;
+                $("#cardPaymentFrom").innerHTML = accountOptions(card.paymentAccountId || state.settings.defaultAccount || state.accounts[0]?.id || "");
+                $("#cardPaymentAmount").value = card.currentDue || card.balance || 0;
+                $("#cardPaymentNote").value = `${card.name} 繳款`;
             };
             $("#deleteCardBtn").onclick = () => {
                 const id = $("#editingCardId").value;
@@ -7143,7 +7904,7 @@
                 toast("已刪除帳戶");
             };
             $("#addStockBtn").onclick = () => {
-                const code = $("#stockCode").value.trim();
+                const code = normalizeStockCode($("#stockCode").value);
                 if (!/^\d{4,6}$/.test(code)) return toast("請輸入正確股票代號");
                 if (state.stocks.some((s) => s.code === code)) return openStock(code);
                 state.stocks.push({
@@ -7821,6 +8582,7 @@
 
             applySettings();
             refreshSettingsUI();
+            runDueCardAutoPayments();
             refreshFxRates();
 
             openPage("calendar");
