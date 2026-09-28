@@ -1944,24 +1944,34 @@
 
             .asset-category {
                 margin-bottom: 13px;
+                container-type: inline-size;
             }
 
             .asset-category-head {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                gap: 10px;
                 padding: 4px 4px 8px;
                 font-weight: 900;
             }
 
+            .asset-category-head span:first-child {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
             .asset-category-total {
+                flex: 0 0 auto;
                 color: var(--muted);
                 font-size: 12px;
             }
 
             .asset-account-row {
                 display: grid;
-                grid-template-columns: 46px 1fr auto;
+                grid-template-columns: 46px minmax(0, 1fr) max-content;
                 gap: 10px;
                 align-items: center;
                 background: #fff;
@@ -1970,6 +1980,28 @@
                 margin-bottom: 8px;
                 box-shadow: 0 7px 22px rgba(80, 57, 102, 0.055);
                 cursor: pointer;
+            }
+
+            .asset-account-row > div:nth-child(2) {
+                min-width: 0;
+            }
+
+            .asset-account-row strong,
+            .asset-account-row small {
+                display: block;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .asset-account-row strong {
+                white-space: nowrap;
+            }
+
+            .asset-account-row small {
+                color: var(--muted);
+                line-height: 1.35;
+                overflow-wrap: anywhere;
             }
 
             .asset-account-row .aicon {
@@ -2922,7 +2954,7 @@
 
             body.layout-desktop #assetRows {
                 display: grid;
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
                 align-items: start;
                 gap: 16px;
             }
@@ -2943,8 +2975,9 @@
             }
 
             body.layout-desktop #assetRows .asset-account-row {
+                grid-template-columns: 42px minmax(110px, 1fr) max-content;
                 margin: 10px 0 0;
-                padding: 10px 0;
+                padding: 12px 0;
                 border: 0;
                 border-bottom: 1px solid #edf0eb;
                 border-radius: 0;
@@ -2963,7 +2996,10 @@
             }
 
             body.layout-desktop #assetRows .asset-account-row .aval {
-                font-size: 13px;
+                min-width: max-content;
+                font-size: clamp(12px, 0.7vw, 14px);
+                text-align: right;
+                white-space: nowrap;
             }
 
             body.layout-desktop #assetRows .asset-account-row small {
@@ -2976,6 +3012,19 @@
 
             body.layout-desktop #assetRows > .empty {
                 grid-column: 1 / -1;
+            }
+
+            @container (max-width: 420px) {
+                .asset-category .asset-account-row {
+                    grid-template-columns: 42px minmax(0, 1fr);
+                    align-items: start;
+                }
+
+                .asset-category .asset-account-row .aval {
+                    grid-column: 2;
+                    justify-self: end;
+                    margin-top: 2px;
+                }
             }
 
             body.layout-desktop .bottom-nav {
@@ -4262,25 +4311,20 @@
                             ><select id="project" class="control"></select>
                         </div>
                         <div class="field">
-                            <label>分帳對象（選填）</label
-                            ><input id="splitPerson" class="control" placeholder="例如：龍寶" />
+                            <label>分攤參與者（選填）</label
+                            ><textarea id="splitParticipants" class="control" placeholder="一行一位或用逗號分隔，例如：小花、小明"></textarea>
                         </div>
                         <div class="field">
-                            <label>自己的負擔比例</label>
+                            <label>我的負擔金額（選填）</label>
                             <div class="rangebox">
-                                <div class="rangehead"><span>比例</span><strong id="shareLabel">100%</strong></div>
-                                <input id="share" type="range" min="0" max="100" step="5" value="100" />
-                                <div class="split-preview" id="splitPreview">自己負擔 NT$ 0</div>
+                                <input id="splitSelfAmount" class="control" type="number" inputmode="decimal" placeholder="留空時平均分攤" />
+                                <div class="split-preview" id="splitPreview">輸入參與者後會顯示分攤結果</div>
                             </div>
                         </div>
                         <div class="field">
                             <label>備註</label
                             ><textarea id="note" class="control" placeholder="例如：火鍋、東京迪士尼門票"></textarea>
                         </div>
-                        <label class="setting-note" style="display:flex;align-items:center;gap:10px">
-                            <input id="saveAsRecurring" type="checkbox" />
-                            <span>設定為固定支出，以後可一鍵記帳</span>
-                        </label>
                     </div>
                     <div id="transferFields" style="display: none">
                         <div class="field">
@@ -4298,6 +4342,10 @@
                             <label>備註</label><textarea id="transferNote" class="control">帳戶轉帳</textarea>
                         </div>
                     </div>
+                    <label class="setting-note" id="saveAsRecurringRow" style="display:flex;align-items:center;gap:10px">
+                        <input id="saveAsRecurring" type="checkbox" />
+                        <span id="saveAsRecurringLabel">設定為固定支出，以後可一鍵記帳</span>
+                    </label>
                 </form>
                 <div class="form-actions"><button class="primary" id="saveTx">儲存這一筆</button></div>
             </section>
@@ -4897,7 +4945,6 @@
                                 <button class="secondary" id="profileExportLinkBtn">複製帳號連結</button>
                             </div>
                             <div class="setting-note" id="profileStatus">目前為本機單人資料。</div>
-                            <div class="setting-note">正式 Google OAuth 需另外申請 Google Cloud OAuth Client ID；目前會用 Google Email 綁定每個人的試算表設定。</div>
                         </div>
 
                         <div class="setting-card">
@@ -5075,16 +5122,6 @@
                                 <button class="secondary" id="sheetUploadBtn">上傳資料</button>
                                 <button class="secondary" id="sheetDownloadBtn">下載資料</button>
                             </div>
-                            <button class="secondary setting-wide" id="sheetShareConfigBtn" style="margin-top: 10px">
-                                複製手機連線連結
-                            </button>
-                            <button class="secondary setting-wide" id="sheetPreviewBtn" style="margin-top: 10px">
-                                查看資料表結構
-                            </button>
-                            <button class="secondary setting-wide" id="sheetDiagnoseBtn" style="margin-top: 10px">
-                                手機連線診斷
-                            </button>
-                            <ul class="diag-list" id="sheetDiagList"></ul>
                         </div>
 
                         <div class="setting-card">
@@ -6026,7 +6063,7 @@
             }
             function removeSplitById(id) {
                 if (!id) return;
-                state.splits = state.splits.filter((s) => s.id !== id);
+                state.splits = state.splits.filter((s) => s.id !== id && s.groupId !== id);
             }
             function reverseTransactionEffects(t) {
                 if (!t) return;
@@ -6471,12 +6508,13 @@
                     data.category || "",
                     data.subcategory || "",
                     data.account || "",
+                    data.from || "",
+                    data.to || "",
                     data.projectId || "",
                     data.note || "",
                 ].join("|");
             }
             function saveRecurringTemplate(tx) {
-                if (tx.type !== "expense") return;
                 state.recurring ||= [];
                 const data = {
                     id: uid(),
@@ -6485,8 +6523,14 @@
                     category: tx.category || "其他",
                     subcategory: tx.subcategory || "",
                     account: tx.account || "",
+                    from: tx.from || "",
+                    to: tx.to || "",
                     projectId: tx.projectId || "",
-                    note: tx.note || tx.subcategory || tx.category || "固定支出",
+                    note:
+                        tx.note ||
+                        tx.subcategory ||
+                        tx.category ||
+                        (tx.type === "income" ? "固定收入" : tx.type === "transfer" ? "固定轉帳" : "固定支出"),
                     party: tx.party || "self",
                 };
                 const key = recurringKey(data);
@@ -6494,38 +6538,62 @@
                 if (existing) Object.assign(existing, data, {id: existing.id});
                 else state.recurring.push(data);
             }
+            function recurringTypeLabel(type = txType) {
+                return type === "income" ? "固定收入" : type === "transfer" ? "固定轉帳" : "固定支出";
+            }
             function renderRecurringShortcuts() {
-                const list = (state.recurring || []).filter((r) => r.type === "expense");
-                $("#recurringBox").classList.toggle("show", txType === "expense" && list.length > 0);
+                const list = (state.recurring || []).filter((r) => (r.type || "expense") === txType);
+                $("#recurringBox").classList.toggle("show", list.length > 0);
+                $("#recurringBox .recurring-head strong").textContent = recurringTypeLabel(txType);
                 $("#recurringList").innerHTML = list
                 .map(
-                    (r) =>
-                        `<button type="button" class="recurring-chip" data-recurring="${r.id}">${
+                    (r) => {
+                        const route =
+                            r.type === "transfer"
+                                ? `${accName(r.from)} → ${accName(r.to)}`
+                                : r.type === "income"
+                                ? paymentName(r.account)
+                                : paymentName(r.account);
+                        return `<button type="button" class="recurring-chip" data-recurring="${r.id}">${
                             r.note || r.subcategory || r.category || "固定支出"
-                        }<small>${money(r.amount)} · ${paymentName(r.account)}</small></button>`
+                        }<small>${money(r.amount)} · ${route}</small></button>`;
+                    }
                 )
                 .join("");
                 $$("[data-recurring]").forEach((button) => (button.onclick = () => createRecurringTransaction(button.dataset.recurring)));
             }
             function createRecurringTransaction(id) {
                 const r = (state.recurring || []).find((item) => item.id === id);
-                if (!r) return toast("找不到固定支出");
-                const tx = {
-                    id: uid(),
-                    type: "expense",
-                    amount: +r.amount || 0,
-                    date: today(),
-                    category: r.category || "其他",
-                    subcategory: r.subcategory || "",
-                    account: r.account || state.settings.defaultAccount || state.accounts[0]?.id || "",
-                    projectId: r.projectId || "",
-                    note: r.note || r.subcategory || r.category || "固定支出",
-                    party: r.party || "self",
-                    splitId: "",
-                };
-                if (!tx.amount) return toast("固定支出金額為 0，請重新設定");
+                if (!r) return toast("找不到固定項目");
+                const type = r.type || "expense";
+                const tx =
+                    type === "transfer"
+                        ? {
+                              id: uid(),
+                              type,
+                              amount: +r.amount || 0,
+                              date: today(),
+                              from: r.from || state.accounts[0]?.id || "",
+                              to: r.to || state.accounts.find((a) => a.id !== r.from)?.id || "",
+                              note: r.note || "固定轉帳",
+                          }
+                        : {
+                              id: uid(),
+                              type,
+                              amount: +r.amount || 0,
+                              date: today(),
+                              category: r.category || "其他",
+                              subcategory: r.subcategory || "",
+                              account: r.account || state.settings.defaultAccount || state.accounts[0]?.id || "",
+                              projectId: r.projectId || "",
+                              note: r.note || r.subcategory || r.category || recurringTypeLabel(type),
+                              party: r.party || "self",
+                              splitId: "",
+                          };
+                if (!tx.amount) return toast(`${recurringTypeLabel(type)}金額為 0，請重新設定`);
+                if (tx.type === "transfer" && (!tx.from || !tx.to || tx.from === tx.to)) return toast("固定轉帳帳戶設定不完整");
                 state.transactions.push(tx);
-                rememberCategory(tx.type, tx.category, tx.subcategory);
+                if (tx.type !== "transfer") rememberCategory(tx.type, tx.category, tx.subcategory);
                 applyTransactionEffects(tx);
                 store.save();
                 selectedDate = tx.date;
@@ -6533,7 +6601,7 @@
                 renderRecurringShortcuts();
                 if (current === "assets") renderAssets();
                 if (current === "calendar") renderCalendar();
-                toast("已用固定支出記帳");
+                toast(`已用${recurringTypeLabel(type)}記帳`);
             }
             function cardPaymentHint(card) {
                 if (!card?.paymentAccountId) return "尚未綁定繳款帳戶";
@@ -6568,7 +6636,7 @@
                 $("#saveTx").textContent = editing ? "更新這一筆" : "儲存這一筆";
                 $("#normalFields").style.display = txType === "transfer" ? "none" : "block";
                 $("#transferFields").style.display = txType === "transfer" ? "block" : "none";
-                $("#saveAsRecurring").closest("label").style.display = txType === "expense" ? "flex" : "none";
+                $("#saveAsRecurringLabel").textContent = `設定為${recurringTypeLabel(txType)}，以後可一鍵記帳`;
                 if (txType !== "transfer") {
                     const options = categoryList(txType);
                     const categoryOptions = [...new Set(options.concat("其他"))];
@@ -6601,26 +6669,40 @@
                 if (!$("#subcategory").value || !subOptions.includes($("#subcategory").value)) $("#subcategory").value = subOptions[0] || "其他";
                 $("#subcategoryCustom").style.display = $("#subcategory").value === "其他" ? "block" : "none";
             }
+            function splitParticipants() {
+                return [
+                    ...new Set(
+                        ($("#splitParticipants").value || "")
+                            .split(/[\n,，、]/)
+                            .map((x) => x.trim())
+                            .filter(Boolean)
+                    ),
+                ];
+            }
+            function splitSelfAmountFor(amount, participantCount) {
+                const raw = $("#splitSelfAmount").value;
+                if (raw !== "") return Math.max(0, Math.min(amount, +raw || 0));
+                return participantCount >= 0 ? amount / (participantCount + 1) : amount;
+            }
             function updateSplitPreview() {
                 if (txType === "transfer") return;
                 const amt = +$("#amount").value || 0,
-                    share = Math.max(0, Math.min(100, Number($("#share").value || 0)));
-                $("#shareLabel").textContent = share + "%";
-                const self = (amt * share) / 100,
-                    other = amt - self;
-                const person = $("#splitPerson").value.trim() || "對方";
-                let tail = "";
-                if ($("#splitPerson").value.trim()) {
-                    tail =
-                        party === "self"
-                            ? other > 0
-                                ? `<br><strong>${person} 欠你 ${money(other)}</strong>`
-                                : `<br><strong>全部由你負擔，不產生分帳</strong>`
-                            : self > 0
-                            ? `<br><strong>你欠 ${person} ${money(self)}</strong>`
-                            : `<br><strong>全部由 ${person} 負擔，不產生分帳</strong>`;
+                    people = splitParticipants(),
+                    self = splitSelfAmountFor(amt, people.length),
+                    othersTotal = Math.max(0, amt - self),
+                    perPerson = people.length ? othersTotal / people.length : 0;
+                if (!people.length) {
+                    $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>沒有分攤參與者，這筆不會產生分帳`;
+                    return;
                 }
-                $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>你負擔 ${money(self)} · ${person} 負擔 ${money(other)}${tail}`;
+                const payer = party === "self" ? state.settings.displayName || "我" : people[0];
+                const tail =
+                    party === "self"
+                        ? people.map((name) => `<br><strong>${name} 欠你 ${money(perPerson)}</strong>`).join("")
+                        : `<br><strong>你欠 ${payer} ${money(self)}</strong>`;
+                $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>你負擔 ${money(self)} · 其他人合計 ${money(
+                    othersTotal
+                )}${tail}`;
             }
             function resetTransactionForm(date = today()) {
                 editingTxId = null;
@@ -6628,8 +6710,8 @@
                 party = "self";
                 $("#amount").value = "";
                 $("#note").value = "";
-                $("#splitPerson").value = "";
-                $("#share").value = 100;
+                $("#splitParticipants").value = "";
+                $("#splitSelfAmount").value = "";
                 $("#date").value = date;
                 $("#transferDate").value = date;
                 $("#transferNote").value = "帳戶轉帳";
@@ -6644,29 +6726,56 @@
                 $("#partyOther").classList.remove("active");
             }
             function splitPayloadForForm(amount) {
-                const person = $("#splitPerson").value.trim(),
-                    share = Math.max(0, Math.min(100, Number($("#share").value || 0)));
-                if (!person) return "";
-                const self = (amount * share) / 100,
-                    other = amount - self,
-                    receivable = party === "self" ? other : 0,
-                    payable = party === "other" ? self : 0,
-                    splitId = uid();
-                if (receivable <= 0 && payable <= 0) return "";
+                const people = splitParticipants();
+                if (!people.length) return "";
+                const splitId = uid(),
+                    self = splitSelfAmountFor(amount, people.length),
+                    otherTotal = Math.max(0, amount - self),
+                    share = amount ? Math.round((self / amount) * 100) : 100,
+                    date = $("#date").value || today(),
+                    note = $("#note").value || selectedSubcategoryValue();
+                if (party === "self") {
+                    const perPerson = people.length ? otherTotal / people.length : 0;
+                    if (perPerson <= 0) return "";
+                    people.forEach((person) =>
+                        state.splits.push({
+                            id: uid(),
+                            groupId: splitId,
+                            person,
+                            amount: perPerson,
+                            totalAmount: amount,
+                            selfAmount: self,
+                            otherAmount: perPerson,
+                            share,
+                            paidBy: party,
+                            payerName: state.settings.displayName || "我",
+                            participants: people,
+                            direction: "owed_to_me",
+                            settled: false,
+                            date,
+                            note,
+                        })
+                    );
+                    return splitId;
+                }
+                const payer = people[0];
+                if (self <= 0) return "";
                 state.splits.push({
-                    id: splitId,
-                    person,
-                    amount: party === "self" ? receivable : payable,
+                    id: uid(),
+                    groupId: splitId,
+                    person: payer,
+                    amount: self,
                     totalAmount: amount,
                     selfAmount: self,
-                    otherAmount: other,
+                    otherAmount: otherTotal,
                     share,
                     paidBy: party,
-                    payerName: party === "self" ? state.settings.displayName || "我" : person,
-                    direction: party === "self" ? "owed_to_me" : "i_owe",
+                    payerName: payer,
+                    participants: people,
+                    direction: "i_owe",
                     settled: false,
-                    date: $("#date").value || today(),
-                    note: $("#note").value || selectedSubcategoryValue(),
+                    date,
+                    note,
                 });
                 return splitId;
             }
@@ -6709,7 +6818,7 @@
                     state.transactions.push(tx);
                 }
                 if (tx.type !== "transfer") rememberCategory(tx.type, tx.category, tx.subcategory);
-                if (!existing && tx.type === "expense" && $("#saveAsRecurring").checked) saveRecurringTemplate(tx);
+                if ($("#saveAsRecurring").checked) saveRecurringTemplate(tx);
                 applyTransactionEffects(tx);
                 store.save();
                 selectedDate = tx.date || today();
@@ -6744,19 +6853,16 @@
                 $("#note").value = t.note || "";
                 $("#partySelf").classList.toggle("active", party === "self");
                 $("#partyOther").classList.toggle("active", party === "other");
-                const split = state.splits.find((s) => s.id === t.splitId);
+                const relatedSplits = state.splits.filter((s) => s.id === t.splitId || s.groupId === t.splitId),
+                    split = relatedSplits[0];
                 if (split && +t.amount) {
-                    $("#splitPerson").value = split.person || "";
-                    const share =
-                        Number.isFinite(+split.share)
-                            ? +split.share
-                            : party === "self"
-                            ? ((+t.amount - +split.amount) / +t.amount) * 100
-                            : (+split.amount / +t.amount) * 100;
-                    $("#share").value = Math.max(0, Math.min(100, Math.round(share / 5) * 5));
+                    $("#splitParticipants").value = (split.participants?.length ? split.participants : relatedSplits.map((s) => s.person))
+                        .filter(Boolean)
+                        .join("\n");
+                    $("#splitSelfAmount").value = Number.isFinite(+split.selfAmount) ? +split.selfAmount : "";
                 } else {
-                    $("#splitPerson").value = "";
-                    $("#share").value = 100;
+                    $("#splitParticipants").value = "";
+                    $("#splitSelfAmount").value = "";
                 }
                 updateSplitPreview();
             }
@@ -7407,8 +7513,8 @@
                 if (!custom) $("#subcategoryCustom").value = "";
             };
             $("#amount").oninput = updateSplitPreview;
-            $("#share").oninput = updateSplitPreview;
-            $("#splitPerson").oninput = updateSplitPreview;
+            $("#splitParticipants").oninput = updateSplitPreview;
+            $("#splitSelfAmount").oninput = updateSplitPreview;
             $("#partySelf").onclick = () => {
                 party = "self";
                 $("#partySelf").classList.add("active");
@@ -8033,7 +8139,6 @@
             }
             function refreshSettingsUI() {
                 const s = state.settings;
-                renderSheetDiagnostics();
                 const profileIndex = profileStore.load();
                 const activeProfile = activeProfileRecord();
                 $("#profileSelect").innerHTML = profileIndex.profiles.map((p) => `<option value="${p.id}">${p.name || p.id}${p.googleEmail ? " · " + p.googleEmail : ""}</option>`).join("");
@@ -8189,10 +8294,6 @@
             };
             $("#settingsImportBtn").onclick = () => $("#settingsImportFile").click();
             $("#csvExportBtn").onclick = exportTransactionsCsv;
-            $("#sheetDiagnoseBtn").onclick = () => {
-                renderSheetDiagnostics();
-                toast("已更新手機連線診斷");
-            };
             $("#registerProfileBtn").onclick = registerLocalProfile;
             $("#profileSelect").onchange = (e) => switchProfile(e.target.value);
             $("#bindGoogleBtn").onclick = () => {
@@ -8256,18 +8357,6 @@
                 const suffix = mode === "all" ? "all" : `${start}_${end}`;
                 downloadTextFile(`anan-money-transactions-${suffix}.csv`, "\ufeff" + [headers.join(","), ...body].join("\n"), "text/csv;charset=utf-8");
                 toast(`已匯出 ${rows.length} 筆 CSV`);
-            }
-            function renderSheetDiagnostics() {
-                const url = normalizeSheetApiUrl(state.settings.sheetApiUrl || SHEET_SYNC_DEFAULTS.url);
-                const checks = [
-                    [!!url, "已設定 Apps Script /exec 網址"],
-                    [/\/exec$/.test(url), "網址結尾必須是 /exec，不是 /dev"],
-                    [location.protocol === "https:" || location.hostname === "localhost", "建議使用 HTTPS GitHub Pages 或 localhost"],
-                    [!!(state.settings.sheetApiToken || SHEET_SYNC_DEFAULTS.token), "已設定同步安全碼"],
-                    [sheetUserKey() !== "default", "已設定使用者識別，避免多人資料混在一起"],
-                    [navigator.cookieEnabled, "瀏覽器 Cookie/站台資料未完全關閉"],
-                ];
-                $("#sheetDiagList").innerHTML = checks.map(([ok, label]) => `<li>${ok ? "✓" : "!"} ${label}</li>`).join("");
             }
             function registerLocalProfile() {
                 const name = $("#profileName").value.trim();
@@ -8443,23 +8532,6 @@
                     toast(`下載失敗：${error.message}`);
                 }
             };
-            $("#sheetShareConfigBtn").onclick = async () => {
-                const config = sheetConfig();
-                if (!config) return;
-                const includeToken = config.token && confirm("要把同步安全碼一起放進手機連線連結嗎？只建議傳給自己的手機。");
-                const tokenPart = includeToken ? `&sheetToken=${encodeURIComponent(config.token)}` : "";
-                const link = `${location.origin}${location.pathname}?sheetUrl=${encodeURIComponent(config.url)}${tokenPart}`;
-                try {
-                    await navigator.clipboard.writeText(link);
-                    toast(includeToken ? "手機連線連結已複製，已包含安全碼" : "手機連線連結已複製，安全碼需在手機輸入一次");
-                } catch (error) {
-                    prompt(includeToken ? "複製這個連結到手機開啟；已包含安全碼" : "複製這個連結到手機開啟；安全碼需在手機輸入一次", link);
-                }
-            };
-            $("#sheetPreviewBtn").onclick = () =>
-                toast(
-                    "試算表分頁：記帳紀錄、帳戶、專案、信用卡、分帳、股票、基金、目標、行事曆、定期收支、餘額歷程、中繼資料、設定、資料表結構；各分頁用 使用者ID 分流"
-                );
             $("#resetDataBtn").onclick = () => {
                 if (!confirm("確定要重設為示範資料嗎？目前資料會被清除。")) return;
                 localStorage.removeItem(store.key);
