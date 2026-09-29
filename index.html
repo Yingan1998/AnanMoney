@@ -417,6 +417,9 @@
             }
 
             .wd {
+                height: 30px;
+                display: grid;
+                place-items: center;
                 font-size: 11px;
                 color: var(--muted);
             }
@@ -429,12 +432,28 @@
                 background: transparent;
                 position: relative;
                 flex: 0 0 auto;
+                align-self: center;
+                display: grid;
+                place-items: center;
+                padding: 0;
                 font-weight: 850;
             }
 
             .day.sel {
                 background: var(--purple);
                 color: #fff;
+            }
+
+            .day.today {
+                box-shadow: inset 0 0 0 2px var(--purple);
+                color: var(--purple);
+                background: #f5effc;
+            }
+
+            .day.today.sel {
+                background: var(--purple);
+                color: #fff;
+                box-shadow: 0 0 0 3px #eadff7;
             }
 
             .day.has:after {
@@ -466,9 +485,9 @@
                 border-radius: 14px;
                 display: flex;
                 flex-direction: column;
-                align-items: stretch;
+                align-items: center;
                 gap: 3px;
-                text-align: left;
+                text-align: center;
             }
 
             .cal-day-cell.selected {
@@ -480,6 +499,7 @@
             }
 
             .cal-chip-list {
+                width: 100%;
                 min-height: 42px;
                 display: flex;
                 flex-direction: column;
@@ -1259,10 +1279,11 @@
             .recurring-box {
                 display: none;
                 margin-bottom: 12px;
-                padding: 12px;
+                padding: 14px;
                 border: 1px solid var(--line);
-                border-radius: 18px;
-                background: #fff;
+                border-radius: 20px;
+                background: linear-gradient(135deg, #fff 0%, #f8f3ff 100%);
+                box-shadow: 0 10px 28px rgba(78, 57, 112, 0.07);
             }
 
             .recurring-box.show {
@@ -1272,39 +1293,110 @@
             .recurring-head {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
+                align-items: flex-start;
                 gap: 10px;
-                margin-bottom: 8px;
+                margin-bottom: 12px;
             }
 
             .recurring-head strong {
+                display: block;
+                font-size: 15px;
+                line-height: 1.25;
+            }
+
+            .recurring-head span {
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 750;
+                text-align: right;
+            }
+
+            .recurring-picker {
+                display: grid;
+                grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.8fr);
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .recurring-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 13px;
+                display: grid;
+                place-items: center;
+                background: #efe6fb;
+                color: var(--purple);
+                font-size: 18px;
+            }
+
+            .recurring-main {
+                min-width: 0;
+            }
+
+            .recurring-title {
+                display: block;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 font-size: 14px;
             }
 
-            .recurring-list {
-                display: flex;
-                gap: 8px;
-                overflow-x: auto;
-                padding-bottom: 2px;
-            }
-
-            .recurring-chip {
-                flex: 0 0 auto;
-                border: 1px solid var(--finxi-line);
-                border-radius: 14px;
-                background: var(--finxi-soft);
-                color: var(--finxi-dark);
-                padding: 9px 11px;
-                text-align: left;
-                font-weight: 850;
-            }
-
-            .recurring-chip small {
+            .recurring-meta {
                 display: block;
                 color: var(--muted);
                 font-size: 11px;
                 font-weight: 700;
-                margin-top: 2px;
+                margin-top: 3px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .recurring-amount {
+                display: block;
+                margin-top: 5px;
+                color: var(--finxi-dark);
+                font-size: 13px;
+                font-weight: 950;
+            }
+
+            .recurring-selected {
+                min-width: 0;
+                border: 1px solid #eadff7;
+                border-radius: 14px;
+                background: rgba(255, 255, 255, 0.86);
+                padding: 10px 12px;
+                color: var(--muted);
+                font-weight: 800;
+            }
+
+            .recurring-actions {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr auto auto;
+                gap: 8px;
+            }
+
+            .recurring-actions button {
+                height: 34px;
+                border-radius: 11px;
+                border: 1px solid #e2d4f2;
+                background: #fff;
+                color: var(--finxi-dark);
+                font-weight: 900;
+                padding: 0 10px;
+            }
+
+            .recurring-actions .recurring-run {
+                background: var(--purple);
+                border-color: var(--purple);
+                color: #fff;
+            }
+
+            .recurring-actions .recurring-delete {
+                color: #c94f5d;
+                border-color: #f2cdd4;
             }
 
             .q-tabs {
@@ -2028,6 +2120,10 @@
                 text-align: right;
             }
 
+            .negative-amount {
+                color: #d94f5c !important;
+            }
+
             .asset-visibility {
                 border: 0;
                 background: transparent;
@@ -2393,6 +2489,26 @@
                 .cal-chip {
                     font-size: 8px;
                     padding-inline: 3px;
+                }
+
+                .recurring-box {
+                    padding: 12px;
+                }
+
+                .recurring-head {
+                    align-items: flex-start;
+                }
+
+                .recurring-list {
+                    grid-template-columns: 1fr;
+                }
+
+                .recurring-picker {
+                    grid-template-columns: 1fr;
+                }
+
+                .recurring-actions {
+                    grid-template-columns: 1fr 1fr 1fr;
                 }
             }
 
@@ -4267,9 +4383,17 @@
                 <div class="form recurring-box" id="recurringBox">
                     <div class="recurring-head">
                         <strong>固定支出</strong>
-                        <span class="muted">點一下直接記帳</span>
+                        <span class="muted">選擇後快速操作</span>
                     </div>
-                    <div class="recurring-list" id="recurringList"></div>
+                    <div class="recurring-picker">
+                        <select id="recurringSelect" class="control"></select>
+                        <div class="recurring-selected" id="recurringSelected"></div>
+                        <div class="recurring-actions">
+                            <button type="button" class="recurring-run" id="recurringRunBtn">記帳</button>
+                            <button type="button" id="recurringApplyBtn">套用</button>
+                            <button type="button" class="recurring-delete" id="recurringDeleteBtn">刪除</button>
+                        </div>
+                    </div>
                 </div>
                 <form class="form">
                     <h2 id="formTitle">新增支出</h2>
@@ -4312,7 +4436,11 @@
                         </div>
                         <div class="field">
                             <label>分攤參與者（選填）</label
-                            ><textarea id="splitParticipants" class="control" placeholder="一行一位或用逗號分隔，例如：小花、小明"></textarea>
+                            ><textarea
+                                id="splitParticipants"
+                                class="control"
+                                placeholder="一行一位或用逗號分隔；可加金額，例如：小花 300、小明 500"
+                            ></textarea>
                         </div>
                         <div class="field">
                             <label>我的負擔金額（選填）</label>
@@ -4948,13 +5076,16 @@
                         </div>
 
                         <div class="setting-card">
-                            <h3>所有金額預設為 0</h3>
+                            <h3>資料重設</h3>
                             <div class="desc">
-                                所有帳戶、信用卡、預算、投資、專案與定期收支的數值一律從 0 開始，之後可逐筆手動修改。
+                                可將所有金額歸零，或清空帳戶並保留一個台幣現金帳戶。操作前會自動下載 JSON 備份。
                             </div>
-                            <div class="setting-note">取消時不會寫入資料；只有按「儲存」才會更新。</div>
+                            <div class="setting-note">每月預算預設為 0，可在「記帳預設值」自行修改後儲存。</div>
                             <button class="secondary setting-wide" id="applyAnanDefaultsBtn" style="margin-top: 12px">
                                 將所有金額重設為 0
+                            </button>
+                            <button class="secondary danger setting-wide" id="clearAccountsBtn" style="margin-top: 10px">
+                                清空所有帳戶
                             </button>
                         </div>
 
@@ -5073,6 +5204,19 @@
                                 <button class="secondary" id="settingsImportBtn">匯入 JSON</button>
                             </div>
                             <input type="file" id="settingsImportFile" accept="application/json" hidden />
+                            <div class="setting-row" id="csvRangeModeRow" style="margin-top: 12px">
+                                <span>CSV 類型</span>
+                                <select id="csvExportType" class="setting-control">
+                                    <option value="transactions">記帳紀錄</option>
+                                    <option value="accounts">帳戶</option>
+                                    <option value="cards">信用卡</option>
+                                    <option value="splits">分帳</option>
+                                    <option value="stocks">股票</option>
+                                    <option value="projects">專案</option>
+                                    <option value="events">行事曆</option>
+                                    <option value="recurring">固定項目</option>
+                                </select>
+                            </div>
                             <div class="setting-row" style="margin-top: 12px">
                                 <span>CSV 區間</span>
                                 <select id="csvRangeMode" class="setting-control">
@@ -5080,7 +5224,7 @@
                                     <option value="range">指定日期區間</option>
                                 </select>
                             </div>
-                            <div class="setting-row">
+                            <div class="setting-row" id="csvDateRangeRow">
                                 <span>起訖日期</span>
                                 <div class="csv-date-range">
                                     <input id="csvStartDate" class="setting-control" type="date" />
@@ -5117,6 +5261,7 @@
                                 <span>同步狀態</span>
                                 <span class="status-pill" id="sheetSyncStatus">尚未連線</span>
                             </div>
+                            <div class="setting-note" id="sheetLastSyncNote">尚未同步。</div>
                             <div class="settings-actions">
                                 <button class="secondary" id="sheetTestBtn">測試連線</button>
                                 <button class="secondary" id="sheetUploadBtn">上傳資料</button>
@@ -5379,6 +5524,7 @@
             const DEFAULT = {
                 budget: 0,
                 accounts: [
+                    {id: "cash-twd", name: "台幣現金", type: "cash_twd", currency: "TWD", balance: 0, memo: ""},
                     {id: "post", name: "郵局", type: "bank", currency: "TWD", balance: 0, memo: ""},
                     {id: "ctbc", name: "中國信託", type: "bank", currency: "TWD", balance: 0, memo: ""},
                     {id: "fubon", name: "台北富邦", type: "bank", currency: "TWD", balance: 0, memo: ""},
@@ -5436,7 +5582,7 @@
                         date: today(),
                         category: "食品",
                         subcategory: "晚餐",
-                        account: "cash",
+                        account: "cash-twd",
                         note: "食物",
                         projectId: "",
                         party: "self",
@@ -5646,7 +5792,7 @@
             state.settings ||= {
                 displayName: "安安",
                 currency: "TWD",
-                defaultAccount: "cash",
+                defaultAccount: "cash-twd",
                 defaultCategory: "食品",
                 theme: "lavender",
                 layout: "auto",
@@ -5861,11 +6007,36 @@
                 state.accounts = structuredClone(ANAN_ACCOUNT_DEFAULTS);
                 state.cards = structuredClone(ANAN_CARD_DEFAULTS);
                 state.settings.ananAccountDefaultsApplied = "2026-09-04";
-                state.settings.defaultAccount = "ctbc";
                 store.save();
                 if (showToast) toast("已重新套用 2026/09/04 預設餘額");
             }
             if (state.settings.ananAccountDefaultsApplied !== "2026-09-04") applyAnanAccountDefaults(false);
+
+            function ensureCashTwdAccount() {
+                state.accounts ||= [];
+                const legacy = state.accounts.find((a) => a.id === "cash"),
+                    existing = state.accounts.find((a) => a.id === "cash-twd");
+                if (!existing) {
+                    state.accounts.unshift({
+                        id: "cash-twd",
+                        name: legacy?.name || "台幣現金",
+                        type: "cash_twd",
+                        currency: "TWD",
+                        balance: legacy?.balance || 0,
+                        memo: legacy?.memo || "",
+                    });
+                }
+                state.transactions = (state.transactions || []).map((t) => ({
+                    ...t,
+                    account: t.account === "cash" ? "cash-twd" : t.account,
+                    from: t.from === "cash" ? "cash-twd" : t.from,
+                    to: t.to === "cash" ? "cash-twd" : t.to,
+                }));
+                if (!state.settings.defaultAccount || state.settings.defaultAccount === "cash" || !state.accounts.some((a) => a.id === state.settings.defaultAccount)) {
+                    state.settings.defaultAccount = "cash-twd";
+                }
+            }
+            ensureCashTwdAccount();
 
             state.funds ||= [{id: uid(), name: "安聯台灣科技基金", nickname: "呱呱", units: 0, cost: 0, nav: 0}];
             state.stocks.forEach((s) => {
@@ -5953,6 +6124,7 @@
                     a.memo ||= "";
                     a.sortOrder = Number.isFinite(+a.sortOrder) ? +a.sortOrder : state.accounts.indexOf(a);
                 });
+                ensureCashTwdAccount();
             }
             let accountFilter = "asset",
                 qtype = "expense",
@@ -5963,6 +6135,7 @@
                 party = "self",
                 calDate = new Date(),
                 selectedDate = today(),
+                calendarToday = selectedDate,
                 calView = "daily",
                 currentStock = null,
                 editingTxId = null,
@@ -6033,6 +6206,9 @@
                         )}</option>`
                 )
                 .join("");
+            }
+            function defaultCashAccountId() {
+                return state.accounts.find((a) => a.id === "cash-twd")?.id || state.accounts.find((a) => a.type === "cash_twd")?.id || state.accounts[0]?.id || "";
             }
             function cardOptions(selected = "") {
                 return state.cards
@@ -6117,6 +6293,9 @@
                 return `${a.currency} ${original.toLocaleString("zh-TW", {maximumFractionDigits: 2})} · 約 ${moneyExact(
                     converted
                 )}`;
+            }
+            function accountAmountClass(a) {
+                return !a || isAccountHidden(a.id) || accBalance(a) >= 0 ? "" : " negative-amount";
             }
             function accountBaseMoney(a) {
                 return isAccountHidden(a.id) ? accountMask() : moneyExact(a.balance || 0);
@@ -6379,6 +6558,15 @@
                 return items.concat(cardDueItemsForDate(iso), transactionItemsForDate(iso));
             }
 
+            function eventCalendarItemsForDate(iso) {
+                const holiday = TW_HOLIDAYS[iso],
+                    items = holiday ? [{type: "holiday", title: holiday}] : [];
+                state.events
+                    .filter((e) => e.date === iso)
+                    .forEach((e) => items.push({type: "event", title: e.title, color: e.color}));
+                return items;
+            }
+
             function calendarChip(item) {
                 const style = item.color ? ` style="background:${item.color}33;color:#5a496b"` : "";
                 return `<span class="cal-chip ${item.type}"${style} title="${item.title}">${item.title}</span>`;
@@ -6392,7 +6580,34 @@
                 )} · ${source}</small></div></div>`;
             }
 
+            function currentCalendarToday() {
+                const now = today();
+                if (calendarToday !== now && selectedDate === calendarToday) {
+                    selectedDate = now;
+                    calDate = new Date(now + "T12:00:00");
+                }
+                calendarToday = now;
+                return now;
+            }
+
+            function setCalendarView(view) {
+                calView = view;
+                $$("[data-calview]").forEach((b) => b.classList.toggle("active", b.dataset.calview === view));
+                $("#dailyPane").style.display = view === "daily" ? "block" : "none";
+                $("#eventPane").style.display = view === "events" ? "block" : "none";
+            }
+
+            function selectCalendarDate(iso, jumpToDetail = false) {
+                selectedDate = dateOnly(iso) || today();
+                calDate = new Date(selectedDate + "T12:00:00");
+                renderCalendar();
+                if (jumpToDetail && calView === "daily") {
+                    requestAnimationFrame(() => $("#dailyPane").scrollIntoView({behavior: "smooth", block: "start"}));
+                }
+            }
+
             function renderCalendar() {
+                const todayIso = currentCalendarToday();
                 const y = calDate.getFullYear(),
                     m = calDate.getMonth();
                 $("#calTitle").textContent = `${y}年${m + 1}月`;
@@ -6403,15 +6618,15 @@
                 for (let i = 0; i < start; i++) html += '<div class="cal-day-cell empty"></div>';
                 for (let d = 1; d <= days; d++) {
                     const iso = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
-                        has = state.transactions.some((t) => t.date === iso),
+                        has = calView === "daily" && state.transactions.some((t) => t.date === iso),
                         holiday = TW_HOLIDAYS[iso],
                         weekend = new Date(iso + "T12:00:00").getDay() % 6 === 0,
-                        items = calendarItemsForDate(iso),
+                        items = calView === "events" ? eventCalendarItemsForDate(iso) : calendarItemsForDate(iso),
                         visibleItems = items.slice(0, 3),
                         more = items.length - visibleItems.length;
                     html += `<div class="cal-day-cell ${iso === selectedDate ? "selected" : ""}"><button class="day ${
                         iso === selectedDate ? "sel" : ""
-                    } ${has ? "has" : ""} ${
+                    } ${iso === todayIso ? "today" : ""} ${has ? "has" : ""} ${
                         weekend ? "weekend" : ""
                     } ${holiday ? "holiday" : ""}" data-date="${iso}" title="${holiday || ""}">${d}</button><div class="cal-chip-list">${visibleItems
                         .map(calendarChip)
@@ -6421,8 +6636,7 @@
                 $$("[data-date]").forEach(
                     (b) =>
                         (b.onclick = () => {
-                            selectedDate = b.dataset.date;
-                            renderCalendar();
+                            selectCalendarDate(b.dataset.date, true);
                         })
                 );
                 const d = new Date(selectedDate + "T12:00:00");
@@ -6541,26 +6755,76 @@
             function recurringTypeLabel(type = txType) {
                 return type === "income" ? "固定收入" : type === "transfer" ? "固定轉帳" : "固定支出";
             }
+            function recurringIcon(type = txType) {
+                return type === "income" ? "↗" : type === "transfer" ? "↔" : "↘";
+            }
+            function recurringRoute(r) {
+                return r.type === "transfer"
+                    ? `${accName(r.from)} → ${accName(r.to)}`
+                    : r.type === "income"
+                    ? paymentName(r.account)
+                    : paymentName(r.account);
+            }
+            function recurringTitle(r) {
+                return r.note || r.subcategory || r.category || recurringTypeLabel(r.type);
+            }
+            function selectedRecurringId() {
+                return $("#recurringSelect").value;
+            }
+            function renderSelectedRecurring() {
+                const r = (state.recurring || []).find((item) => item.id === selectedRecurringId());
+                if (!r) {
+                    $("#recurringSelected").textContent = "尚未選擇固定項目";
+                    return;
+                }
+                $("#recurringSelected").innerHTML = `<span class="recurring-title">${recurringIcon(r.type)} ${recurringTitle(
+                    r
+                )}</span><span class="recurring-meta">${recurringRoute(r)}</span><span class="recurring-amount">${money(r.amount)}</span>`;
+            }
             function renderRecurringShortcuts() {
                 const list = (state.recurring || []).filter((r) => (r.type || "expense") === txType);
                 $("#recurringBox").classList.toggle("show", list.length > 0);
                 $("#recurringBox .recurring-head strong").textContent = recurringTypeLabel(txType);
-                $("#recurringList").innerHTML = list
-                .map(
-                    (r) => {
-                        const route =
-                            r.type === "transfer"
-                                ? `${accName(r.from)} → ${accName(r.to)}`
-                                : r.type === "income"
-                                ? paymentName(r.account)
-                                : paymentName(r.account);
-                        return `<button type="button" class="recurring-chip" data-recurring="${r.id}">${
-                            r.note || r.subcategory || r.category || "固定支出"
-                        }<small>${money(r.amount)} · ${route}</small></button>`;
-                    }
-                )
-                .join("");
-                $$("[data-recurring]").forEach((button) => (button.onclick = () => createRecurringTransaction(button.dataset.recurring)));
+                $("#recurringBox .recurring-head span").textContent = `${list.length} 筆可快速記帳`;
+                $("#recurringSelect").innerHTML = list
+                    .map((r) => `<option value="${r.id}">${recurringTitle(r)}｜${money(r.amount)}｜${recurringRoute(r)}</option>`)
+                    .join("");
+                renderSelectedRecurring();
+            }
+            function applyRecurringToForm(id) {
+                const r = (state.recurring || []).find((item) => item.id === id);
+                if (!r) return toast("找不到固定項目");
+                txType = r.type || "expense";
+                party = r.party || "self";
+                editingTxId = null;
+                renderAdd();
+                $("#amount").value = +r.amount || "";
+                $("#saveAsRecurring").checked = true;
+                if (txType === "transfer") {
+                    $("#fromAccount").value = r.from || "";
+                    $("#toAccount").value = r.to || "";
+                    $("#transferDate").value = today();
+                    $("#transferNote").value = r.note || "固定轉帳";
+                } else {
+                    setCategoryFields(r.category || "", r.subcategory || "");
+                    $("#account").value = r.account || "";
+                    $("#project").value = r.projectId || "";
+                    $("#date").value = today();
+                    $("#note").value = r.note || "";
+                    $("#partySelf").classList.toggle("active", party === "self");
+                    $("#partyOther").classList.toggle("active", party === "other");
+                    updateSplitPreview();
+                }
+                toast(`已套用${recurringTypeLabel(txType)}到表單`);
+            }
+            function deleteRecurringTemplate(id) {
+                const r = (state.recurring || []).find((item) => item.id === id);
+                if (!r) return toast("找不到固定項目");
+                if (!confirm(`刪除「${r.note || r.subcategory || r.category || recurringTypeLabel(r.type)}」？`)) return;
+                state.recurring = (state.recurring || []).filter((item) => item.id !== id);
+                store.save();
+                renderRecurringShortcuts();
+                toast("固定項目已刪除");
             }
             function createRecurringTransaction(id) {
                 const r = (state.recurring || []).find((item) => item.id === id);
@@ -6652,8 +6916,15 @@
                 .map((a) => `<option value="${a.id}">${a.name} · ${money(accBalance(a))}</option>`)
                 .join("");
                 $("#account").innerHTML = paymentOptions(txType);
+                if (!editing && txType !== "transfer") $("#account").value = state.settings.defaultAccount || defaultCashAccountId();
                 $("#fromAccount").innerHTML = accountOpts;
                 $("#toAccount").innerHTML = accountOpts;
+                if (!editing && txType === "transfer") {
+                    $("#fromAccount").value = state.settings.defaultAccount || defaultCashAccountId();
+                    if ($("#toAccount").value === $("#fromAccount").value) {
+                        $("#toAccount").value = state.accounts.find((a) => a.id !== $("#fromAccount").value)?.id || "";
+                    }
+                }
                 $("#project").innerHTML =
                     `<option value="">不指定專案</option>` +
                     state.projects.map((p) => `<option value="${p.id}">${p.name}</option>`).join("");
@@ -6669,36 +6940,62 @@
                 if (!$("#subcategory").value || !subOptions.includes($("#subcategory").value)) $("#subcategory").value = subOptions[0] || "其他";
                 $("#subcategoryCustom").style.display = $("#subcategory").value === "其他" ? "block" : "none";
             }
-            function splitParticipants() {
-                return [
-                    ...new Set(
-                        ($("#splitParticipants").value || "")
-                            .split(/[\n,，、]/)
-                            .map((x) => x.trim())
-                            .filter(Boolean)
-                    ),
-                ];
+            function splitParticipantEntries() {
+                const seen = new Set();
+                return ($("#splitParticipants").value || "")
+                    .split(/[\n,，、]/)
+                    .map((raw) => {
+                        const text = raw.trim();
+                        if (!text) return null;
+                        const match = text.match(/^(.+?)(?:\s+|\:|：)(\d+(?:\.\d+)?)$/);
+                        const name = (match ? match[1] : text).trim();
+                        if (!name || seen.has(name)) return null;
+                        seen.add(name);
+                        return {name, amount: match ? Math.max(0, +match[2] || 0) : null};
+                    })
+                    .filter(Boolean);
             }
-            function splitSelfAmountFor(amount, participantCount) {
-                const raw = $("#splitSelfAmount").value;
-                if (raw !== "") return Math.max(0, Math.min(amount, +raw || 0));
-                return participantCount >= 0 ? amount / (participantCount + 1) : amount;
+            function splitParticipants() {
+                return splitParticipantEntries().map((x) => x.name);
+            }
+            function splitDraftFor(amount) {
+                const entries = splitParticipantEntries(),
+                    explicit = entries.filter((x) => Number.isFinite(x.amount)),
+                    unspecified = entries.filter((x) => !Number.isFinite(x.amount)),
+                    explicitTotal = explicit.reduce((sum, x) => sum + x.amount, 0),
+                    rawSelf = $("#splitSelfAmount").value,
+                    self =
+                        rawSelf !== ""
+                            ? Math.max(0, Math.min(amount, +rawSelf || 0))
+                            : explicit.length
+                            ? Math.max(0, amount - explicitTotal)
+                            : entries.length
+                            ? amount / (entries.length + 1)
+                            : amount,
+                    remaining = Math.max(0, amount - self - explicitTotal),
+                    fallbackAmount = unspecified.length ? remaining / unspecified.length : 0,
+                    people = entries.map((entry) => ({
+                        name: entry.name,
+                        amount: Number.isFinite(entry.amount) ? entry.amount : fallbackAmount,
+                    })),
+                    otherTotal = people.reduce((sum, entry) => sum + entry.amount, 0);
+                return {people, self, otherTotal};
             }
             function updateSplitPreview() {
                 if (txType === "transfer") return;
                 const amt = +$("#amount").value || 0,
-                    people = splitParticipants(),
-                    self = splitSelfAmountFor(amt, people.length),
-                    othersTotal = Math.max(0, amt - self),
-                    perPerson = people.length ? othersTotal / people.length : 0;
+                    draft = splitDraftFor(amt),
+                    people = draft.people,
+                    self = draft.self,
+                    othersTotal = draft.otherTotal;
                 if (!people.length) {
                     $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>沒有分攤參與者，這筆不會產生分帳`;
                     return;
                 }
-                const payer = party === "self" ? state.settings.displayName || "我" : people[0];
+                const payer = party === "self" ? state.settings.displayName || "我" : people[0].name;
                 const tail =
                     party === "self"
-                        ? people.map((name) => `<br><strong>${name} 欠你 ${money(perPerson)}</strong>`).join("")
+                        ? people.map((person) => `<br><strong>${person.name} 欠你 ${money(person.amount)}</strong>`).join("")
                         : `<br><strong>你欠 ${payer} ${money(self)}</strong>`;
                 $("#splitPreview").innerHTML = `總額 ${money(amt)}<br>你負擔 ${money(self)} · 其他人合計 ${money(
                     othersTotal
@@ -6726,30 +7023,32 @@
                 $("#partyOther").classList.remove("active");
             }
             function splitPayloadForForm(amount) {
-                const people = splitParticipants();
+                const draft = splitDraftFor(amount),
+                    people = draft.people;
                 if (!people.length) return "";
                 const splitId = uid(),
-                    self = splitSelfAmountFor(amount, people.length),
-                    otherTotal = Math.max(0, amount - self),
+                    self = draft.self,
+                    otherTotal = draft.otherTotal,
                     share = amount ? Math.round((self / amount) * 100) : 100,
                     date = $("#date").value || today(),
-                    note = $("#note").value || selectedSubcategoryValue();
+                    note = $("#note").value || selectedSubcategoryValue(),
+                    participantNames = people.map((person) => person.name);
                 if (party === "self") {
-                    const perPerson = people.length ? otherTotal / people.length : 0;
-                    if (perPerson <= 0) return "";
-                    people.forEach((person) =>
+                    const payablePeople = people.filter((person) => person.amount > 0);
+                    if (!payablePeople.length) return "";
+                    payablePeople.forEach((person) =>
                         state.splits.push({
                             id: uid(),
                             groupId: splitId,
-                            person,
-                            amount: perPerson,
+                            person: person.name,
+                            amount: person.amount,
                             totalAmount: amount,
                             selfAmount: self,
-                            otherAmount: perPerson,
+                            otherAmount: person.amount,
                             share,
                             paidBy: party,
                             payerName: state.settings.displayName || "我",
-                            participants: people,
+                            participants: participantNames,
                             direction: "owed_to_me",
                             settled: false,
                             date,
@@ -6758,7 +7057,7 @@
                     );
                     return splitId;
                 }
-                const payer = people[0];
+                const payer = people[0].name;
                 if (self <= 0) return "";
                 state.splits.push({
                     id: uid(),
@@ -6771,7 +7070,7 @@
                     share,
                     paidBy: party,
                     payerName: payer,
-                    participants: people,
+                    participants: participantNames,
                     direction: "i_owe",
                     settled: false,
                     date,
@@ -7169,7 +7468,7 @@
                             a.id
                         }"><div class="aicon">${icon}</div><div><strong>${a.name}</strong><small>${
                             a.currency || "TWD"
-                        }${a.memo ? " · " + a.memo : ""}</small></div><div class="aval"><span>${accountMoney(
+                        }${a.memo ? " · " + a.memo : ""}</small></div><div class="aval${accountAmountClass(a)}"><span>${accountMoney(
                             a
                         )}</span><button class="asset-visibility ${
                             hidden ? "muted-eye" : ""
@@ -7210,6 +7509,7 @@
                 if (!a) return openPage("calendar");
                 $("#accountDetailTitle").textContent = a.name;
                 $("#accountDetailBalance").innerHTML = accountMoney(a);
+                $("#accountDetailBalance").classList.toggle("negative-amount", !isAccountHidden(a.id) && accBalance(a) < 0);
                 const mk = monthKey(),
                     tx = state.transactions.filter((t) => t.account === a.id || t.from === a.id || t.to === a.id),
                     mt = tx.filter((t) => t.date?.slice(0, 7) === mk);
@@ -7315,7 +7615,7 @@
                                     a.currency || "TWD"
                                 } · ${g}</div><div class="account-note"><strong>備註</strong>${
                                     a.memo || "尚未填寫備註"
-                                }</div><div class="account-edit"><div class="account-amount-wrap"><strong>${accountMoney(
+                                }</div><div class="account-edit"><div class="account-amount-wrap${accountAmountClass(a)}"><strong>${accountMoney(
                                     a
                                 )}</strong><span class="account-balance-sub">基準餘額 ${accountBaseMoney(
                                     a
@@ -7515,6 +7815,10 @@
             $("#amount").oninput = updateSplitPreview;
             $("#splitParticipants").oninput = updateSplitPreview;
             $("#splitSelfAmount").oninput = updateSplitPreview;
+            $("#recurringSelect").onchange = renderSelectedRecurring;
+            $("#recurringRunBtn").onclick = () => createRecurringTransaction(selectedRecurringId());
+            $("#recurringApplyBtn").onclick = () => applyRecurringToForm(selectedRecurringId());
+            $("#recurringDeleteBtn").onclick = () => deleteRecurringTemplate(selectedRecurringId());
             $("#partySelf").onclick = () => {
                 party = "self";
                 $("#partySelf").classList.add("active");
@@ -7561,10 +7865,8 @@
             $$("[data-calview]").forEach(
                 (b) =>
                     (b.onclick = () => {
-                        calView = b.dataset.calview;
-                        $$("[data-calview]").forEach((x) => x.classList.toggle("active", x === b));
-                        $("#dailyPane").style.display = calView === "daily" ? "block" : "none";
-                        $("#eventPane").style.display = calView === "events" ? "block" : "none";
+                        setCalendarView(b.dataset.calview);
+                        renderCalendar();
                     })
             );
             function resetEventForm(date = selectedDate) {
@@ -8148,14 +8450,17 @@
                 $("#profileGoogleEmail").value = activeProfile.googleEmail || s.googleEmail || "";
                 $("#profileStatus").textContent = `目前使用者：${activeProfile.name || s.displayName || "安安"}（資料庫 ${store.key}）`;
                 $("#settingCurrency").value = s.currency || "TWD";
-                $("#settingDefaultAccount").innerHTML = state.accounts
+                $("#settingDefaultAccount").innerHTML = [...state.accounts]
+                .sort((a, b) => (a.id === "cash-twd" ? -1 : b.id === "cash-twd" ? 1 : (a.sortOrder ?? 999) - (b.sortOrder ?? 999)))
                 .map((a) => `<option value="${a.id}">${a.name}</option>`)
                 .join("");
-                $("#settingDefaultAccount").value = s.defaultAccount || state.accounts[0]?.id || "";
+                $("#settingDefaultAccount").value = s.defaultAccount || "cash-twd";
                 $("#settingDefaultCategory").value = s.defaultCategory || "食品";
                 $("#settingBudget").value = state.budget || 0;
                 $("#sheetApiUrl").value = s.sheetApiUrl || "";
                 $("#sheetApiToken").value = s.sheetApiToken || "";
+                updateSheetLastSyncNote();
+                updateCsvRangeVisibility();
                 sw($("#privacySwitch"), s.privacy);
                 sw($("#compactSwitch"), s.compact);
                 sw($("#largeTextSwitch"), s.largeText);
@@ -8285,15 +8590,16 @@
             $$("[data-tone]").forEach((b) => (b.onclick = () => persistSetting("tone", b.dataset.tone)));
 
             $("#settingsExportBtn").onclick = () => {
-                const blob = new Blob([JSON.stringify(state, null, 2)], {type: "application/json"});
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `安安Money-V3.7-${today()}.json`;
-                a.click();
-                URL.revokeObjectURL(a.href);
+                exportBackupSnapshot("manual");
             };
             $("#settingsImportBtn").onclick = () => $("#settingsImportFile").click();
             $("#csvExportBtn").onclick = exportTransactionsCsv;
+            function updateCsvRangeVisibility() {
+                const show = ($("#csvExportType").value || "transactions") === "transactions";
+                $("#csvRangeModeRow").style.display = show ? "flex" : "none";
+                $("#csvDateRangeRow").style.display = show ? "flex" : "none";
+            }
+            $("#csvExportType").onchange = updateCsvRangeVisibility;
             $("#registerProfileBtn").onclick = registerLocalProfile;
             $("#profileSelect").onchange = (e) => switchProfile(e.target.value);
             $("#bindGoogleBtn").onclick = () => {
@@ -8314,6 +8620,7 @@
                 const f = e.target.files[0];
                 if (!f) return;
                 try {
+                    exportBackupSnapshot("before-import");
                     const imported = JSON.parse(await f.text());
                     applyLoadedState(imported);
                     store.save();
@@ -8336,27 +8643,125 @@
                 a.click();
                 URL.revokeObjectURL(a.href);
             }
+            function exportBackupSnapshot(reason = "backup") {
+                const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+                downloadTextFile(
+                    `anan-money-${reason}-${stamp}.json`,
+                    JSON.stringify(state, null, 2),
+                    "application/json;charset=utf-8"
+                );
+            }
+            function csvBuild(headers, rows) {
+                return "\ufeff" + [headers.join(","), ...rows.map((row) => row.map(csvEscape).join(","))].join("\n");
+            }
             function exportTransactionsCsv() {
+                const type = $("#csvExportType").value || "transactions";
                 const mode = $("#csvRangeMode").value;
                 const start = $("#csvStartDate").value || "0000-01-01";
                 const end = $("#csvEndDate").value || "9999-12-31";
-                const rows = state.transactions.filter((t) => mode === "all" || (t.date >= start && t.date <= end));
-                const headers = ["日期", "類型", "金額", "分類", "子分類", "帳戶/卡片", "轉出", "轉入", "專案", "備註"];
-                const body = rows.map((t) => [
-                    t.date,
-                    t.type,
-                    t.amount,
-                    t.category || "",
-                    t.subcategory || "",
-                    t.account ? paymentName(t.account) : "",
-                    t.from ? accName(t.from) : "",
-                    t.to ? accName(t.to) : "",
-                    state.projects.find((p) => p.id === t.projectId)?.name || "",
-                    t.note || "",
-                ].map(csvEscape).join(","));
+                const configs = {
+                    transactions: {
+                        name: "transactions",
+                        headers: ["日期", "類型", "金額", "分類", "子分類", "帳戶/卡片", "轉出", "轉入", "專案", "備註"],
+                        rows: state.transactions
+                            .filter((t) => mode === "all" || (t.date >= start && t.date <= end))
+                            .map((t) => [
+                                t.date,
+                                t.type,
+                                t.amount,
+                                t.category || "",
+                                t.subcategory || "",
+                                t.account ? paymentName(t.account) : "",
+                                t.from ? accName(t.from) : "",
+                                t.to ? accName(t.to) : "",
+                                state.projects.find((p) => p.id === t.projectId)?.name || "",
+                                t.note || "",
+                            ]),
+                    },
+                    accounts: {
+                        name: "accounts",
+                        headers: ["名稱", "類型", "幣別", "目前餘額", "基準餘額", "備註", "是否隱藏"],
+                        rows: state.accounts.map((a) => [
+                            a.name,
+                            assetTypeLabel(a.type),
+                            a.currency || "TWD",
+                            accBalance(a),
+                            a.balance || 0,
+                            a.memo || "",
+                            isAccountHidden(a.id) ? "是" : "否",
+                        ]),
+                    },
+                    cards: {
+                        name: "cards",
+                        headers: ["名稱", "信用額度", "未繳總額", "本期應繳", "扣款帳戶", "自動繳款", "繳款截止日", "結帳日", "備註"],
+                        rows: state.cards.map((c) => [
+                            c.name,
+                            c.limit || 0,
+                            c.balance || 0,
+                            c.currentDue || 0,
+                            accName(c.paymentAccountId),
+                            c.autoPayment ? "是" : "否",
+                            dateOnly(c.dueDate),
+                            dateOnly(c.statementDate),
+                            c.memo || "",
+                        ]),
+                    },
+                    splits: {
+                        name: "splits",
+                        headers: ["日期", "對象", "方向", "金額", "總額", "我負擔", "對方負擔", "付款者", "狀態", "備註"],
+                        rows: state.splits.map((s) => [
+                            s.date,
+                            s.person,
+                            s.direction === "owed_to_me" ? "對方欠我" : "我欠對方",
+                            s.amount || 0,
+                            s.totalAmount || 0,
+                            s.selfAmount || 0,
+                            s.otherAmount || 0,
+                            s.payerName || "",
+                            s.settled ? "已結清" : "未結清",
+                            s.note || "",
+                        ]),
+                    },
+                    stocks: {
+                        name: "stocks",
+                        headers: ["代號", "名稱", "股數", "成本", "現價", "備註"],
+                        rows: state.stocks.map((s) => [s.code, s.name || "", s.shares || 0, s.cost || 0, stockPrice(s), s.memo || ""]),
+                    },
+                    projects: {
+                        name: "projects",
+                        headers: ["名稱", "類型", "預算", "開始日", "結束日", "備註"],
+                        rows: state.projects.map((p) => [p.name, p.type || "", p.budget || 0, p.startDate || "", p.endDate || "", p.memo || ""]),
+                    },
+                    events: {
+                        name: "events",
+                        headers: ["日期", "標題", "顏色"],
+                        rows: state.events.map((e) => [e.date, e.title, e.color || ""]),
+                    },
+                    recurring: {
+                        name: "recurring",
+                        headers: ["類型", "名稱", "金額", "分類", "子分類", "帳戶", "轉出", "轉入", "專案"],
+                        rows: (state.recurring || []).map((r) => [
+                            recurringTypeLabel(r.type),
+                            r.note || r.subcategory || r.category || recurringTypeLabel(r.type),
+                            r.amount || 0,
+                            r.category || "",
+                            r.subcategory || "",
+                            r.account ? paymentName(r.account) : "",
+                            r.from ? accName(r.from) : "",
+                            r.to ? accName(r.to) : "",
+                            state.projects.find((p) => p.id === r.projectId)?.name || "",
+                        ]),
+                    },
+                };
+                const selected = configs[type] || configs.transactions;
                 const suffix = mode === "all" ? "all" : `${start}_${end}`;
-                downloadTextFile(`anan-money-transactions-${suffix}.csv`, "\ufeff" + [headers.join(","), ...body].join("\n"), "text/csv;charset=utf-8");
-                toast(`已匯出 ${rows.length} 筆 CSV`);
+                const rangeSuffix = type === "transactions" ? `-${suffix}` : "";
+                downloadTextFile(
+                    `anan-money-${selected.name}${rangeSuffix}.csv`,
+                    csvBuild(selected.headers, selected.rows),
+                    "text/csv;charset=utf-8"
+                );
+                toast(`已匯出 ${selected.rows.length} 筆 CSV`);
             }
             function registerLocalProfile() {
                 const name = $("#profileName").value.trim();
@@ -8421,6 +8826,24 @@
                 const status = $("#sheetSyncStatus");
                 status.textContent = text;
                 status.style.color = error ? "#b64252" : "";
+            }
+            function formatDateTime(value) {
+                if (!value) return "";
+                const d = new Date(value);
+                return Number.isNaN(d.getTime()) ? "" : d.toLocaleString("zh-TW");
+            }
+            function updateSheetLastSyncNote() {
+                const note = $("#sheetLastSyncNote");
+                if (!note) return;
+                const at = state.settings.sheetLastSyncAt,
+                    action = state.settings.sheetLastSyncAction || "同步";
+                note.textContent = at ? `最後${action}：${formatDateTime(at)}` : "尚未同步。";
+            }
+            function markSheetSynced(action) {
+                state.settings.sheetLastSyncAt = new Date().toISOString();
+                state.settings.sheetLastSyncAction = action;
+                store.save();
+                updateSheetLastSyncNote();
             }
             // GET uses JSONP because Apps Script ContentService does not provide browser CORS headers.
             function sheetJsonpRequest(action) {
@@ -8495,6 +8918,7 @@
                     setSheetStatus("連線中…");
                     await sheetRequest("GET", "ping");
                     setSheetStatus("已連線");
+                    markSheetSynced("測試連線");
                     toast("Google 試算表連線成功");
                 } catch (error) {
                     const invalidToken = error.message === "Invalid sync token";
@@ -8505,9 +8929,11 @@
             $("#sheetUploadBtn").onclick = async () => {
                 if (!confirm("要以上傳資料覆蓋 Google 試算表目前內容嗎？")) return;
                 try {
+                    exportBackupSnapshot("before-sheet-upload");
                     setSheetStatus("上傳中…");
                     await sheetRequest("POST", "save", state);
                     setSheetStatus(`已上傳 ${new Date().toLocaleTimeString("zh-TW")}`);
+                    markSheetSynced("上傳");
                     toast("資料已上傳到 Google 試算表");
                 } catch (error) {
                     setSheetStatus("上傳失敗", true);
@@ -8517,6 +8943,7 @@
             $("#sheetDownloadBtn").onclick = async () => {
                 if (!confirm("要用 Google 試算表資料覆蓋目前本機資料嗎？")) return;
                 try {
+                    exportBackupSnapshot("before-sheet-download");
                     setSheetStatus("下載中…");
                     const result = await sheetRequest("GET", "load");
                     if (!result.data) throw new Error("試算表沒有可用資料");
@@ -8526,6 +8953,7 @@
                     refreshSettingsUI();
                     openPage(current);
                     setSheetStatus(`已下載 ${new Date().toLocaleTimeString("zh-TW")}`);
+                    markSheetSynced("下載");
                     toast("資料已從 Google 試算表下載");
                 } catch (error) {
                     setSheetStatus("下載失敗", true);
@@ -8534,6 +8962,7 @@
             };
             $("#resetDataBtn").onclick = () => {
                 if (!confirm("確定要重設為示範資料嗎？目前資料會被清除。")) return;
+                exportBackupSnapshot("before-reset-demo");
                 localStorage.removeItem(store.key);
                 location.reload();
             };
@@ -8549,15 +8978,6 @@
                     renderQuick();
                     $("#quickEntry").classList.toggle("open");
                 };
-
-            $("#applyAnanDefaultsBtn").onclick = () => {
-                if (!confirm("要把帳戶與信用卡重新套用為 2026/09/04 的預設值嗎？手動修改過的餘額會被覆蓋。")) return;
-                applyAnanAccountDefaults(true);
-                renderAssets();
-                if (current === "accounts") renderAccountGroups();
-                if (current === "cards") renderCards();
-                refreshSettingsUI();
-            };
 
             function resetAllAmountsToZero() {
                 state.accounts = (state.accounts || []).map((a) => ({...a, balance: 0}));
@@ -8576,16 +8996,46 @@
                 state.goals = (state.goals || []).map((g) => ({...g, target: 0, saved: 0}));
                 store.save();
             }
+            function clearAllAccountsData() {
+                state.accounts = [{id: "cash-twd", name: "台幣現金", type: "cash_twd", currency: "TWD", balance: 0, memo: ""}];
+                state.transactions = [];
+                state.cards = [];
+                state.splits = [];
+                state.projects = [];
+                state.stocks = [];
+                state.funds = [];
+                state.goals = [];
+                state.recurring = [];
+                state.settings.defaultAccount = "cash-twd";
+                state.budget = 0;
+                store.save();
+            }
             $("#cancelAccountBtn")?.addEventListener("click", () => $("#accountModal").classList.remove("open"));
             $("#cancelCardBtn")?.addEventListener("click", () => $("#cardModal").classList.remove("open"));
             $("#applyAnanDefaultsBtn").onclick = () => {
                 if (!confirm("確定將所有數值金額重設為 0？")) return;
+                exportBackupSnapshot("before-reset-amounts");
                 resetAllAmountsToZero();
                 renderAssets();
                 if (current === "accounts") renderAccountGroups();
                 if (current === "cards") renderCards();
                 refreshSettingsUI();
                 toast("所有數值已重設為 0");
+            };
+            $("#clearAccountsBtn").onclick = () => {
+                if (!confirm("確定清空所有帳戶與帳務資料？會保留一個台幣現金帳戶。")) return;
+                exportBackupSnapshot("before-clear-accounts");
+                clearAllAccountsData();
+                currentAccountId = null;
+                selectedDate = today();
+                calDate = new Date(selectedDate + "T12:00:00");
+                renderAssets();
+                renderCards();
+                renderAccountGroups();
+                renderCalendar();
+                refreshSettingsUI();
+                openPage("assets");
+                toast("已清空帳戶並保留台幣現金");
             };
 
             // PIN lock
